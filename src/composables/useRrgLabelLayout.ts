@@ -19,6 +19,7 @@ export function useRrgLabelLayout(
   yScale: MaybeRef<RrgScale>,
   options: LabelLayoutOptions & {
     tickerLabelAlwaysVisible?: MaybeRef<boolean> | boolean
+    hoveredTicker?: MaybeRef<string | null> | string | null
   } = {},
 ): ComputedRef<ResolvedLabel[]> {
   return computed(() => {
@@ -26,6 +27,11 @@ export function useRrgLabelLayout(
       typeof options.tickerLabelAlwaysVisible === 'boolean'
         ? options.tickerLabelAlwaysVisible
         : (options.tickerLabelAlwaysVisible?.value ?? false)
+
+    const hovered =
+      typeof options.hoveredTicker === 'string' || options.hoveredTicker == null
+        ? (options.hoveredTicker ?? null)
+        : options.hoveredTicker.value
 
     const pixelPoints = currentPoints.value.map((p) => ({
       ticker: p.ticker,
@@ -38,6 +44,9 @@ export function useRrgLabelLayout(
     const mode = labelMode.value
 
     return layout.map((label) => {
+      if (hovered && label.ticker === hovered) {
+        return { ...label, visible: true }
+      }
       if (alwaysVisible || mode === 'always') {
         return { ...label, visible: true }
       }

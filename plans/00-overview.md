@@ -124,7 +124,7 @@ These types protect the component from Sector Orbit-specific state shape.
 | [C5](./C5-tails.md) | Tail Rendering (**done**) | Rendering Core | 2–3 days |
 | [C8](./C8-viewport.md) | Viewport Modes (**done**) | Rendering Core | 1–2 days |
 | [C6](./C6-label-collision.md) | Label Collision System (**done**) | Rendering Core | 3–5 days |
-| [C7](./C7-hover-events.md) | Hover, Tooltip, and Selection Events | Interaction | 1–2 days |
+| [C7](./C7-hover-events.md) | Hover, Tooltip, and Selection Events (**done**) | Interaction | 1–2 days |
 | [C12](./C12-playback-controls.md) | Playback Controls | Interaction | 1–2 days |
 | [C9](./C9-accessibility.md) | Accessibility and Agent-Testability | Polish | 1 day |
 | [C11](./C11-adversarial-review.md) | Adversarial Review and Polish | Polish | 2–3 days |
@@ -148,7 +148,7 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 8. C5 — Tail Rendering (+ performance smoke test)
 9. C8 — Viewport Modes
 10. C6 — Label Collision System
-11. C7 — Hover, Tooltip, and Selection Events
+11. C7 — Hover, Tooltip, and Selection Events (**complete**)
 12. C12 — Playback Controls (controlled timeline UI; independent of C6; can parallelize with C7)
 13. C9 — Accessibility and Agent-Testability
 14. C11 — Adversarial Review and Polish
@@ -175,7 +175,7 @@ The component is ready to integrate into Sector Orbit when:
 - [ ] Clear axes, quadrant labels, 100/100 center lines
 - [ ] Tails are readable with clear directionality
 - [ ] Labels do not fuse in clustered cases
-- [ ] Hover makes individual tickers easy to inspect
+- [x] Hover makes individual tickers easy to inspect
 - [ ] Playback controls (when used) make play state, speed, and position unambiguous ([C12](./C12-playback-controls.md))
 - [ ] Viewport modes (fit/max/center) are predictable and stable
 - [ ] Component API accepts generic `RrgRenderSeries[]` — no Sector Orbit assumptions

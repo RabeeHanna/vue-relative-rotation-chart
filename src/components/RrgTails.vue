@@ -2,6 +2,8 @@
 import { computed, type PropType } from 'vue'
 import type { TailData } from '../composables/useRrgTailSlices'
 
+const FADED_TAIL_OPACITY = 0.2
+
 const props = defineProps({
   tailData: { type: Array as PropType<TailData[]>, default: () => [] },
   hoveredTicker: { type: String as PropType<string | null>, default: null },
@@ -17,6 +19,11 @@ const orderedTails = computed(() => {
   tails.push(hovered)
   return tails
 })
+
+function segmentOpacity(ticker: string, opacity: number): number {
+  if (!props.hoveredTicker || ticker === props.hoveredTicker) return opacity
+  return opacity * FADED_TAIL_OPACITY
+}
 </script>
 
 <template>
@@ -38,7 +45,7 @@ const orderedTails = computed(() => {
         :y2="segment.y2"
         :stroke="tail.color"
         :stroke-width="tail.ticker === hoveredTicker ? tailStrokeWidth + 0.75 : tailStrokeWidth"
-        :stroke-opacity="segment.opacity"
+        :stroke-opacity="segmentOpacity(tail.ticker, segment.opacity)"
         stroke-linecap="round"
       />
     </g>

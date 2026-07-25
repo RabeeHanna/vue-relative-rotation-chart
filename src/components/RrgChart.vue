@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, toRef } from 'vue'
-import { RRG_CHART_DEFAULTS, type RrgChartProps } from '../types/rrg'
+import { computed, toRef, watch } from 'vue'
+import { RRG_CHART_DEFAULTS, type RrgChartProps, type RrgRenderPoint } from '../types/rrg'
 import { useRrgViewport } from '../composables/useRrgViewport'
 import { useRrgScales } from '../composables/useRrgScales'
 import { useRrgTailSlices } from '../composables/useRrgTailSlices'
 import { useRrgLabelLayout } from '../composables/useRrgLabelLayout'
+import { useRrgHoverState } from '../composables/useRrgHoverState'
 import { assignSeriesColors } from '../utils/colors'
 import { RRG_DEFAULT_MARGIN } from '../utils/chartLayout'
 import RrgSvgRoot from './RrgSvgRoot.vue'
@@ -13,6 +14,7 @@ import RrgQuadrants from './RrgQuadrants.vue'
 import RrgPoints from './RrgPoints.vue'
 import RrgLabels from './RrgLabels.vue'
 import RrgTails from './RrgTails.vue'
+import RrgTooltip from './RrgTooltip.vue'
 
 const props = withDefaults(defineProps<RrgChartProps>(), {
   tailLength: RRG_CHART_DEFAULTS.tailLength,
@@ -27,10 +29,10 @@ const props = withDefaults(defineProps<RrgChartProps>(), {
   selectedTicker: null,
 })
 
-defineEmits<{
-  pointHover: [point: import('../types/rrg').RrgRenderPoint]
+const emit = defineEmits<{
+  pointHover: [point: RrgRenderPoint]
   pointLeave: []
-  pointClick: [point: import('../types/rrg').RrgRenderPoint]
+  pointClick: [point: RrgRenderPoint]
 }>()
 
 const coloredSeries = computed(() => assignSeriesColors(props.series))
@@ -57,6 +59,35 @@ const { currentPoints, tailData } = useRrgTailSlices(
   yScale,
 )
 
+const { hoveredTicker, hoveredPoint, onPointEnter, onPointLeave, onPointClick } =
+  useRrgHoverState()
+
+const effectiveHoveredTicker = computed(
+  () => hoveredTicker.value ?? props.highlightedTicker ?? null,
+)
+
+watch(hoveredPoint, (point) => {
+  if (point) emit('pointHover', point)
+  else emit('pointLeave')
+})
+
+function handlePointEnter(point: RrgRenderPoint) {
+  onPointEnter(point)
+}
+
+function handlePointLeave() {
+  onPointLeave()
+}
+
+function handlePointClick(point: RrgRenderPoint) {
+  onPointClick(point)
+  emit('pointClick', point)
+}
+
+function handleChartLeave() {
+  onPointLeave()
+}
+
 const labelModeRef = toRef(props, 'labelMode')
 const alwaysVisibleRef = toRef(props, 'tickerLabelAlwaysVisible')
 const resolvedLabels = useRrgLabelLayout(
@@ -64,7 +95,10 @@ const resolvedLabels = useRrgLabelLayout(
   labelModeRef,
   xScale,
   yScale,
-  { tickerLabelAlwaysVisible: alwaysVisibleRef },
+  {
+    tickerLabelAlwaysVisible: alwaysVisibleRef,
+    hoveredTicker: effectiveHoveredTicker,
+  },
 )
 </script>
 
@@ -76,6 +110,8 @@ const resolvedLabels = useRrgLabelLayout(
     :data-selected-date="selectedDate"
     :data-show-patterns="showPatterns ? 'true' : 'false'"
     :data-ticker-label-always-visible="tickerLabelAlwaysVisible ? 'true' : 'false'"
+    :data-hovered-ticker="effectiveHoveredTicker ?? undefined"
+    @pointerleave="handleChartLeave"
   >
     <RrgSvgRoot :width="width" :height="height">
       <RrgAxes
@@ -89,13 +125,24 @@ const resolvedLabels = useRrgLabelLayout(
         :x-scale="xScale"
         :y-scale="yScale"
       />
-      <RrgTails :tail-data="tailData" :hovered-ticker="highlightedTicker" />
+      <RrgTails :tail-data="tailData" :hovered-ticker="effectiveHoveredTicker" />
       <RrgPoints
         :current-points="currentPoints"
         :x-scale="xScale"
         :y-scale="yScale"
+        :hovered-ticker="effectiveHoveredTicker"
+        @point-enter="handlePointEnter"
+        @point-leave="handlePointLeave"
+        @point-click="handlePointClick"
       />
-      <RrgLabels :labels="resolvedLabels" />
+      <RrgLabels :labels="resolvedLabels" :hovered-ticker="effectiveHoveredTicker" />
+      <RrgTooltip
+        :hovered-point="hoveredPoint"
+        :x-scale="xScale"
+        :y-scale="yScale"
+        :plot-width="plotWidth"
+        :plot-height="plotHeight"
+      />
     </RrgSvgRoot>
   </div>
 </template>
@@ -111,7 +158,7 @@ const resolvedLabels = useRrgLabelLayout(
   --rrg-label: #222;
   --rrg-muted-label: #888;
   --rrg-point-stroke: #fff;
-  --rrg-tooltip-bg: #fff;
+  --rrg-tooltip-bg: rgba(255, 255, 255, 0.95);
   width: 100%;
   color: var(--rrg-label);
   font-family: ui-sans-serif, system-ui, sans-serif;
@@ -128,6 +175,6 @@ const resolvedLabels = useRrgLabelLayout(
   --rrg-label: #eee;
   --rrg-muted-label: #aaa;
   --rrg-point-stroke: #1a1a2e;
-  --rrg-tooltip-bg: #222;
+  --rrg-tooltip-bg: rgba(20, 20, 30, 0.95);
 }
 </style>

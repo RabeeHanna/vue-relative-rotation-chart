@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { RrgChart } from '../src'
+import { ref } from 'vue'
+import { RrgChart, type RrgRenderPoint } from '../src'
 import { mockSelectedDate, mockSeries } from './mockSeries'
+
+const hovered = ref<RrgRenderPoint | null>(null)
 </script>
 
 <template>
@@ -9,8 +12,16 @@ import { mockSelectedDate, mockSeries } from './mockSeries'
       <h1>vue-relative-rotation-chart</h1>
       <p>Renderer only — data and calculations are supplied by the caller.</p>
     </header>
-    <RrgChart :series="mockSeries" :selected-date="mockSelectedDate" />
-    <pre class="meta">selectedDate={{ mockSelectedDate }} · series={{ mockSeries.length }}</pre>
+    <RrgChart
+      :series="mockSeries"
+      :selected-date="mockSelectedDate"
+      @point-hover="hovered = $event"
+      @point-leave="hovered = null"
+    />
+    <pre class="meta">
+selectedDate={{ mockSelectedDate }} · series={{ mockSeries.length }}
+hovered={{ hovered ? `${hovered.ticker} @ ${hovered.date}` : 'none' }}
+    </pre>
   </main>
 </template>
 
@@ -53,5 +64,6 @@ header p {
   font-size: 0.85rem;
   color: #666;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  white-space: pre-wrap;
 }
 </style>

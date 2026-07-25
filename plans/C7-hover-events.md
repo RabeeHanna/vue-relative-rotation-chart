@@ -268,17 +268,17 @@ tests/
 
 ## Acceptance Criteria
 
-- [ ] Hovering a point shows tooltip with: ticker, name (if present), date, x (RS-Ratio), y (RS-Momentum), quadrant
-- [ ] Tooltip stays within SVG bounds (smart repositioning near edges)
-- [ ] Hovered point renders at full opacity
-- [ ] Hovered tail renders at full opacity and on top of other tails
-- [ ] Unrelated points fade to low opacity on hover
-- [ ] Unrelated tails fade to low opacity on hover
-- [ ] Hovered ticker label is always revealed (regardless of labelMode)
-- [ ] `pointHover` event emitted with correct `RrgRenderPoint` payload
-- [ ] `pointLeave` event emitted when pointer leaves
-- [ ] `pointClick` event emitted with correct payload on click
-- [ ] `highlightedTicker` prop from parent overrides hover emphasis
-- [ ] Leaving the chart area clears hover state completely
-- [ ] `npm run typecheck` passes
-- [ ] Unit tests for hover state pass
+- [x] Hovering a point shows tooltip with: ticker, name (if present), date, x (RS-Ratio), y (RS-Momentum), quadrant
+- [x] Tooltip stays within SVG bounds (smart repositioning near edges)
+- [x] Hovered point renders at full opacity
+- [x] Hovered tail renders at full opacity and on top of other tails
+- [x] Unrelated points fade to low opacity on hover
+- [x] Unrelated tails fade to low opacity on hover
+- [x] Hovered ticker label is always revealed (regardless of labelMode)
+- [x] `pointHover` event emitted with correct `RrgRenderPoint` payload
+- [x] `pointLeave` event emitted when pointer leaves
+- [x] `pointClick` event emitted with correct payload on click
+- [x] `highlightedTicker` prop from parent overrides hover emphasis
+- [x] Leaving the chart area clears hover state completely
+- [x] `npm run typecheck` passes
+- [x] Unit tests for hover state pass

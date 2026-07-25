@@ -48,6 +48,7 @@ export function useRrgTailSlices(
         x: point.x,
         y: point.y,
         quadrant: point.quadrant,
+        date: point.date,
         color: s.color,
       })
     }

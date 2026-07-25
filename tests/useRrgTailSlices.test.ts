@@ -33,6 +33,7 @@ describe('useRrgTailSlices currentPoints', () => {
       x: 104,
       y: 103,
       quadrant: 'leading',
+      date: '2024-03-01',
     })
   })
 

@@ -4,6 +4,7 @@ import type { ResolvedLabel } from '../composables/useRrgLabelLayout'
 
 defineProps({
   labels: { type: Array as PropType<ResolvedLabel[]>, required: true },
+  hoveredTicker: { type: String as PropType<string | null>, default: null },
 })
 </script>
 
@@ -21,8 +22,14 @@ defineProps({
       dominant-baseline="hanging"
       :data-testid="`rrg-label-${label.ticker}`"
       :data-visible="label.visible ? 'true' : 'false'"
-      :opacity="label.visible ? 1 : 0"
-      :pointer-events="label.visible ? 'none' : 'none'"
+      :opacity="
+        !label.visible
+          ? 0
+          : hoveredTicker && label.ticker !== hoveredTicker
+            ? 0.3
+            : 1
+      "
+      pointer-events="none"
     >
       {{ label.label }}
     </text>

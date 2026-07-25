@@ -24,6 +24,11 @@ export type RrgRenderPoint = {
   y: number
   /** Derived from x/y by the caller */
   quadrant: RrgQuadrant
+  /**
+   * ISO date for the current frame when emitted from hover/click events.
+   * Optional on synthetic points; populated by the chart for interaction payloads.
+   */
+  date?: string
   /** Optional color override; component assigns a default if omitted */
   color?: string
 }
