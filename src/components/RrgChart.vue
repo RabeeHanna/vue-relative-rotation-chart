@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 import { RRG_CHART_DEFAULTS, type RrgChartProps } from '../types/rrg'
 import { useRrgViewport } from '../composables/useRrgViewport'
 import { useRrgScales } from '../composables/useRrgScales'
+import { useRrgTailSlices } from '../composables/useRrgTailSlices'
+import { assignSeriesColors } from '../utils/colors'
 import { RRG_DEFAULT_MARGIN } from '../utils/chartLayout'
 import RrgSvgRoot from './RrgSvgRoot.vue'
 import RrgAxes from './RrgAxes.vue'
 import RrgQuadrants from './RrgQuadrants.vue'
+import RrgPoints from './RrgPoints.vue'
+import RrgLabels from './RrgLabels.vue'
+import RrgTails from './RrgTails.vue'
 
 const props = withDefaults(defineProps<RrgChartProps>(), {
   tailLength: RRG_CHART_DEFAULTS.tailLength,
@@ -27,6 +32,7 @@ defineEmits<{
   pointClick: [point: import('../types/rrg').RrgRenderPoint]
 }>()
 
+const coloredSeries = computed(() => assignSeriesColors(props.series))
 const domain = useRrgViewport()
 const plotWidth = computed(() => {
   const w = props.width ?? 640
@@ -37,6 +43,11 @@ const plotHeight = computed(() => {
   return Math.max(0, h - RRG_DEFAULT_MARGIN.top - RRG_DEFAULT_MARGIN.bottom)
 })
 const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
+
+const seriesRef = coloredSeries
+const selectedDateRef = toRef(props, 'selectedDate')
+const tailLengthRef = toRef(props, 'tailLength')
+const { currentPoints } = useRrgTailSlices(seriesRef, selectedDateRef, tailLengthRef)
 </script>
 
 <template>
@@ -57,6 +68,17 @@ const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
       />
       <RrgQuadrants
         v-if="showQuadrantLabels"
+        :x-scale="xScale"
+        :y-scale="yScale"
+      />
+      <RrgTails />
+      <RrgPoints
+        :current-points="currentPoints"
+        :x-scale="xScale"
+        :y-scale="yScale"
+      />
+      <RrgLabels
+        :points="currentPoints"
         :x-scale="xScale"
         :y-scale="yScale"
       />
