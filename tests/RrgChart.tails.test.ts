@@ -28,7 +28,8 @@ describe('RrgChart tails', () => {
     })
 
     expect(wrapper.get('[data-testid="rrg-tail-XLK"]').exists()).toBe(true)
-    expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('line').length).toBe(2)
+    expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-segment').length).toBe(2)
+    expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-hit').length).toBe(2)
     expect(wrapper.get('[data-testid="rrg-point-XLK"]').exists()).toBe(true)
     expect(wrapper.get('[data-testid="rrg-chart"]').attributes('data-show-tail-fade')).toBe(
       'false',
@@ -46,7 +47,7 @@ describe('RrgChart tails', () => {
       },
     })
 
-    const lines = wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('line')
+    const lines = wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-segment')
     const o0 = Number(lines[0].attributes('stroke-opacity'))
     const o1 = Number(lines[1].attributes('stroke-opacity'))
     expect(o0).toBeLessThan(o1)

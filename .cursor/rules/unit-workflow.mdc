@@ -13,8 +13,9 @@ Implementation follows `plans/00-overview.md` order. Work happens on **`develop`
 2. If ambiguous, list 2–3 options, pick the recommended one, proceed (unless the user asked to pause)
 3. Implement + **unit tests** in the same change
 4. Run `npm test` (and `typecheck` / `lint` / `build` when the unit touches packaging)
-5. **One commit per unit** — do not batch unrelated units
+5. **One commit per unit** — squash any WIP commits into a single unit commit before finishing
 6. Update plan status / overview checkmarks when the unit completes
+7. **Push to remote only after the unit is complete** (squashed commit on `develop`)
 
 ## Pre-Start vs Foundation
 
@@ -26,3 +27,4 @@ Implementation follows `plans/00-overview.md` order. Work happens on **`develop`
 - Commit on `master` for feature units
 - Skip Vitest for “small” logic changes
 - Expand scope into the next unit inside the same commit
+- Push mid-unit WIP; wait until the unit commit is ready

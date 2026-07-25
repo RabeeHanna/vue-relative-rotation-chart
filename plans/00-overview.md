@@ -131,7 +131,7 @@ These types protect the component from Sector Orbit-specific state shape.
 | [C13](./C13-demo-playground.md) | Demo Playground (**done**) | Demo / Polish | 2–3 days |
 | [C13.5](./C13.5-demo-sessions.md) | Demo Session Persistence (**done**) | Demo / Polish | 0.5 day |
 | [C14](./C14-public-release.md) | Public Release Hygiene (**done**) | Packaging / Trust | 1–2 days |
-| [C15](./C15-tail-hover.md) | Tail Hit-Target Hover | Interaction / Polish | 1–2 days |
+| [C15](./C15-tail-hover.md) | Tail Hit-Target Hover (**done**) | Interaction / Polish | 1–2 days |
 | [C16](./C16-optimization.md) | Render / Playback Optimization | Performance | 2–4 days |
 | [C10](./C10-sector-orbit-integration.md) | Sector Orbit Feature-Flag Integration (deferred) | Integration | 1–2 days |
 
@@ -160,7 +160,7 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 15. C13 — Demo Playground (configurable scenarios, viewport UI, copy-as-code) (**complete**)
 15b. C13.5 — Demo Session Persistence (**complete**)
 16. C14 — Public Release Hygiene (packaging, CI, trust; optional scenarios export) (**complete**)
-17. C15 — Tail Hit-Target Hover (investigate + implement after C14)
+17. C15 — Tail Hit-Target Hover (investigate + implement after C14) (**complete**)
 18. C16 — Render / Playback Optimization (long histories, redraw avoidance)
 19. C10 — Sector Orbit Feature-Flag Integration (**deferred**; independent of C13–C16)
 

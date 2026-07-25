@@ -88,7 +88,23 @@ function handlePointEnter(point: RrgRenderPoint) {
   onPointEnter(point)
 }
 
-function handlePointLeave() {
+function stillOverInteractive(related: EventTarget | null): boolean {
+  if (!(related instanceof Element)) return false
+  return Boolean(related.closest('.rrg-point-hit, .rrg-tail, .rrg-tail-hit'))
+}
+
+function handlePointLeave(event?: PointerEvent) {
+  if (event && stillOverInteractive(event.relatedTarget)) return
+  onPointLeave()
+}
+
+function handleTailEnter(ticker: string) {
+  const point = currentPoints.value.find((p) => p.ticker === ticker)
+  if (point) onPointEnter(point)
+}
+
+function handleTailLeave(event: PointerEvent) {
+  if (stillOverInteractive(event.relatedTarget)) return
   onPointLeave()
 }
 
@@ -144,7 +160,12 @@ const resolvedLabels = useRrgLabelLayout(
         :x-scale="xScale"
         :y-scale="yScale"
       />
-      <RrgTails :tail-data="tailData" :hovered-ticker="effectiveHoveredTicker" />
+      <RrgTails
+        :tail-data="tailData"
+        :hovered-ticker="effectiveHoveredTicker"
+        @tail-enter="handleTailEnter"
+        @tail-leave="handleTailLeave"
+      />
       <RrgPoints
         :current-points="currentPoints"
         :x-scale="xScale"

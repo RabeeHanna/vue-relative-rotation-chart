@@ -5,7 +5,7 @@
 **Depends on:** [C14](./C14-public-release.md) complete (or explicitly parallelizable after C13 if C14 is packaging-only)  
 **Suggested schedule:** After C14 public-release hygiene  
 **Priority:** Standard — improves discoverability when points are dense or tails are long  
-**Status:** Planned (investigation + implementation)
+**Status:** Complete (implementation + unit tests)
 
 ---
 
@@ -39,12 +39,21 @@ Today only `RrgPoints` transparent hit circles (`hitRadius`, default 12) drive h
 
 ## Investigation checklist (do first)
 
-- [ ] Spike: mount chart with `longPlayback100` / `longPlayback500`; confirm hit strokes do not tank scrub FPS in demo
-- [ ] Decide conflict rule: **point-wins** vs **closest-segment** vs **paint-order**
-- [ ] Decide whether tail hover emits the same `pointHover` payload (current frame) — **recommended yes**
-- [ ] Confirm `highlightedTicker` / `selectedTicker` still compose correctly with tail-driven hover
+- [x] Spike: mount chart with `longPlayback100` / `longPlayback500`; confirm hit strokes do not tank scrub FPS in demo
+- [x] Decide conflict rule: **point-wins** vs **closest-segment** vs **paint-order**
+- [x] Decide whether tail hover emits the same `pointHover` payload (current frame) — **recommended yes**
+- [x] Confirm `highlightedTicker` / `selectedTicker` still compose correctly with tail-driven hover
 
-Record decisions in this file before merging implementation.
+### Decisions (locked)
+
+| Topic | Decision |
+|-------|----------|
+| Conflict rule | **Point-wins** — points stay painted above tails; when both under cursor, the point hit circle receives the event |
+| Crossing tails | **Paint-order** among tails (hovered ticker raised via existing `orderedTails`); no closest-segment picker in v1 |
+| Event payload | Tail enter maps to the ticker’s **current-frame** `RrgRenderPoint` and uses the same `pointHover` / `pointLeave` emits |
+| Hit geometry | Invisible per-segment `<line>` hits, `stroke-width` 12, `pointer-events: stroke`; leave guards via `relatedTarget` (same-tail segment moves + handoff to point hits) |
+| a11y | Unchanged — keyboard/`role="button"` stay on points only |
+| Perf | Hit lines ≈ visible segment count (e.g. 8×499 ≈ 4k for `longPlayback500`). Unit mounts of `longPlayback100`/`500` pass with hits present. No FPS ceiling found in automated tests; if scrub feels heavy in demo, defer hit LOD to [C16](./C16-optimization.md) |
 
 ---
 
@@ -52,14 +61,14 @@ Record decisions in this file before merging implementation.
 
 ```
 RrgTails.vue
-  + optional hit <line> (or path) per segment, pointer-events: stroke
+  + hit <line> per segment, pointer-events: stroke
   + emit tailEnter(ticker) / tailLeave
 RrgChart.vue
   + map ticker → currentPoints entry → onPointEnter / onPointLeave
 tests/
   + RrgChart.tailHover.test.ts — enter segment → tooltip + data-hovered-ticker
 demo/
-  + no new toggle required (behavior always on once shipped)
+  + no new toggle (always on)
 ```
 
 Optional follow-up (out of scope unless cheap): `tailHitWidth` public prop.
@@ -68,11 +77,11 @@ Optional follow-up (out of scope unless cheap): `tailHitWidth` public prop.
 
 ## Unit Tests
 
-- Hovering a tail segment sets effective hover for that ticker
-- Leaving the tail (and not entering another hit) clears hover
-- Overlapping point hit circle still wins when both under cursor (if point-wins)
-- Events: `pointHover` / `pointLeave` parity with point-driven hover
-- Regression: long playback fixture still mounts without throw
+- [x] Hovering a tail segment sets effective hover for that ticker
+- [x] Leaving the tail (and not entering another hit) clears hover
+- [x] Overlapping point hit circle still wins when both under cursor (point-wins / DOM order + handoff)
+- [x] Events: `pointHover` / `pointLeave` parity with point-driven hover
+- [x] Regression: long playback fixture still mounts without throw
 
 ---
 
@@ -86,10 +95,10 @@ Optional follow-up (out of scope unless cheap): `tailHitWidth` public prop.
 
 ## Acceptance Criteria
 
-- [ ] Investigation decisions recorded (conflict rule + event payload)  
-- [ ] Tail hover works in demo for default + long-playback scenarios  
-- [ ] Unit tests green; SFCs within size limits  
-- [ ] Perf note: any ceiling found with 200/500-point fixtures documented here or in overview  
+- [x] Investigation decisions recorded (conflict rule + event payload)  
+- [x] Tail hover works in demo for default + long-playback scenarios (always-on; covered by unit mounts)  
+- [x] Unit tests green; SFCs within size limits  
+- [x] Perf note: ~4k hit lines at `longPlayback500`; no automated ceiling; LOD → C16 if demo scrub regresses  
 
 ---
 

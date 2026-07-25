@@ -120,8 +120,8 @@ describe('RrgChart interactions', () => {
 
     await wrapper.get('[data-testid="rrg-point-XLK"] .rrg-point-hit').trigger('pointerenter')
 
-    const xlkSeg = wrapper.get('[data-testid="rrg-tail-XLK"]').get('line')
-    const xlfSeg = wrapper.get('[data-testid="rrg-tail-XLF"]').get('line')
+    const xlkSeg = wrapper.get('[data-testid="rrg-tail-XLK"]').get('.rrg-tail-segment')
+    const xlfSeg = wrapper.get('[data-testid="rrg-tail-XLF"]').get('.rrg-tail-segment')
     expect(Number(xlkSeg.attributes('stroke-opacity'))).toBeGreaterThan(
       Number(xlfSeg.attributes('stroke-opacity')),
     )

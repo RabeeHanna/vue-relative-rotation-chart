@@ -18,7 +18,7 @@ defineProps({
 
 defineEmits<{
   pointEnter: [point: RrgRenderPoint]
-  pointLeave: []
+  pointLeave: [event?: PointerEvent]
   pointClick: [point: RrgRenderPoint]
 }>()
 
@@ -52,7 +52,7 @@ function ariaLabel(point: RrgRenderPoint): string {
         :aria-label="ariaLabel(point)"
         style="cursor: pointer"
         @pointerenter="$emit('pointEnter', point)"
-        @pointerleave="$emit('pointLeave')"
+        @pointerleave="$emit('pointLeave', $event)"
         @focus="$emit('pointEnter', point)"
         @blur="$emit('pointLeave')"
         @click="$emit('pointClick', point)"
