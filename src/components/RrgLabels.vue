@@ -1,31 +1,30 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import type { RrgRenderPoint } from '../types/rrg'
-import type { RrgScale } from '../composables/useRrgScales'
+import type { ResolvedLabel } from '../composables/useRrgLabelLayout'
 
 defineProps({
-  points: { type: Array as PropType<RrgRenderPoint[]>, required: true },
-  xScale: { type: Function as PropType<RrgScale>, required: true },
-  yScale: { type: Function as PropType<RrgScale>, required: true },
-  labelOffsetX: { type: Number, default: 8 },
-  labelOffsetY: { type: Number, default: -8 },
+  labels: { type: Array as PropType<ResolvedLabel[]>, required: true },
 })
 </script>
 
 <template>
   <g class="rrg-labels" data-testid="rrg-labels">
     <text
-      v-for="point in points"
-      :key="point.ticker"
+      v-for="label in labels"
+      :key="label.ticker"
       class="rrg-label"
-      :x="xScale(point.x) + labelOffsetX"
-      :y="yScale(point.y) + labelOffsetY"
+      :class="{ 'rrg-label--hidden': !label.visible }"
+      :x="label.x"
+      :y="label.y"
       fill="var(--rrg-label, #222)"
       font-size="11"
-      :data-testid="`rrg-label-${point.ticker}`"
-      data-visible="true"
+      dominant-baseline="hanging"
+      :data-testid="`rrg-label-${label.ticker}`"
+      :data-visible="label.visible ? 'true' : 'false'"
+      :opacity="label.visible ? 1 : 0"
+      :pointer-events="label.visible ? 'none' : 'none'"
     >
-      {{ point.label }}
+      {{ label.label }}
     </text>
   </g>
 </template>

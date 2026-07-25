@@ -122,8 +122,8 @@ These types protect the component from Sector Orbit-specific state shape.
 | [C3](./C3-axes-quadrants.md) | Static SVG Axes and Quadrants (**done**) | Foundation | 1–2 days |
 | [C4](./C4-points.md) | Points and Current Frame Rendering (**done**) | Foundation | 1 day |
 | [C5](./C5-tails.md) | Tail Rendering (**done**) | Rendering Core | 2–3 days |
-| [C8](./C8-viewport.md) | Viewport Modes | Rendering Core | 1–2 days |
-| [C6](./C6-label-collision.md) | Label Collision System | Rendering Core | 3–5 days |
+| [C8](./C8-viewport.md) | Viewport Modes (**done**) | Rendering Core | 1–2 days |
+| [C6](./C6-label-collision.md) | Label Collision System (**done**) | Rendering Core | 3–5 days |
 | [C7](./C7-hover-events.md) | Hover, Tooltip, and Selection Events | Interaction | 1–2 days |
 | [C9](./C9-accessibility.md) | Accessibility and Agent-Testability | Polish | 1 day |
 | [C11](./C11-adversarial-review.md) | Adversarial Review and Polish | Polish | 2–3 days |

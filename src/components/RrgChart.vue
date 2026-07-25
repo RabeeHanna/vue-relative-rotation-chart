@@ -4,6 +4,7 @@ import { RRG_CHART_DEFAULTS, type RrgChartProps } from '../types/rrg'
 import { useRrgViewport } from '../composables/useRrgViewport'
 import { useRrgScales } from '../composables/useRrgScales'
 import { useRrgTailSlices } from '../composables/useRrgTailSlices'
+import { useRrgLabelLayout } from '../composables/useRrgLabelLayout'
 import { assignSeriesColors } from '../utils/colors'
 import { RRG_DEFAULT_MARGIN } from '../utils/chartLayout'
 import RrgSvgRoot from './RrgSvgRoot.vue'
@@ -55,6 +56,16 @@ const { currentPoints, tailData } = useRrgTailSlices(
   xScale,
   yScale,
 )
+
+const labelModeRef = toRef(props, 'labelMode')
+const alwaysVisibleRef = toRef(props, 'tickerLabelAlwaysVisible')
+const resolvedLabels = useRrgLabelLayout(
+  currentPoints,
+  labelModeRef,
+  xScale,
+  yScale,
+  { tickerLabelAlwaysVisible: alwaysVisibleRef },
+)
 </script>
 
 <template>
@@ -84,11 +95,7 @@ const { currentPoints, tailData } = useRrgTailSlices(
         :x-scale="xScale"
         :y-scale="yScale"
       />
-      <RrgLabels
-        :points="currentPoints"
-        :x-scale="xScale"
-        :y-scale="yScale"
-      />
+      <RrgLabels :labels="resolvedLabels" />
     </RrgSvgRoot>
   </div>
 </template>
