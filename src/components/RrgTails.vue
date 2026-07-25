@@ -57,9 +57,10 @@ function onTailLeave(event: PointerEvent) {
     >
       <line
         v-for="(segment, i) in tail.segments"
-        :key="`${tail.ticker}-hit-${i}-${segment.date}`"
+        :key="`${tail.ticker}-hit-${i}`"
         class="rrg-tail-hit"
         data-testid="rrg-tail-hit"
+        :data-segment-index="i"
         :x1="segment.x1"
         :y1="segment.y1"
         :x2="segment.x2"
@@ -73,8 +74,9 @@ function onTailLeave(event: PointerEvent) {
       />
       <line
         v-for="(segment, i) in tail.segments"
-        :key="`${tail.ticker}-${i}-${segment.date}`"
+        :key="`${tail.ticker}-seg-${i}`"
         class="rrg-tail-segment"
+        :data-segment-index="i"
         :x1="segment.x1"
         :y1="segment.y1"
         :x2="segment.x2"

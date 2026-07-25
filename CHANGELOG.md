@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- C16: stable tail segment Vue keys (scrub patches geometry instead of remounting lines)
+- C16: CX scrub coalesce — live scrubber preview; chart date updates at most once per animation frame
 - Public release hygiene (C14): MIT license, contributing/security docs, CI gates
 - Optional `vue-relative-rotation-chart/scenarios` export subpath with named fixtures
 - Demo static build (`npm run build:demo`) for GitHub Pages
@@ -20,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Notes
 
 - First **npm publish** is deferred until a deliberate public release; use git/`file:` installs until then
+- Full-history tail rendering / LOD deferred; default product mode remains capped `tailLength`
 
 ## [0.1.0] - 2026-07-25
 

@@ -106,11 +106,55 @@ describe('RrgPlaybackControls', () => {
     await wrapper.get('[data-testid="rrg-playback-step-forward"]').trigger('click')
     expect(wrapper.emitted('update:selectedDate')?.at(-1)?.[0]).toBe('2024-01-19')
 
-    await wrapper.get('[data-testid="rrg-playback-scrubber"]').setValue(0)
+    const scrubber = wrapper.get('[data-testid="rrg-playback-scrubber"]')
+    const el = scrubber.element as HTMLInputElement
+    el.value = '0'
+    await scrubber.trigger('input')
+    await vi.advanceTimersByTimeAsync(16)
     expect(wrapper.emitted('update:selectedDate')?.at(-1)?.[0]).toBe('2024-01-05')
 
     await wrapper.get('[data-testid="rrg-playback-speed-up"]').trigger('click')
     expect(wrapper.emitted('update:speed')?.at(-1)?.[0]).toBe(2.5)
+  })
+
+  it('coalesces rapid scrub inputs to the latest index per frame', async () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-05',
+        playing: false,
+      },
+    })
+
+    const scrubber = wrapper.get('[data-testid="rrg-playback-scrubber"]')
+    const el = scrubber.element as HTMLInputElement
+    el.value = '1'
+    await scrubber.trigger('input')
+    el.value = '2'
+    await scrubber.trigger('input')
+    expect(wrapper.emitted('update:selectedDate') ?? []).toHaveLength(0)
+
+    await vi.advanceTimersByTimeAsync(16)
+    expect(wrapper.emitted('update:selectedDate')).toHaveLength(1)
+    expect(wrapper.emitted('update:selectedDate')?.[0]?.[0]).toBe('2024-01-19')
+  })
+
+  it('keeps scrubber preview date live before the coalesced emit', async () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-05',
+        playing: false,
+      },
+    })
+
+    const scrubber = wrapper.get('[data-testid="rrg-playback-scrubber"]')
+    const el = scrubber.element as HTMLInputElement
+    el.value = '2'
+    await scrubber.trigger('input')
+    expect(wrapper.get('[data-testid="rrg-playback-date"]').text()).toBe('2024-01-19')
+    expect(wrapper.get('[data-testid="rrg-playback-frame"]').text()).toBe('Frame 3 of 3')
+    expect(wrapper.emitted('update:selectedDate') ?? []).toHaveLength(0)
   })
 
   it('pauses when stepping while playing', async () => {

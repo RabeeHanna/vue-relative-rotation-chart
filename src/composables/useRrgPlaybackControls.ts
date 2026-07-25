@@ -1,6 +1,7 @@
 import { computed, toRef, watch } from 'vue'
 import type { RrgPlaybackControlsProps } from '../types/rrg'
 import { useRrgPlayback } from './useRrgPlayback'
+import { useScrubDatePreview } from './useScrubDatePreview'
 import {
   clampSpeed,
   nextFrameIndex,
@@ -24,35 +25,41 @@ type ResolvedProps = Required<
   >
 >
 
-/** Controlled playback frame/transport state + rAF advancement. */
+/** Controlled playback transport + rAF play loop + CX scrub coalesce. */
 export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackControlsEmit) {
   const frameIndex = computed(() => snapDateIndex(props.dates, props.selectedDate))
   const frameCount = computed(() => props.dates.length)
+  const { effectiveIndex, clearPreview, onScrubInput, onScrubCommit } = useScrubDatePreview({
+    frameIndex,
+    dates: computed(() => props.dates),
+    playing: computed(() => props.playing),
+    emitPlaying: (playing) => emit('update:playing', playing),
+    emitDate: (date) => emit('update:selectedDate', date),
+  })
+
   const canInteract = computed(() => frameCount.value > 1)
-  const atStart = computed(() => frameIndex.value <= 0)
-  const atEnd = computed(() => frameIndex.value >= frameCount.value - 1)
-  const stepBackDisabled = computed(
-    () => !canInteract.value || (!props.loop && atStart.value),
-  )
-  const stepForwardDisabled = computed(
-    () => !canInteract.value || (!props.loop && atEnd.value),
-  )
-  const clampedSpeed = computed(() =>
-    clampSpeed(props.speed, props.minSpeed, props.maxSpeed),
-  )
+  const atStart = computed(() => effectiveIndex.value <= 0)
+  const atEnd = computed(() => effectiveIndex.value >= frameCount.value - 1)
+  const stepBackDisabled = computed(() => !canInteract.value || (!props.loop && atStart.value))
+  const stepForwardDisabled = computed(() => !canInteract.value || (!props.loop && atEnd.value))
+  const clampedSpeed = computed(() => clampSpeed(props.speed, props.minSpeed, props.maxSpeed))
   const speedLabel = computed(() => `${clampedSpeed.value}x`)
   const displayDate = computed(() =>
-    frameIndex.value < 0 ? props.selectedDate || '—' : props.dates[frameIndex.value],
+    frameCount.value === 0 || effectiveIndex.value < 0
+      ? props.selectedDate || '—'
+      : props.dates[effectiveIndex.value],
   )
   const frameLabel = computed(() =>
-    frameCount.value === 0
-      ? 'Frame —'
-      : `Frame ${Math.max(frameIndex.value, 0) + 1} of ${frameCount.value}`,
+    frameCount.value === 0 ? 'Frame —' : `Frame ${effectiveIndex.value + 1} of ${frameCount.value}`,
   )
-
-  /** Interval mode: fps = speed. Skip mode: 1 tick/sec, jump round(speed) frames. */
   const tickRate = computed(() => playbackTickRate(clampedSpeed.value, props.speedMode))
   const frameStep = computed(() => playbackFrameStep(clampedSpeed.value, props.speedMode))
+
+  function goToIndex(index: number) {
+    if (index < 0 || index >= props.dates.length) return
+    clearPreview()
+    emit('update:selectedDate', props.dates[index])
+  }
 
   watch(
     () => [props.dates, props.selectedDate] as const,
@@ -63,7 +70,6 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
     },
     { immediate: true },
   )
-
   watch(
     () => props.speed,
     (speed) => {
@@ -73,13 +79,10 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
     { immediate: true },
   )
 
-  function goToIndex(index: number) {
-    if (index >= 0 && index < props.dates.length) emit('update:selectedDate', props.dates[index])
-  }
-
   function togglePlaying() {
     const next = !props.playing
     if (next && (!canInteract.value || (!props.loop && atEnd.value))) return
+    clearPreview()
     emit('update:playing', next)
   }
 
@@ -88,8 +91,8 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
     if (props.playing) emit('update:playing', false)
     const next =
       delta === 1
-        ? nextFrameIndex(frameIndex.value, frameCount.value, props.loop)
-        : prevFrameIndex(frameIndex.value, frameCount.value, props.loop)
+        ? nextFrameIndex(effectiveIndex.value, frameCount.value, props.loop)
+        : prevFrameIndex(effectiveIndex.value, frameCount.value, props.loop)
     if (next != null) goToIndex(next)
   }
 
@@ -102,28 +105,14 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
     else goToIndex(next)
   }
 
-  useRrgPlayback({
-    playing: toRef(props, 'playing'),
-    speed: tickRate,
-    onFrame: advanceFrame,
-  })
-
-  function onScrubInput(event: Event) {
-    const value = Number((event.target as HTMLInputElement).value)
-    if (!Number.isFinite(value)) return
-    if (props.playing) emit('update:playing', false)
-    goToIndex(value)
-  }
+  useRrgPlayback({ playing: toRef(props, 'playing'), speed: tickRate, onFrame: advanceFrame })
 
   function nudgeSpeed(delta: number) {
-    emit(
-      'update:speed',
-      clampSpeed(clampedSpeed.value + delta, props.minSpeed, props.maxSpeed),
-    )
+    emit('update:speed', clampSpeed(clampedSpeed.value + delta, props.minSpeed, props.maxSpeed))
   }
 
   return {
-    frameIndex,
+    frameIndex: effectiveIndex,
     frameCount,
     canInteract,
     atEnd,
@@ -137,6 +126,7 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
     stepBy,
     goToIndex,
     onScrubInput,
+    onScrubCommit,
     nudgeSpeed,
   }
 }

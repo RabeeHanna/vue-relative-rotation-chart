@@ -36,6 +36,7 @@ const {
   stepBy,
   goToIndex,
   onScrubInput,
+  onScrubCommit,
   nudgeSpeed,
 } = useRrgPlaybackControls(props, emit)
 
@@ -133,6 +134,8 @@ function onKeydown(event: KeyboardEvent) {
         :aria-valuetext="displayDate"
         aria-label="Timeline"
         @input="onScrubInput"
+        @change="onScrubCommit"
+        @pointerup="onScrubCommit"
       />
       <div class="rrg-playback__meta">
         <span data-testid="rrg-playback-date">{{ displayDate }}</span>
