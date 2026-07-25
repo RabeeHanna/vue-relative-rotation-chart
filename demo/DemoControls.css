@@ -11,6 +11,9 @@
   gap: 0.55rem 0.85rem;
   align-items: center;
 }
+.simple {
+  padding-bottom: 0.15rem;
+}
 label {
   display: flex;
   gap: 0.35rem;
@@ -21,6 +24,42 @@ label {
 }
 input[type='number'] {
   width: 4rem;
+}
+input.overridden {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+.overridden-hint {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  font-style: italic;
+}
+.customize,
+.snippet-panel {
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 4px;
+  padding: 0.35rem 0.65rem 0.55rem;
+}
+.customize > summary,
+.snippet-panel > summary {
+  cursor: pointer;
+  font-weight: 600;
+  user-select: none;
+}
+.customize[open] > summary,
+.snippet-panel[open] > summary {
+  margin-bottom: 0.45rem;
+}
+.tail-cluster {
+  margin: 0.35rem 0 0.15rem;
+  padding: 0.4rem 0.55rem;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.04);
+}
+.tail-help {
+  margin: 0 0 0.35rem;
+  font-size: 0.8rem;
+  opacity: 0.8;
 }
 .snippet {
   margin: 0;
@@ -43,6 +82,7 @@ input[type='number'] {
 .advanced {
   border-top: 1px solid rgba(0, 0, 0, 0.12);
   padding-top: 0.5rem;
+  margin-top: 0.35rem;
 }
 .adv-block {
   display: flex;

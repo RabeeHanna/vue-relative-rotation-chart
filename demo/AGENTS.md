@@ -7,6 +7,8 @@ Local Vite playground for visual development and adoption of `RrgChart` (C13).
 ## Belongs here
 
 - App shell (`main.ts`, `DemoApp.vue`, `DemoControls.vue`, `DemoAdvanced.vue`, `DemoChartHost.vue`)
+- Simple defaults: Scenario + Theme; power knobs under **Customize** (closed); playback stays below the chart (C19.5)
+- Snippet behind a closed `<details>`; Tail / Full history clustered with override helper copy
 - Scenario catalog / UI metadata (`scenarios.ts`; series fixtures imported from `src/scenarios`)
 - Thin re-exports (`mockSeries.ts`, `longPlayback.ts`; `adversarialMocks.ts` for C11 tests)
 - Playground helpers (`copySnippet.ts`, `generateSeries.ts`, `parseSeriesJson.ts`, `demoUrl.ts`, `demoSession.ts`, `useDemoAppState.ts`)

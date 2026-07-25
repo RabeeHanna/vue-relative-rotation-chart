@@ -26,6 +26,8 @@ export const DEMO_CONTROL_DEFAULTS: DemoControlsState = {
   genSeed: 42,
   dataHint: '',
   showSummary: false,
+  customizeOpen: false,
+  snippetOpen: false,
   advancedOpen: false,
   copyOpen: false,
   chartCopy: { ...EMPTY_CHART_COPY },

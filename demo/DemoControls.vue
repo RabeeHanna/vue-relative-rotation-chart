@@ -4,6 +4,7 @@ import { scenarioCatalog } from './scenarios'
 import type { ChartSizePreset } from './demoUrl'
 import type { DemoControlsState } from './demoControlsState'
 import DemoAdvanced from './DemoAdvanced.vue'
+import DemoCopyOverrides from './DemoCopyOverrides.vue'
 import './DemoControls.css'
 
 const state = defineModel<DemoControlsState>({ required: true })
@@ -29,7 +30,7 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
 
 <template>
   <section class="demo-controls" data-testid="demo-controls">
-    <div class="row tier1">
+    <div class="row simple" data-testid="demo-simple">
       <label>
         Scenario
         <select v-model="state.scenario" data-testid="demo-scenario">
@@ -39,96 +40,140 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
         </select>
       </label>
       <label>
-        Viewport
-        <select v-model="state.viewportMode" data-testid="demo-viewport" :disabled="state.compare">
-          <option v-for="v in viewports" :key="v" :value="v">{{ v }}</option>
-        </select>
-      </label>
-      <label>
-        Labels
-        <select v-model="state.labelMode" data-testid="demo-label-mode">
-          <option v-for="l in labels" :key="l" :value="l">{{ l }}</option>
-        </select>
-      </label>
-      <label>
-        Tail
-        <input
-          v-model.number="state.tailLength"
-          type="number"
-          min="1"
-          max="60"
-          :disabled="state.fullHistoryTail"
-          data-testid="demo-tail-length"
-        />
-      </label>
-      <label class="check">
-        <input
-          v-model="state.fullHistoryTail"
-          type="checkbox"
-          data-testid="demo-full-history-tail"
-        />
-        Full history
-      </label>
-      <label>
         Theme
         <select v-model="state.theme" data-testid="demo-theme">
           <option value="light">light</option>
           <option value="dark">dark</option>
         </select>
       </label>
-      <label>
-        Size
-        <select v-model="state.size" data-testid="demo-size">
-          <option v-for="s in sizes" :key="s" :value="s">{{ s }}</option>
-        </select>
-      </label>
     </div>
 
-    <div class="row actions">
-      <button type="button" data-testid="demo-copy-snippet" @click="emit('copySnippet')">
-        Copy component snippet
-      </button>
-      <button
-        type="button"
-        data-testid="demo-toggle-summary"
-        @click="state.showSummary = !state.showSummary"
+    <details
+      class="customize"
+      :open="state.customizeOpen"
+      data-testid="demo-customize"
+    >
+      <summary
+        data-testid="demo-customize-summary"
+        @click.prevent="state.customizeOpen = !state.customizeOpen"
       >
-        Accessible summary {{ state.showSummary ? '▾' : '▸' }}
-      </button>
-      <label class="check">
-        <input
-          v-model="state.tickerLabelAlwaysVisible"
-          type="checkbox"
-          data-testid="demo-labels-always"
-        />
-        Always labels
-      </label>
-      <label class="check">
-        <input v-model="state.showTailFade" type="checkbox" data-testid="demo-tail-fade" />
-        Tail fade
-      </label>
-      <label class="check">
-        <input v-model="state.playbackLoop" type="checkbox" data-testid="demo-playback-loop" />
-        Loop playback
-      </label>
-    </div>
+        Customize
+      </summary>
 
-    <p v-if="dataNotInLink" class="notice" data-testid="demo-data-not-in-link">
-      Data not in link — re-paste or re-generate
-    </p>
+      <div class="row">
+        <label>
+          Viewport
+          <select v-model="state.viewportMode" data-testid="demo-viewport" :disabled="state.compare">
+            <option v-for="v in viewports" :key="v" :value="v">{{ v }}</option>
+          </select>
+        </label>
+        <label>
+          Labels
+          <select v-model="state.labelMode" data-testid="demo-label-mode">
+            <option v-for="l in labels" :key="l" :value="l">{{ l }}</option>
+          </select>
+        </label>
+        <label>
+          Size
+          <select v-model="state.size" data-testid="demo-size">
+            <option v-for="s in sizes" :key="s" :value="s">{{ s }}</option>
+          </select>
+        </label>
+      </div>
 
-    <div v-if="state.showSummary" class="summary">
-      <p data-testid="demo-a11y-title"><strong>{{ summaryTitle }}</strong></p>
-      <p data-testid="demo-a11y-desc">{{ summaryDesc }}</p>
-    </div>
+      <div class="tail-cluster" data-testid="demo-tail-cluster">
+        <p class="tail-help">Full history overrides Tail length.</p>
+        <div class="row">
+          <label>
+            Tail
+            <input
+              v-model.number="state.tailLength"
+              type="number"
+              min="1"
+              max="60"
+              :disabled="state.fullHistoryTail"
+              :class="{ overridden: state.fullHistoryTail }"
+              data-testid="demo-tail-length"
+            />
+            <span
+              v-if="state.fullHistoryTail"
+              class="overridden-hint"
+              data-testid="demo-tail-overridden"
+            >
+              overridden
+            </span>
+          </label>
+          <label class="check">
+            <input
+              v-model="state.fullHistoryTail"
+              type="checkbox"
+              data-testid="demo-full-history-tail"
+            />
+            Full history
+          </label>
+        </div>
+      </div>
 
-    <pre class="snippet" data-testid="demo-snippet">{{ snippet }}</pre>
+      <div class="row actions">
+        <button type="button" data-testid="demo-copy-snippet" @click="emit('copySnippet')">
+          Copy component snippet
+        </button>
+        <button
+          type="button"
+          data-testid="demo-toggle-summary"
+          @click="state.showSummary = !state.showSummary"
+        >
+          Accessible summary {{ state.showSummary ? '▾' : '▸' }}
+        </button>
+        <label class="check">
+          <input
+            v-model="state.tickerLabelAlwaysVisible"
+            type="checkbox"
+            data-testid="demo-labels-always"
+          />
+          Always labels
+        </label>
+        <label class="check">
+          <input v-model="state.showTailFade" type="checkbox" data-testid="demo-tail-fade" />
+          Tail fade
+        </label>
+        <label class="check">
+          <input v-model="state.playbackLoop" type="checkbox" data-testid="demo-playback-loop" />
+          Loop playback
+        </label>
+      </div>
 
-    <DemoAdvanced
-      v-model="state"
-      @apply-json="emit('applyJson')"
-      @generate="emit('generate')"
-      @copy-data="emit('copyData')"
-    />
+      <p v-if="dataNotInLink" class="notice" data-testid="demo-data-not-in-link">
+        Data not in link — re-paste or re-generate
+      </p>
+
+      <div v-if="state.showSummary" class="summary">
+        <p data-testid="demo-a11y-title"><strong>{{ summaryTitle }}</strong></p>
+        <p data-testid="demo-a11y-desc">{{ summaryDesc }}</p>
+      </div>
+
+      <details
+        class="snippet-panel"
+        :open="state.snippetOpen"
+        data-testid="demo-snippet-details"
+      >
+        <summary
+          data-testid="demo-snippet-summary"
+          @click.prevent="state.snippetOpen = !state.snippetOpen"
+        >
+          Component snippet
+        </summary>
+        <pre class="snippet" data-testid="demo-snippet">{{ snippet }}</pre>
+      </details>
+
+      <DemoCopyOverrides v-model="state" />
+
+      <DemoAdvanced
+        v-model="state"
+        @apply-json="emit('applyJson')"
+        @generate="emit('generate')"
+        @copy-data="emit('copyData')"
+      />
+    </details>
   </section>
 </template>

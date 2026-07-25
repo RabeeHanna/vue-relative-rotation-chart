@@ -40,6 +40,8 @@ export type DemoControlsState = {
   genSeed: number
   dataHint: string
   showSummary: boolean
+  customizeOpen: boolean
+  snippetOpen: boolean
   advancedOpen: boolean
   copyOpen: boolean
   chartCopy: DemoChartCopyFields

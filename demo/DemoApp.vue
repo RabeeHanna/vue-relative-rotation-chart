@@ -2,7 +2,6 @@
 import { RrgPlaybackControls } from '../src'
 import DemoChartHost from './DemoChartHost.vue'
 import DemoControls from './DemoControls.vue'
-import DemoCopyOverrides from './DemoCopyOverrides.vue'
 import DemoPerfPanel from './DemoPerfPanel.vue'
 import { useDemoAppState } from './useDemoAppState'
 import { partialCopyFromFields } from './demoCopyFields'
@@ -52,7 +51,6 @@ const {
       @generate="onGenerate"
     />
 
-    <DemoCopyOverrides v-model="controls" />
     <DemoPerfPanel />
 
     <p v-if="copyStatus" class="copy-status" data-testid="demo-copy-status">{{ copyStatus }}</p>
