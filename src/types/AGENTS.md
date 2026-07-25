@@ -6,14 +6,16 @@ Public TypeScript contract for the package.
 
 ## Belongs here
 
-- `rrg.ts` — `RrgRenderSeries`, `RrgChartProps`, emits, viewport/label modes, defaults
+- `rrg.ts` — `RrgRenderSeries`, chart/playback props, emits, viewport/label modes
+- `copy.ts` — `RrgChartCopy` / `RrgPlaybackCopy`, merge helpers, English defaults
+- `defaults.ts` — `RRG_CHART_DEFAULTS` / `RRG_PLAYBACK_DEFAULTS`
 - JSDoc documenting caller assumptions (sorted dates, no validation)
 
 ## Does not belong here
 
 - Internal-only layout types (keep next to composables unless exported on purpose)
 - Sector Orbit app types
-- Runtime logic beyond small constant defaults (`RRG_CHART_DEFAULTS`)
+- Runtime logic beyond small constant defaults and copy merge helpers
 
 ## Depends on
 

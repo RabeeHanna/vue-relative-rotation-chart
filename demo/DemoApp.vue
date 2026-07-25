@@ -2,7 +2,9 @@
 import { RrgPlaybackControls } from '../src'
 import DemoChartHost from './DemoChartHost.vue'
 import DemoControls from './DemoControls.vue'
+import DemoCopyOverrides from './DemoCopyOverrides.vue'
 import { useDemoAppState } from './useDemoAppState'
+import { partialCopyFromFields } from './demoCopyFields'
 import './DemoApp.css'
 
 const {
@@ -49,6 +51,8 @@ const {
       @generate="onGenerate"
     />
 
+    <DemoCopyOverrides v-model="controls" />
+
     <p v-if="copyStatus" class="copy-status" data-testid="demo-copy-status">{{ copyStatus }}</p>
 
     <DemoChartHost
@@ -73,6 +77,7 @@ const {
       :min-speed="controls.minSpeed"
       :max-speed="controls.maxSpeed"
       :speed-mode="controls.speedMode"
+      :copy="partialCopyFromFields(controls.playbackCopy)"
     />
 
     <p class="hover-chip" data-testid="demo-hover-chip">

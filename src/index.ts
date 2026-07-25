@@ -8,6 +8,8 @@ export type {
   RrgChartInput,
   RrgChartProps,
   RrgChartEmits,
+  RrgChartCopy,
+  RrgPlaybackCopy,
   RrgPlaybackControlsProps,
   RrgPlaybackControlsEmits,
   RrgPlaybackSpeedMode,
@@ -17,3 +19,10 @@ export type {
 } from './types/rrg'
 
 export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from './types/rrg'
+export {
+  RRG_CHART_COPY_DEFAULTS,
+  RRG_PLAYBACK_COPY_DEFAULTS,
+  mergeChartCopy,
+  mergePlaybackCopy,
+  formatCopy,
+} from './types/copy'

@@ -3,6 +3,8 @@ import { computed, type PropType } from 'vue'
 import type { RrgRenderPoint } from '../types/rrg'
 import type { RrgScale } from '../composables/useRrgScales'
 import { computeTooltipPosition } from '../utils/tooltipPosition'
+import type { ResolvedRrgChartCopy } from '../types/copy'
+import { RRG_CHART_COPY_DEFAULTS } from '../types/copy'
 
 const TOOLTIP_WIDTH = 168
 const TOOLTIP_HEIGHT = 78
@@ -16,6 +18,10 @@ const props = defineProps({
   yScale: { type: Function as PropType<RrgScale>, required: true },
   plotWidth: { type: Number, required: true },
   plotHeight: { type: Number, required: true },
+  copy: {
+    type: Object as PropType<ResolvedRrgChartCopy>,
+    default: () => RRG_CHART_COPY_DEFAULTS,
+  },
 })
 
 const position = computed(() => {
@@ -63,19 +69,27 @@ const position = computed(() => {
       {{ hoveredPoint.date }}
     </text>
     <text dy="41" dx="8" font-size="10" fill="var(--rrg-axis-label)">
-      RS-Ratio: {{ hoveredPoint.x.toFixed(2) }}
+      {{ copy.rsRatio }}: {{ hoveredPoint.x.toFixed(2) }}
     </text>
     <text dy="54" dx="8" font-size="10" fill="var(--rrg-axis-label)">
-      RS-Momentum: {{ hoveredPoint.y.toFixed(2) }}
+      {{ copy.rsMomentum }}: {{ hoveredPoint.y.toFixed(2) }}
     </text>
     <text
       dy="67"
       dx="8"
       font-size="10"
       fill="var(--rrg-axis-label)"
-      style="text-transform: capitalize"
     >
-      Quadrant: {{ hoveredPoint.quadrant }}
+      {{ copy.quadrant }}:
+      {{
+        hoveredPoint.quadrant === 'leading'
+          ? copy.leading
+          : hoveredPoint.quadrant === 'weakening'
+            ? copy.weakening
+            : hoveredPoint.quadrant === 'lagging'
+              ? copy.lagging
+              : copy.improving
+      }}
     </text>
   </g>
 </template>

@@ -1,5 +1,6 @@
 import { computed, toRef, watch } from 'vue'
 import type { RrgPlaybackControlsProps } from '../types/rrg'
+import { formatCopy, mergePlaybackCopy } from '../types/copy'
 import { useRrgPlayback } from './useRrgPlayback'
 import { useScrubDatePreview } from './useScrubDatePreview'
 import {
@@ -23,12 +24,14 @@ type ResolvedProps = Required<
     RrgPlaybackControlsProps,
     'dates' | 'selectedDate' | 'playing' | 'speed' | 'minSpeed' | 'maxSpeed' | 'loop' | 'speedMode'
   >
->
+> &
+  Pick<RrgPlaybackControlsProps, 'copy'>
 
 /** Controlled playback transport + rAF play loop + CX scrub coalesce. */
 export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackControlsEmit) {
   const frameIndex = computed(() => snapDateIndex(props.dates, props.selectedDate))
   const frameCount = computed(() => props.dates.length)
+  const resolvedCopy = computed(() => mergePlaybackCopy(props.copy))
   const { effectiveIndex, clearPreview, onScrubInput, onScrubCommit } = useScrubDatePreview({
     frameIndex,
     dates: computed(() => props.dates),
@@ -50,7 +53,10 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
       : props.dates[effectiveIndex.value],
   )
   const frameLabel = computed(() =>
-    frameCount.value === 0 ? 'Frame —' : `Frame ${effectiveIndex.value + 1} of ${frameCount.value}`,
+    formatCopy(resolvedCopy.value.frame, {
+      current: frameCount.value === 0 ? '—' : effectiveIndex.value + 1,
+      total: frameCount.value === 0 ? '—' : frameCount.value,
+    }),
   )
   const tickRate = computed(() => playbackTickRate(clampedSpeed.value, props.speedMode))
   const frameStep = computed(() => playbackFrameStep(clampedSpeed.value, props.speedMode))
@@ -122,6 +128,7 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
     speedLabel,
     displayDate,
     frameLabel,
+    resolvedCopy,
     togglePlaying,
     stepBy,
     goToIndex,

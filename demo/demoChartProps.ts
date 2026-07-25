@@ -1,6 +1,7 @@
-import type { RrgLabelMode, RrgRenderSeries, RrgViewportMode } from '../src/types/rrg'
+import type { RrgChartCopy, RrgLabelMode, RrgRenderSeries, RrgViewportMode } from '../src/types/rrg'
 import type { ChartSizePreset } from './demoUrl'
 import { CHART_SIZE_PX } from './demoUrl'
+import { partialCopyFromFields, type DemoChartCopyFields } from './demoCopyFields'
 
 export function demoCurrentPoints(series: RrgRenderSeries[], selectedDate: string) {
   return series
@@ -49,6 +50,7 @@ export function demoChartProps(input: {
   pointRadius: number
   hitRadius: number
   size: ChartSizePreset
+  copy?: RrgChartCopy
 }) {
   const { width, height } = CHART_SIZE_PX[input.size]
   return {
@@ -69,6 +71,7 @@ export function demoChartProps(input: {
     hitRadius: input.hitRadius,
     width,
     height,
+    ...(input.copy && Object.keys(input.copy).length > 0 ? { copy: input.copy } : {}),
   }
 }
 
@@ -88,6 +91,7 @@ export function demoChartPropsFromControls(
     pointRadius: number
     hitRadius: number
     size: ChartSizePreset
+    chartCopy?: DemoChartCopyFields
   },
   series: RrgRenderSeries[],
   selectedDate: string,
@@ -98,5 +102,15 @@ export function demoChartPropsFromControls(
     Boolean(controls.fullHistoryTail),
     series,
   )
-  return demoChartProps({ ...controls, tailLength, series, selectedDate, viewportMode })
+  const copy = controls.chartCopy
+    ? partialCopyFromFields(controls.chartCopy)
+    : undefined
+  return demoChartProps({
+    ...controls,
+    tailLength,
+    series,
+    selectedDate,
+    viewportMode,
+    copy,
+  })
 }

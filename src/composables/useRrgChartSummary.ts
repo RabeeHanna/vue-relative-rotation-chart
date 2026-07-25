@@ -1,5 +1,11 @@
 import { computed, type ComputedRef, type Ref } from 'vue'
 import type { RrgQuadrant, RrgRenderPoint, RrgViewportMode } from '../types/rrg'
+import {
+  formatCopy,
+  mergeChartCopy,
+  type RrgChartCopy,
+  type ResolvedRrgChartCopy,
+} from '../types/copy'
 
 type MaybeRef<T> = ComputedRef<T> | Ref<T>
 
@@ -10,12 +16,24 @@ export function useRrgChartSummary(
   selectedDate: MaybeRef<string>,
   viewportMode: MaybeRef<RrgViewportMode>,
   currentPoints: MaybeRef<RrgRenderPoint[]>,
+  copy?: MaybeRef<RrgChartCopy | null | undefined> | RrgChartCopy | null,
 ): {
   title: ComputedRef<string>
   description: ComputedRef<string>
+  resolvedCopy: ComputedRef<ResolvedRrgChartCopy>
 } {
-  const title = computed(
-    () => `Relative Rotation Chart — ${selectedDate.value}`,
+  const resolvedCopy = computed(() => {
+    const raw =
+      copy == null
+        ? undefined
+        : typeof copy === 'object' && 'value' in copy
+          ? copy.value
+          : copy
+    return mergeChartCopy(raw ?? undefined)
+  })
+
+  const title = computed(() =>
+    formatCopy(resolvedCopy.value.chartTitle, { date: selectedDate.value }),
   )
 
   const description = computed(() => {
@@ -26,13 +44,14 @@ export function useRrgChartSummary(
         .map((p) => p.ticker)
         .join(', ') || 'none'
 
-    return [
-      `RRG chart showing ${points.length} tickers as of ${selectedDate.value}.`,
-      `Viewport mode: ${viewportMode.value}.`,
-      `Leading quadrant: ${byQuadrant('leading')}.`,
-      `Improving quadrant: ${byQuadrant('improving')}.`,
-    ].join(' ')
+    return formatCopy(resolvedCopy.value.chartDescription, {
+      date: selectedDate.value,
+      count: points.length,
+      viewport: viewportMode.value,
+      leading: byQuadrant('leading'),
+      improving: byQuadrant('improving'),
+    })
   })
 
-  return { title, description }
+  return { title, description, resolvedCopy }
 }

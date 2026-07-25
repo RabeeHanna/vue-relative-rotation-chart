@@ -7,6 +7,7 @@ import { useRrgTailSlices } from '../composables/useRrgTailSlices'
 import { useRrgLabelLayout } from '../composables/useRrgLabelLayout'
 import { useRrgHoverState } from '../composables/useRrgHoverState'
 import { useRrgChartSummary } from '../composables/useRrgChartSummary'
+import { useRrgChartPointer } from '../composables/useRrgChartPointer'
 import { assignSeriesColors } from '../utils/colors'
 import { RRG_DEFAULT_MARGIN } from '../utils/chartLayout'
 import RrgSvgRoot from './RrgSvgRoot.vue'
@@ -41,12 +42,12 @@ const emit = defineEmits<{
 }>()
 
 const coloredSeries = computed(() => assignSeriesColors(props.series))
-const seriesRef = coloredSeries
 const selectedDateRef = toRef(props, 'selectedDate')
 const tailLengthRef = toRef(props, 'tailLength')
 const viewportModeRef = toRef(props, 'viewportMode')
 const showTailFadeRef = toRef(props, 'showTailFade')
-const domain = useRrgViewport(seriesRef, selectedDateRef, tailLengthRef, viewportModeRef)
+const copyRef = toRef(props, 'copy')
+const domain = useRrgViewport(coloredSeries, selectedDateRef, tailLengthRef, viewportModeRef)
 const plotWidth = computed(() => {
   const w = props.width ?? 640
   return Math.max(0, w - RRG_DEFAULT_MARGIN.left - RRG_DEFAULT_MARGIN.right)
@@ -56,27 +57,34 @@ const plotHeight = computed(() => {
   return Math.max(0, h - RRG_DEFAULT_MARGIN.top - RRG_DEFAULT_MARGIN.bottom)
 })
 const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
-
 const { currentPoints, tailData } = useRrgTailSlices(
-  seriesRef,
+  coloredSeries,
   selectedDateRef,
   tailLengthRef,
   xScale,
   yScale,
   showTailFadeRef,
 )
-
 const { hoveredTicker, hoveredPoint, onPointEnter, onPointLeave, onPointClick } =
   useRrgHoverState()
-
 const effectiveHoveredTicker = computed(
   () => hoveredTicker.value ?? props.highlightedTicker ?? null,
 )
-
-const { title: a11yTitle, description: a11yDescription } = useRrgChartSummary(
+const { title: a11yTitle, description: a11yDescription, resolvedCopy } = useRrgChartSummary(
   selectedDateRef,
   viewportModeRef,
   currentPoints,
+  copyRef,
+)
+const {
+  handlePointEnter,
+  handlePointLeave,
+  handleTailEnter,
+  handleTailLeave,
+  handlePointClick,
+  handleChartLeave,
+} = useRrgChartPointer(currentPoints, { onPointEnter, onPointLeave, onPointClick }, (p) =>
+  emit('pointClick', p),
 )
 
 watch(hoveredPoint, (point) => {
@@ -84,48 +92,13 @@ watch(hoveredPoint, (point) => {
   else emit('pointLeave')
 })
 
-function handlePointEnter(point: RrgRenderPoint) {
-  onPointEnter(point)
-}
-
-function stillOverInteractive(related: EventTarget | null): boolean {
-  if (!(related instanceof Element)) return false
-  return Boolean(related.closest('.rrg-point-hit, .rrg-tail, .rrg-tail-hit'))
-}
-
-function handlePointLeave(event?: PointerEvent) {
-  if (event && stillOverInteractive(event.relatedTarget)) return
-  onPointLeave()
-}
-
-function handleTailEnter(ticker: string) {
-  const point = currentPoints.value.find((p) => p.ticker === ticker)
-  if (point) onPointEnter(point)
-}
-
-function handleTailLeave(event: PointerEvent) {
-  if (stillOverInteractive(event.relatedTarget)) return
-  onPointLeave()
-}
-
-function handlePointClick(point: RrgRenderPoint) {
-  onPointClick(point)
-  emit('pointClick', point)
-}
-
-function handleChartLeave() {
-  onPointLeave()
-}
-
-const labelModeRef = toRef(props, 'labelMode')
-const alwaysVisibleRef = toRef(props, 'tickerLabelAlwaysVisible')
 const resolvedLabels = useRrgLabelLayout(
   currentPoints,
-  labelModeRef,
+  toRef(props, 'labelMode'),
   xScale,
   yScale,
   {
-    tickerLabelAlwaysVisible: alwaysVisibleRef,
+    tickerLabelAlwaysVisible: toRef(props, 'tickerLabelAlwaysVisible'),
     hoveredTicker: effectiveHoveredTicker,
   },
 )
@@ -159,6 +132,7 @@ const resolvedLabels = useRrgLabelLayout(
         v-if="showQuadrantLabels"
         :x-scale="xScale"
         :y-scale="yScale"
+        :copy="resolvedCopy"
       />
       <RrgTails
         :tail-data="tailData"
@@ -174,6 +148,7 @@ const resolvedLabels = useRrgLabelLayout(
         :selected-ticker="selectedTicker"
         :point-radius="pointRadius"
         :hit-radius="hitRadius"
+        :copy="resolvedCopy"
         @point-enter="handlePointEnter"
         @point-leave="handlePointLeave"
         @point-click="handlePointClick"
@@ -185,6 +160,7 @@ const resolvedLabels = useRrgLabelLayout(
         :y-scale="yScale"
         :plot-width="plotWidth"
         :plot-height="plotHeight"
+        :copy="resolvedCopy"
       />
     </RrgSvgRoot>
   </div>

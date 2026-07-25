@@ -5,8 +5,14 @@
  * RS-Ratio / RS-Momentum. Callers must pass precomputed series.
  */
 
+import type { RrgChartCopy, RrgPlaybackCopy } from './copy'
+
+export type { RrgChartCopy, RrgPlaybackCopy } from './copy'
+export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from './defaults'
+
 /** Quadrant relative to the RRG center (x=100, y=100). */
 export type RrgQuadrant = 'leading' | 'weakening' | 'lagging' | 'improving'
+
 
 /**
  * A single ticker position at one moment in time (current frame point).
@@ -126,6 +132,9 @@ export type RrgChartProps = {
    * When false, all segments use a uniform strong opacity. Default false.
    */
   showTailFade?: boolean
+
+  /** Optional UI copy overrides (quadrants, tooltip, a11y title/desc). */
+  copy?: RrgChartCopy
 }
 
 export type RrgChartEmits = {
@@ -156,6 +165,8 @@ export type RrgPlaybackControlsProps = {
   loop?: boolean
   /** Default `interval`. */
   speedMode?: RrgPlaybackSpeedMode
+  /** Optional UI copy overrides (buttons, frame label, aria). */
+  copy?: RrgPlaybackCopy
 }
 
 export type RrgPlaybackControlsEmits = {
@@ -173,28 +184,3 @@ export type RrgDomain = {
   yMin: number
   yMax: number
 }
-
-/** Default prop values shared by the component and tests. */
-export const RRG_CHART_DEFAULTS = {
-  tailLength: 10,
-  viewportMode: 'fit' as RrgViewportMode,
-  labelMode: 'auto' as RrgLabelMode,
-  showQuadrantLabels: true,
-  showGrid: true,
-  showAxes: true,
-  showPatterns: false,
-  tickerLabelAlwaysVisible: false,
-  showTailFade: false,
-  pointRadius: 5.5,
-  hitRadius: 12,
-} as const
-
-/** Defaults for `<RrgPlaybackControls />`. */
-export const RRG_PLAYBACK_DEFAULTS = {
-  playing: false,
-  speed: 2,
-  minSpeed: 0.5,
-  maxSpeed: 5,
-  loop: true,
-  speedMode: 'interval' as RrgPlaybackSpeedMode,
-} as const

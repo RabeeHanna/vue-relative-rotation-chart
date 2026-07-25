@@ -2,8 +2,10 @@
 import type { PropType } from 'vue'
 import type { RrgRenderPoint } from '../types/rrg'
 import type { RrgScale } from '../composables/useRrgScales'
+import type { ResolvedRrgChartCopy } from '../types/copy'
+import { RRG_CHART_COPY_DEFAULTS } from '../types/copy'
 
-defineProps({
+const props = defineProps({
   currentPoints: {
     type: Array as PropType<RrgRenderPoint[]>,
     required: true,
@@ -14,6 +16,10 @@ defineProps({
   hitRadius: { type: Number, default: 12 },
   hoveredTicker: { type: String as PropType<string | null>, default: null },
   selectedTicker: { type: String as PropType<string | null>, default: null },
+  copy: {
+    type: Object as PropType<ResolvedRrgChartCopy>,
+    default: () => RRG_CHART_COPY_DEFAULTS,
+  },
 })
 
 defineEmits<{
@@ -22,8 +28,16 @@ defineEmits<{
   pointClick: [point: RrgRenderPoint]
 }>()
 
+function quadrantWord(point: RrgRenderPoint): string {
+  const c = props.copy
+  if (point.quadrant === 'leading') return c.leading
+  if (point.quadrant === 'weakening') return c.weakening
+  if (point.quadrant === 'lagging') return c.lagging
+  return c.improving
+}
+
 function ariaLabel(point: RrgRenderPoint): string {
-  return `${point.ticker} — ${point.quadrant} quadrant, RS-Ratio ${point.x.toFixed(1)}, RS-Momentum ${point.y.toFixed(1)}`
+  return `${point.ticker} — ${quadrantWord(point)} quadrant, ${props.copy.rsRatio} ${point.x.toFixed(1)}, ${props.copy.rsMomentum} ${point.y.toFixed(1)}`
 }
 </script>
 

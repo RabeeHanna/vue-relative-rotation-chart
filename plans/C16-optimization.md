@@ -48,9 +48,10 @@ Investigate and implement optimizations so long RRG histories and dense ticker s
 ## Follow-ups (not C16)
 
 - ~~Demo **full-history tail** toggle (off by default)~~ — **done** (`fullHistoryTail` in demo controls / URL / session)
+- ~~Public **`copy` prop** + demo Copy / labels panel~~ — **done** (`RrgChartCopy` / `RrgPlaybackCopy`; session-persisted overrides)
 - Optional `maxTailSegments` / simplify if full-history node counts hurt  
 - Hit LOD if full-history mode proves heavy in the browser  
-- Browser FPS harness (optional)
+- **Next draft:** performance testing / profiling unit under likely use cases (browser FPS + harness)
 
 ---
 

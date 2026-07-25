@@ -27,6 +27,9 @@ describe('demo session', () => {
       speedMode: 'skip' as const,
       cssBg: '#112233',
       advancedOpen: true,
+      copyOpen: true,
+      chartCopy: { ...DEMO_CONTROL_DEFAULTS.chartCopy, leading: 'Lider' },
+      playbackCopy: { ...DEMO_CONTROL_DEFAULTS.playbackCopy, play: 'Go' },
     }
     writeDemoSession(
       { controls, playback: { speed: 4, selectedDate: '2024-04-19' } },
@@ -41,6 +44,9 @@ describe('demo session', () => {
     expect(loaded?.controls.speedMode).toBe('skip')
     expect(loaded?.controls.cssBg).toBe('#112233')
     expect(loaded?.controls.advancedOpen).toBe(true)
+    expect(loaded?.controls.copyOpen).toBe(true)
+    expect(loaded?.controls.chartCopy.leading).toBe('Lider')
+    expect(loaded?.controls.playbackCopy.play).toBe('Go')
     expect(loaded?.playback).toEqual({ speed: 4, selectedDate: '2024-04-19' })
   })
 

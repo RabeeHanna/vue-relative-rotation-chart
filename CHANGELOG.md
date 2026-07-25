@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Optional `copy` prop on `RrgChart` and `RrgPlaybackControls` for quadrant, tooltip, a11y, and control labels (`mergeChartCopy` / `mergePlaybackCopy` / `formatCopy`)
+- Demo **Copy / labels** panel to override strings (session-persisted; blank = package default)
+- Demo full-history tail toggle (`fullHistoryTail`, off by default)
 - C16: stable tail segment Vue keys (scrub patches geometry instead of remounting lines)
 - C16: CX scrub coalesce — live scrubber preview; chart date updates at most once per animation frame
 - Public release hygiene (C14): MIT license, contributing/security docs, CI gates
@@ -22,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Notes
 
 - First **npm publish** is deferred until a deliberate public release; use git/`file:` installs until then
-- Full-history tail rendering / LOD deferred; default product mode remains capped `tailLength`
+- Full-history LOD / hit simplification still deferred; default product mode remains capped `tailLength`
 
 ## [0.1.0] - 2026-07-25
 

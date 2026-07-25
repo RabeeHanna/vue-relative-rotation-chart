@@ -1,4 +1,5 @@
 import type { DemoControlsState } from './demoControlsState'
+import { EMPTY_CHART_COPY, EMPTY_PLAYBACK_COPY } from './demoCopyFields'
 import { parseDemoUrl, type DemoUrlState } from './demoUrl'
 
 export const DEMO_SESSION_KEY = 'vrrc-demo-session'
@@ -26,6 +27,9 @@ export const DEMO_CONTROL_DEFAULTS: DemoControlsState = {
   dataHint: '',
   showSummary: false,
   advancedOpen: false,
+  copyOpen: false,
+  chartCopy: { ...EMPTY_CHART_COPY },
+  playbackCopy: { ...EMPTY_PLAYBACK_COPY },
   cssBg: '#ffffff',
   cssLabel: '#222222',
   cssGrid: '#d0d0cc',
@@ -78,6 +82,8 @@ export function mergeDemoControls(
   const merged: DemoControlsState = {
     ...DEMO_CONTROL_DEFAULTS,
     ...(session ?? {}),
+    chartCopy: { ...EMPTY_CHART_COPY, ...(session?.chartCopy ?? {}) },
+    playbackCopy: { ...EMPTY_PLAYBACK_COPY, ...(session?.playbackCopy ?? {}) },
   }
   for (const key of URL_KEYS) {
     if (present.has(key)) {

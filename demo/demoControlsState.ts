@@ -2,6 +2,7 @@ import type { RrgLabelMode, RrgViewportMode } from '../src/types/rrg'
 import type { ChartSizePreset, EmbedWidth } from './demoUrl'
 import type { DemoDataSource } from './copySnippet'
 import type { ScenarioId } from './scenarios'
+import type { DemoChartCopyFields, DemoPlaybackCopyFields } from './demoCopyFields'
 
 export type DemoControlsState = {
   scenario: ScenarioId
@@ -41,4 +42,7 @@ export type DemoControlsState = {
   dataHint: string
   showSummary: boolean
   advancedOpen: boolean
+  copyOpen: boolean
+  chartCopy: DemoChartCopyFields
+  playbackCopy: DemoPlaybackCopyFields
 }

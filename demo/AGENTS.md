@@ -12,6 +12,7 @@ Local Vite playground for visual development and adoption of `RrgChart` (C13).
 - Playground helpers (`copySnippet.ts`, `generateSeries.ts`, `parseSeriesJson.ts`, `demoUrl.ts`, `demoSession.ts`, `useDemoAppState.ts`)
 - Full-history tail toggle (`fullHistoryTail`, off by default — expands effective `tailLength` to series length)
 - Power-user panel (`DemoPowerUser.vue` — radii, speeds, selectedTicker, CSS vars)
+- Copy / labels overrides (`DemoCopyOverrides.vue`, `demoCopyFields.ts` — blank = package default; session-persisted)
 - Tab session persistence (`sessionStorage` via `demoSession.ts` — C13.5)
 
 ## Does not belong here

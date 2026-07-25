@@ -32,6 +32,7 @@ const {
   speedLabel,
   displayDate,
   frameLabel,
+  resolvedCopy,
   togglePlaying,
   stepBy,
   goToIndex,
@@ -76,7 +77,7 @@ function onKeydown(event: KeyboardEvent) {
     data-testid="rrg-playback"
     tabindex="0"
     role="group"
-    aria-label="Playback controls. Space play pause, arrows step, Home End jump."
+    :aria-label="resolvedCopy.group"
     :data-playing="playing ? 'true' : 'false'"
     :data-speed="String(clampedSpeed)"
     :data-speed-mode="speedMode"
@@ -90,7 +91,7 @@ function onKeydown(event: KeyboardEvent) {
         class="rrg-playback__btn"
         data-testid="rrg-playback-step-back"
         :disabled="stepBackDisabled"
-        aria-label="Step backward"
+        :aria-label="resolvedCopy.stepBackward"
         @click="stepBy(-1)"
       >
         ⏮
@@ -100,7 +101,7 @@ function onKeydown(event: KeyboardEvent) {
         class="rrg-playback__btn rrg-playback__btn--play"
         data-testid="rrg-playback-toggle"
         :disabled="!canInteract || (!loop && atEnd && !playing)"
-        :aria-label="playing ? 'Pause' : 'Play'"
+        :aria-label="playing ? resolvedCopy.pause : resolvedCopy.play"
         @click="togglePlaying"
       >
         {{ playing ? '⏸' : '▶' }}
@@ -110,7 +111,7 @@ function onKeydown(event: KeyboardEvent) {
         class="rrg-playback__btn"
         data-testid="rrg-playback-step-forward"
         :disabled="stepForwardDisabled"
-        aria-label="Step forward"
+        :aria-label="resolvedCopy.stepForward"
         @click="stepBy(1)"
       >
         ⏭
@@ -132,7 +133,7 @@ function onKeydown(event: KeyboardEvent) {
         :aria-valuemax="Math.max(frameCount - 1, 0)"
         :aria-valuenow="Math.max(frameIndex, 0)"
         :aria-valuetext="displayDate"
-        aria-label="Timeline"
+        :aria-label="resolvedCopy.timeline"
         @input="onScrubInput"
         @change="onScrubCommit"
         @pointerup="onScrubCommit"
@@ -141,7 +142,7 @@ function onKeydown(event: KeyboardEvent) {
         <span data-testid="rrg-playback-date">{{ displayDate }}</span>
         <span data-testid="rrg-playback-frame">{{ frameLabel }}</span>
         <span v-if="loop" class="rrg-playback__loop" data-testid="rrg-playback-loop">
-          Loop
+          {{ resolvedCopy.loop }}
         </span>
       </div>
     </div>
@@ -151,7 +152,7 @@ function onKeydown(event: KeyboardEvent) {
         type="button"
         class="rrg-playback__btn"
         data-testid="rrg-playback-speed-down"
-        aria-label="Decrease speed"
+        :aria-label="resolvedCopy.decreaseSpeed"
         :disabled="clampedSpeed <= minSpeed"
         @click="nudgeSpeed(-0.5)"
       >
@@ -164,7 +165,7 @@ function onKeydown(event: KeyboardEvent) {
         type="button"
         class="rrg-playback__btn"
         data-testid="rrg-playback-speed-up"
-        aria-label="Increase speed"
+        :aria-label="resolvedCopy.increaseSpeed"
         :disabled="clampedSpeed >= maxSpeed"
         @click="nudgeSpeed(0.5)"
       >
