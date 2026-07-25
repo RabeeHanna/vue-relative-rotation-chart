@@ -5,7 +5,7 @@
 **Depends on:** [C18](./C18-pre-npm-polish.md) complete; decisions locked in [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.md); prefer [C19.5](./C19.5-demo-ux-simplify.md) **before** publish  
 **Suggested schedule:** Immediately after scrutiny lock; **before** first `npm publish`  
 **Priority:** High — publish gate  
-**Status:** Draft — ready to implement  
+**Status:** Docs + pack gate ready — **npm publish blocked on auth** (`npm whoami` → ENEEDAUTH)  
 
 ---
 
@@ -85,16 +85,16 @@ Full rationale: [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.m
 
 ## Acceptance criteria
 
-- [ ] D1–D5 honored in README / changelog / process  
-- [ ] README: rotation pitch; precise quadrant wording; enumerated fragile surfaces  
-- [ ] `[0.1.0]` (or publish version) CHANGELOG accurately describes shipped API  
+- [x] D1–D5 honored in README / changelog / process  
+- [x] README: rotation pitch; precise quadrant wording; enumerated fragile surfaces  
+- [x] `[0.1.0]` (or publish version) CHANGELOG accurately describes shipped API  
 - [x] Real-data dogfood notes committed (worked / broke / fixed)  
 - [x] [C19.5](./C19.5-demo-ux-simplify.md) done (or explicitly deferred with reason — prefer done before publish)  
-- [ ] Pack dry-run confirms `dist/` only (demo not in tarball)  
+- [x] Pack dry-run confirms `dist/` only (demo not in tarball)  
 - [x] Prefer [C20](./C20-bundle-size-perf-playbook.md) bundle-size tracking landed (or explicitly deferred with reason)  
-- [ ] Host default branch still untouched by this unit  
+- [x] Host default branch still untouched by this unit  
 - [ ] Package published to npm; README install + badges updated  
-- [ ] Vitest green; typecheck/lint/build green if touched  
+- [x] Vitest green; typecheck/lint/build green if touched  
 
 ---
 
@@ -147,3 +147,4 @@ Full rationale: [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.m
 | 2026-07-25 | Unit drafted from locked scrutiny feedback (D1–D5 + changelog + dogfood-before-publish) |
 | 2026-07-25 | Added C19.5 demo UX sequencing + packaging `files: ["dist"]` confirmation |
 | 2026-07-25 | Cross-link C20 bundle/playbook; prefer before publish; C21 profiling deferred |
+| 2026-07-25 | README pitch + fragile surfaces + accurate `[0.1.0]` CHANGELOG; pack dry-run OK; publish awaits npm login |

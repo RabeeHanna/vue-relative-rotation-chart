@@ -3,9 +3,9 @@
 [![CI](https://github.com/RabeeHanna/vue-relative-rotation-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/RabeeHanna/vue-relative-rotation-chart/actions/workflows/ci.yml)
 [![license](https://img.shields.io/github/license/RabeeHanna/vue-relative-rotation-chart.svg)](./LICENSE)
 
-A Vue SVG component for rendering RRG-style relative rotation charts from precomputed relative strength and momentum data.
+**Vue 3 SVG library for RRG-style relative rotation charts** — render precomputed RS-Ratio × RS-Momentum series with readable tails, collision-aware labels, viewport modes, hover/tooltip, and optional playback scrubbing.
 
-**This component is a renderer only** — it does not fetch prices, compute RS-Ratio / RS-Momentum, cache data, or own app routing/stores. Callers must pass precomputed `RrgRenderSeries[]`.
+**Renderer only.** This package does not fetch prices, compute RS-Ratio / RS-Momentum, cache data, or own app routing/stores. Callers pass precomputed `RrgRenderSeries[]`.
 
 > **Not published to npm yet.** Prefer a git / `file:` / workspace link until the first deliberate publish.
 >
@@ -16,6 +16,12 @@ A Vue SVG component for rendering RRG-style relative rotation charts from precom
 ```bash
 # After public release:
 # npm install vue-relative-rotation-chart
+```
+
+Also import styles once in your app:
+
+```ts
+import 'vue-relative-rotation-chart/style.css'
 ```
 
 Peer dependency: Vue `^3.5.0`.
@@ -30,12 +36,17 @@ Workspace / local link:
 }
 ```
 
+## Quadrants
+
+The `quadrant` field on each point **currently accepts these four values:** `leading`, `weakening`, `lagging`, and `improving`. A fully generic labeling scheme is deferred to a future major version — do not treat quadrant as an open-ended caller-defined string today.
+
 ## Usage
 
 ```vue
 <script setup lang="ts">
 import { RrgChart, RrgPlaybackControls } from 'vue-relative-rotation-chart'
 import type { RrgRenderSeries } from 'vue-relative-rotation-chart'
+import 'vue-relative-rotation-chart/style.css'
 import { ref } from 'vue'
 
 const series: RrgRenderSeries[] = [
@@ -108,8 +119,10 @@ const speed = ref(2)
 | Prop | Type | Default | Notes |
 |------|------|---------|--------|
 | `dates` | `string[]` | — | Ascending ISO dates |
-| `selectedDate` | `string` | — | Snapped to `dates` |
-| `playing` / `speed` / `loop` | controlled | see defaults | `v-model:` supported |
+| `selectedDate` | `string` | — | Snapped to `dates`; `v-model:selected-date` |
+| `playing` | `boolean` | `false` | `v-model:playing` |
+| `speed` | `number` | `2` | `v-model:speed` |
+| `loop` | `boolean` | `true` | |
 | `labelStyle` | `'icon' \| 'icon-text'` | `'icon'` | Visible copy beside glyphs |
 | `copy` | `RrgPlaybackCopy` | — | Optional label overrides |
 
@@ -122,9 +135,45 @@ import { denseCluster } from 'vue-relative-rotation-chart/scenarios'
 
 Use `defaultScenario` for the sector baseline (`default` is a reserved word).
 
+## Fragile surfaces (`0.x`)
+
+Pre-1.0 may change between minors. Treat these as the surfaces most likely to move — pin carefully or read the changelog on upgrade:
+
+1. **`RrgQuadrant`** — fixed four-value enum (`leading` \| `weakening` \| `lagging` \| `improving`) only  
+2. **Playback `v-model` / emit names** — `selectedDate`, `playing`, `speed` (and related props)  
+3. **`copy` shapes** — `RrgChartCopy` / `RrgPlaybackCopy` field keys and defaults  
+4. **Visual defaults** — especially `showTailFade` (default `false`), `labelMode` (default `auto`), `pointRadius` / `hitRadius`
+
+See also [Semver policy](#semver-policy).
+
+## Host integration (sketch)
+
+Typical consumer pattern: keep calculation in the host; adapt host series → `RrgRenderSeries[]`; mount `RrgChart` (+ optional `RrgPlaybackControls`). A feature-flag swap next to an existing chart is enough for dogfood — see [`plans/C10-host-integration.md`](./plans/C10-host-integration.md).
+
+```ts
+import type { RrgRenderSeries } from 'vue-relative-rotation-chart'
+
+// hostAdapter.ts — map your calculated frames into RrgRenderSeries[]
+export function toRrgSeries(hostSeries: YourSeries[]): RrgRenderSeries[] {
+  return hostSeries.map((s) => ({
+    ticker: s.symbol,
+    label: s.symbol,
+    name: s.name,
+    points: s.frames.map((f) => ({
+      date: f.isoDate,
+      x: f.rsRatio,
+      y: f.rsMomentum,
+      quadrant: f.quadrant, // leading | weakening | lagging | improving
+    })),
+    color: s.color,
+    visible: s.visible,
+  }))
+}
+```
+
 ## Semver policy
 
-- **Pre-1.0 (`0.x`):** public API may change between minors; treat upgrades carefully.
+- **Pre-1.0 (`0.x`):** public API may change between minors. Prefer the [fragile surfaces](#fragile-surfaces-0x) list over a vague “API may change” disclaimer when assessing upgrade risk.
 - **v1+:** semver for the renderer API; the package remains renderer-only (no fetch/calc).
 - See [`CHANGELOG.md`](./CHANGELOG.md). Prefer conventional commits (`feat:`, `fix:`, `docs:`, …).
 
@@ -140,8 +189,11 @@ npm run lint
 npm test
 npm run test:e2e
 npm run test:perf        # Playwright FPS harness (C17)
+npm run check:bundle-size
 npm run review:artifacts # screenshots + debug JSON (plans/screenshots/)
 ```
+
+Performance playbook: [`docs/perf.md`](./docs/perf.md).
 
 ## Docs
 

@@ -3,6 +3,23 @@
   "version": "0.1.0",
   "description": "Vue SVG component for RRG-style relative rotation charts (renderer only).",
   "license": "MIT",
+  "homepage": "https://github.com/RabeeHanna/vue-relative-rotation-chart#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RabeeHanna/vue-relative-rotation-chart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RabeeHanna/vue-relative-rotation-chart/issues"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "svg",
+    "chart",
+    "rrg",
+    "relative-rotation",
+    "relative-strength"
+  ],
   "type": "module",
   "files": [
     "dist"

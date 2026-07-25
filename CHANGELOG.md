@@ -7,38 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-07-25
+
+First deliberate public cut: rotation-specialist Vue SVG renderer (no fetch/calc).
+
 ### Added
 
-- C18: `resolveChartDate` / empty-state UI; `data-date-status` (`exact` \| `snapped` \| `empty`)
-- C18: playback `labelStyle` (`icon` \| `icon-text`)
-- C18: `npm run review:artifacts` (screenshots + debug JSON; `review:screenshots` alias)
-- C18: public-surface scrub Vitest hard gate
-- C17 performance harness: Vitest node-count hard gates + soft date-patch timings (`tests/perf/`); Playwright FPS sampler (`npm run test:perf`); nightly workflow; demo local perf sample panel
-- Optional `copy` prop on `RrgChart` and `RrgPlaybackControls` for quadrant, tooltip, a11y, and control labels (`mergeChartCopy` / `mergePlaybackCopy` / `formatCopy`)
-- Demo **Copy / labels** panel to override strings (session-persisted; blank = package default)
-- Demo full-history tail toggle (`fullHistoryTail`, off by default)
-- C16: stable tail segment Vue keys (scrub patches geometry instead of remounting lines)
-- C16: CX scrub coalesce — live scrubber preview; chart date updates at most once per animation frame
-- Public release hygiene (C14): MIT license, contributing/security docs, CI gates
-- Optional `vue-relative-rotation-chart/scenarios` export subpath with named fixtures
-- Demo static build (`npm run build:demo`) for GitHub Pages
-
-### Changed
-
-- C18: remove deprecated `showPatterns` from public API / demo
-- C18: demo defaults — dark theme, grey dark palette, play from first date with loop on
-- C18: README install honesty (not on npm yet); prop/event tables; generic consumer wording
-- Vue is peer-only (removed from `dependencies`; still required by consumers)
+- **`RrgChart`** — SVG RRG-style chart from precomputed `RrgRenderSeries[]` (axes, quadrants, points, tails, spatial-bin labels, hover/tooltip, tail hit targets)
+- **`RrgPlaybackControls`** — controlled timeline UI with `v-model:selected-date`, `v-model:playing`, `v-model:speed`; `loop`; `labelStyle` (`icon` \| `icon-text`)
+- Typed public contract (`RrgRenderPoint`, `RrgRenderSeries`, `RrgQuadrant`, viewport/label modes) and CSS variable theming + `vue-relative-rotation-chart/style.css`
+- Optional `copy` overrides (`RrgChartCopy` / `RrgPlaybackCopy`) for quadrant, tooltip, a11y, and control labels
+- Viewport modes `fit` \| `max` \| `center` (Fit-All product default); date snap / empty-state via `resolveChartDate` (`data-date-status`)
+- Scrub coalesce (chart date ≤1 update per animation frame) and stable tail segment keys for smoother scrubbing
+- Optional `vue-relative-rotation-chart/scenarios` fixture subpath
+- Vite demo playground (scenarios, Simple/Customize controls, copy-as-code, session persistence, GitHub Pages build)
+- Packaging / trust: MIT, CONTRIBUTING, SECURITY, CI (typecheck, lint, Vitest, e2e), peer Vue only
+- Perf hygiene: Vitest node-count gates, soft FPS harness (`npm run test:perf`), bundle-size soft warn (`npm run check:bundle-size`), `docs/perf.md`
 
 ### Notes
 
-- First **npm publish** is deferred until a deliberate public release; use git/`file:` installs until then
-- Full-history LOD / hit simplification still deferred; default product mode remains capped `tailLength`
-- C17 FPS is soft / nightly — not a hard PR gate; append baselines in `plans/C17-results.md`
-
-## [0.1.0] - 2026-07-25
-
-### Added
-
-- Initial public-facing package surface: `RrgChart`, playback controls, typed render contract
-- Vite demo playground with scenarios, copy-as-code, and session persistence
+- Renderer-only: callers supply precomputed series; no price fetch or RRG calculation in-package
+- `RrgQuadrant` is the fixed four-value enum (`leading` \| `weakening` \| `lagging` \| `improving`) in this release
+- Default product mode uses capped `tailLength`; full-history LOD remains deferred
+- C17 FPS budgets are soft / nightly — not a hard PR gate
