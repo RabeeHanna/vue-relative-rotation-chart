@@ -134,7 +134,8 @@ These types protect the component from Sector Orbit-specific state shape.
 | [C15](./C15-tail-hover.md) | Tail Hit-Target Hover (**done**) | Interaction / Polish | 1–2 days |
 | [C16](./C16-optimization.md) | Render / Playback Optimization (**done**) | Performance | 2–4 days |
 | [C17](./C17-performance-profiling.md) | Performance Testing & Profiling (**done**) | Performance / Quality | 2–4 days |
-| [C10](./C10-sector-orbit-integration.md) | Sector Orbit Feature-Flag Integration (deferred) | Integration | 1–2 days |
+| [C18](./C18-pre-npm-polish.md) | Pre-npm Polish — Review Artifacts + Public API / Docs (**draft**) | Polish / Trust | 2–3 days |
+| [C10](./C10-sector-orbit-integration.md) | Sector Orbit Feature-Flag Integration (deferred → **next after C18**) | Integration | 1–2 days |
 
 **Total estimated: ~20–25 days** (or ~4–5 weeks at 1/3 time)
 
@@ -164,7 +165,8 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 17. C15 — Tail Hit-Target Hover (investigate + implement after C14) (**complete**)
 18. C16 — Render / Playback Optimization (long histories, redraw avoidance) (**complete**)
 19. C17 — Performance Testing & Profiling (harness + use-case matrix) (**complete** — [scrutiny](./C17-research.md), [results](./C17-results.md))
-20. C10 — Sector Orbit Feature-Flag Integration (**deferred**; independent of C13–C17; **revisit C17 P0–P3 profiles when C10 lands**)
+20. C18 — Pre-npm Polish (review artifacts, API cleanup, README) (**draft** — [plan](./C18-pre-npm-polish.md))
+21. C10 — Sector Orbit Feature-Flag Integration (**after C18**; **revisit C17 P0–P3 profiles when C10 lands**)
 
 ---
 

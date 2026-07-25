@@ -67,7 +67,7 @@ See [C17-research.md § Locked decisions](./C17-research.md#locked-decisions). S
 - Hit LOD / simplify if documented full-history numbers warrant it  
 - Date→index map if profiles show find cost  
 - Revisit must-pass profiles after C10  
-- Append nightly CI rows into [C17-results.md](./C17-results.md)  
+- **Next:** [C18](./C18-pre-npm-polish.md) pre-npm polish → then [C10](./C10-sector-orbit-integration.md)  
 
 ---
 
@@ -75,4 +75,4 @@ See [C17-research.md § Locked decisions](./C17-research.md#locked-decisions). S
 
 - Research: [C17-research.md](./C17-research.md)  
 - Prior: [C16-optimization.md](./C16-optimization.md)  
-- Order: C16 → **C17** → optional LOD → C10 (then profile revisit)
+- Order: C16 → **C17** → [C18](./C18-pre-npm-polish.md) → C10 (then profile revisit)

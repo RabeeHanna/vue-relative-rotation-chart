@@ -65,7 +65,7 @@ Scenario modules remain **demo/fixture data only** — no Sector Orbit types, no
 
 ### npm publish (owner note) — DEFERRED
 
-**Do not publish to npm yet.** Packaging + publish workflow are ready, but the first `npm publish` is intentionally delayed until the project is more ready for a public release (post C15/C16 polish at minimum). Consumers should use `file:` / git / workspace links until then.
+**Do not publish to npm yet.** Packaging + publish workflow are ready, but the first `npm publish` is intentionally delayed until pre-npm polish ([C18](./C18-pre-npm-polish.md)) and preferably [C10](./C10-sector-orbit-integration.md) confidence. Consumers should use `file:` / git / workspace links until then.
 
 ### Demo URL (owner note)
 
