@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { ref } from 'vue'
 import { useRrgHoverState } from '../src/composables/useRrgHoverState'
 import type { RrgRenderPoint } from '../src/types/rrg'
 
@@ -50,5 +51,27 @@ describe('useRrgHoverState', () => {
     onPointEnter(xlf)
     expect(hoveredTicker.value).toBe('XLF')
     expect(hoveredPoint.value?.ticker).toBe('XLF')
+  })
+
+  it('keeps hoveredPoint in sync with currentPoints while ticker stays hovered', () => {
+    const currentPoints = ref<RrgRenderPoint[]>([xlk])
+    const { hoveredPoint, onPointEnter } = useRrgHoverState(currentPoints)
+    onPointEnter(xlk)
+    currentPoints.value = [
+      {
+        ...xlk,
+        x: 110,
+        y: 99,
+        date: '2024-01-01',
+        quadrant: 'weakening',
+      },
+    ]
+    expect(hoveredPoint.value).toMatchObject({
+      ticker: 'XLK',
+      x: 110,
+      y: 99,
+      date: '2024-01-01',
+      quadrant: 'weakening',
+    })
   })
 })

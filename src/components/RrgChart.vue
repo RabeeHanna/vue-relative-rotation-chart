@@ -73,7 +73,7 @@ const { currentPoints, tailData } = useRrgTailSlices(
   showTailFadeRef,
 )
 const { hoveredTicker, hoveredPoint, onPointEnter, onPointLeave, onPointClick } =
-  useRrgHoverState()
+  useRrgHoverState(currentPoints)
 const effectiveHoveredTicker = computed(
   () => hoveredTicker.value ?? props.highlightedTicker ?? null,
 )

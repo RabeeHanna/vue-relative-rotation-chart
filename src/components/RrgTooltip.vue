@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, type PropType } from 'vue'
+import { computed, ref, watch, type PropType } from 'vue'
 import type { RrgRenderPoint } from '../types/rrg'
 import type { RrgScale } from '../composables/useRrgScales'
 import { computeTooltipPosition } from '../utils/tooltipPosition'
@@ -24,12 +24,31 @@ const props = defineProps({
   },
 })
 
+/** Pixel anchor at hover start — stays put while the point moves under playback. */
+const anchorPx = ref<{ x: number; y: number } | null>(null)
+
+watch(
+  () => props.hoveredPoint,
+  (point, prev) => {
+    if (!point) {
+      anchorPx.value = null
+      return
+    }
+    const tickerChanged = !prev || prev.ticker !== point.ticker
+    if (!anchorPx.value || tickerChanged) {
+      anchorPx.value = {
+        x: props.xScale(point.x),
+        y: props.yScale(point.y),
+      }
+    }
+  },
+)
+
 const position = computed(() => {
-  const point = props.hoveredPoint
-  if (!point) return { x: 0, y: 0 }
+  if (!anchorPx.value) return { x: 0, y: 0 }
   return computeTooltipPosition({
-    pointX: props.xScale(point.x),
-    pointY: props.yScale(point.y),
+    pointX: anchorPx.value.x,
+    pointY: anchorPx.value.y,
     tooltipWidth: TOOLTIP_WIDTH,
     tooltipHeight: TOOLTIP_HEIGHT,
     plotWidth: props.plotWidth,

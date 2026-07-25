@@ -126,4 +126,28 @@ describe('RrgChart interactions', () => {
       Number(xlfSeg.attributes('stroke-opacity')),
     )
   })
+
+  it('keeps tooltip anchored when the hovered point moves on date change', async () => {
+    const wrapper = mount(RrgChart, {
+      props: {
+        series,
+        selectedDate: '2024-03-01',
+        width: 640,
+        height: 480,
+        viewportMode: 'center',
+      },
+    })
+
+    await wrapper.get('[data-testid="rrg-point-XLK"] .rrg-point-hit').trigger('pointerenter')
+    const tip = wrapper.get('[data-testid="rrg-tooltip"]')
+    const transformBefore = tip.attributes('transform')
+    expect(transformBefore).toBeTruthy()
+
+    await wrapper.setProps({ selectedDate: '2024-01-01' })
+
+    const tipAfter = wrapper.get('[data-testid="rrg-tooltip"]')
+    expect(tipAfter.attributes('transform')).toBe(transformBefore)
+    expect(tipAfter.text()).toContain('2024-01-01')
+    expect(tipAfter.text()).toContain('102.00')
+  })
 })
