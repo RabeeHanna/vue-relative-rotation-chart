@@ -117,6 +117,16 @@ export type RrgChartEmits = {
   pointClick: [point: RrgRenderPoint]
 }
 
+/**
+ * Computed viewport domain in data space (internal; not part of the caller input contract).
+ */
+export type RrgDomain = {
+  xMin: number
+  xMax: number
+  yMin: number
+  yMax: number
+}
+
 /** Default prop values shared by the component and tests. */
 export const RRG_CHART_DEFAULTS = {
   tailLength: 10,

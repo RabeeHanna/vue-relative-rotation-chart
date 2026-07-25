@@ -18,7 +18,7 @@ describe('RrgChart smoke', () => {
         selectedDate: '2024-03-01',
       },
     })
-    expect(wrapper.text()).toContain('RRG Chart')
     expect(wrapper.get('[data-testid="rrg-chart"]').exists()).toBe(true)
+    expect(wrapper.get('[data-testid="rrg-svg-root"]').exists()).toBe(true)
   })
 })

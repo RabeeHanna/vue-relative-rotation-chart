@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RRG_CHART_DEFAULTS, type RrgChartProps } from '../types/rrg'
+import { useRrgViewport } from '../composables/useRrgViewport'
+import { useRrgScales } from '../composables/useRrgScales'
+import { RRG_DEFAULT_MARGIN } from '../utils/chartLayout'
+import RrgSvgRoot from './RrgSvgRoot.vue'
+import RrgAxes from './RrgAxes.vue'
+import RrgQuadrants from './RrgQuadrants.vue'
 
-withDefaults(defineProps<RrgChartProps>(), {
+const props = withDefaults(defineProps<RrgChartProps>(), {
   tailLength: RRG_CHART_DEFAULTS.tailLength,
   viewportMode: RRG_CHART_DEFAULTS.viewportMode,
   labelMode: RRG_CHART_DEFAULTS.labelMode,
@@ -19,6 +26,17 @@ defineEmits<{
   pointLeave: []
   pointClick: [point: import('../types/rrg').RrgRenderPoint]
 }>()
+
+const domain = useRrgViewport()
+const plotWidth = computed(() => {
+  const w = props.width ?? 640
+  return Math.max(0, w - RRG_DEFAULT_MARGIN.left - RRG_DEFAULT_MARGIN.right)
+})
+const plotHeight = computed(() => {
+  const h = props.height ?? 480
+  return Math.max(0, h - RRG_DEFAULT_MARGIN.top - RRG_DEFAULT_MARGIN.bottom)
+})
+const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
 </script>
 
 <template>
@@ -30,15 +48,50 @@ defineEmits<{
     :data-show-patterns="showPatterns ? 'true' : 'false'"
     :data-ticker-label-always-visible="tickerLabelAlwaysVisible ? 'true' : 'false'"
   >
-    RRG Chart
+    <RrgSvgRoot :width="width" :height="height">
+      <RrgAxes
+        v-if="showAxes"
+        :x-scale="xScale"
+        :y-scale="yScale"
+        :show-grid="showGrid"
+      />
+      <RrgQuadrants
+        v-if="showQuadrantLabels"
+        :x-scale="xScale"
+        :y-scale="yScale"
+      />
+    </RrgSvgRoot>
   </div>
 </template>
 
-<style scoped>
+<style>
 .rrg-chart {
-  color: var(--rrg-label, #222);
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  padding: 1rem;
-  border: 1px dashed var(--rrg-grid, #ccc);
+  --rrg-bg: #ffffff;
+  --rrg-grid: rgba(0, 0, 0, 0.08);
+  --rrg-axis: rgba(0, 0, 0, 0.3);
+  --rrg-center-line: rgba(0, 0, 0, 0.25);
+  --rrg-axis-label: rgba(0, 0, 0, 0.5);
+  --rrg-quadrant-label: rgba(0, 0, 0, 0.15);
+  --rrg-label: #222;
+  --rrg-muted-label: #888;
+  --rrg-point-stroke: #fff;
+  --rrg-tooltip-bg: #fff;
+  width: 100%;
+  color: var(--rrg-label);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.rrg-chart.dark,
+.dark .rrg-chart {
+  --rrg-bg: #1a1a2e;
+  --rrg-grid: rgba(255, 255, 255, 0.08);
+  --rrg-axis: rgba(255, 255, 255, 0.3);
+  --rrg-center-line: rgba(255, 255, 255, 0.25);
+  --rrg-axis-label: rgba(255, 255, 255, 0.5);
+  --rrg-quadrant-label: rgba(255, 255, 255, 0.12);
+  --rrg-label: #eee;
+  --rrg-muted-label: #aaa;
+  --rrg-point-stroke: #1a1a2e;
+  --rrg-tooltip-bg: #222;
 }
 </style>
