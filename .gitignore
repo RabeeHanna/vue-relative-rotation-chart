@@ -9,3 +9,4 @@ Thumbs.db
 .turbo/
 *.tsbuildinfo
 spikes/output/
+spikes/label-collision/artifacts/*.png

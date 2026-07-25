@@ -3,7 +3,8 @@
 **Phase:** Pre-Start Prerequisites  
 **Estimate:** 0.5 day  
 **Must complete before:** C8 (Viewport Modes)  
-**Priority:** Medium — must be decided before viewport code is written
+**Priority:** Medium — must be decided before viewport code is written  
+**Status:** Complete — 2026-07-25
 
 ---
 
@@ -19,111 +20,74 @@ The `fit` viewport mode defaults to focusing on visible current points with padd
 
 > One ticker positioned far from the cluster (e.g. x=150, y=50 while the rest cluster near 100/100) causes the axis scale to expand dramatically, compressing the useful cluster into a tiny region of the chart.
 
-This makes the chart unreadable for normal use cases. The PRD says fit mode should "avoid one outlier crushing the useful cluster where possible" but does not specify how.
-
-This must be decided before C8 so the implementation has a clear spec.
+This must be decided before C8 so the implementation has a clear spec. The original PRD favored avoiding that crush; after review we chose transparency over cluster-protection for v1 (see decision below).
 
 ---
 
-## The Three Options
+## The Options Considered
 
 ### Option A: Percentile-Based Clipping
 
-**How it works:**
-- Calculate the 5th–95th percentile range of all visible x positions and all visible y positions
-- Use those percentile bounds (plus padding) as the viewport domain
-- Tickers outside the clipped range are simply not visible in fit mode (they render outside the SVG viewport)
-
-**Pros:**
-- Adapts to data density; always shows the main cluster well
-- No hardcoded magic numbers
-- Statistically principled
-
-**Cons:**
-- Tickers outside range disappear silently — user may not know an outlier exists
-- Percentile calculation changes as tickers are added/removed
-- May clip legitimate extreme values in small universes (e.g. 5 tickers, the 5th percentile is the lowest value)
-
-**Acceptance scenario:**
-- 15 tickers near 100/100, one at 150/50 → viewport shows 100/100 cluster clearly; outlier is off-chart
-- User must be able to switch to `max` mode to see outlier
+- Domain = 5th–95th percentile of visible x/y (+ padding)
+- Outliers render off-chart in `fit`; visible in `max`
 
 ### Option B: Fixed Cap
 
-**How it works:**
-- x-axis is capped at a fixed range (e.g. 85–115 in fit mode, regardless of data)
-- y-axis is capped at a fixed range (e.g. 85–115)
-- Tickers outside the cap are clipped
-
-**Pros:**
-- Completely predictable — same scale in fit mode every time
-- Easy to implement
-- Familiar to StockCharts-style users
-
-**Cons:**
-- Ignores actual data distribution; may crop legitimate variation
-- Hard to choose the right cap values for all use cases
-- May be too narrow or too wide depending on the data epoch
+- Fixed ranges (e.g. 85–115) regardless of data
+- Predictable but ignores actual distribution
 
 ### Option C: Hybrid — Fit Cluster with Outlier Indicator
 
-**How it works:**
-- Viewport fits the main cluster (using percentile-based or fixed approach)
-- Tickers that fall outside the viewport are not hidden — instead, a visual indicator (e.g. arrow badge at the viewport edge) shows that off-chart tickers exist
-- User can click/hover the indicator to see which tickers are off-chart, or switch to `max` mode
+- Clip cluster + edge badges for off-chart tickers
+- Best UX, more C8 scope
 
-**Pros:**
-- Best UX: user sees the cluster clearly AND knows outliers exist
-- Prevents silent data loss
+### Option D: Fit-All (data extent, no clipping) — SELECTED
 
-**Cons:**
-- More implementation effort (requires off-chart indicator component)
-- Adds complexity to C8 scope
+- Domain = min/max of visible current points **and** their tail slices, plus padding
+- No percentile clipping, no fixed cap
+- Domain is recomputed from props whenever series / `selectedDate` / `tailLength` change
+- One far outlier *will* expand the viewport and compress the cluster — accepted for v1
+- Users who want a tighter fixed window use `center`; full history uses `max`
 
 ---
 
-## Recommended Decision
-
-**Start with Option A (Percentile-Based).** Reasons:
-- More principled than fixed cap
-- Simpler to implement than hybrid
-- The outlier information is not lost — `max` mode always shows everything
-- The PRD already states: "Fit is readable for default sectors. Max shows full extreme range."
-
-Reserve Option C for v2 if user feedback indicates the silent-clipping behavior is confusing.
-
----
-
-## Decision Record (to fill in before C8)
+## Decision Record (COMPLETED)
 
 ```
 Fit Mode Outlier Strategy
 ==========================
-Strategy selected: [ ] Percentile-Based  [ ] Fixed Cap  [ ] Hybrid  [ ] Other: ___
+Strategy selected: [ ] Percentile-Based  [ ] Fixed Cap  [ ] Hybrid  [x] Other: Fit-All (no clipping)
 
-If Percentile-Based:
-  - X percentile range: ___ – ___ (e.g. 5th–95th)
-  - Y percentile range: ___ – ___ (e.g. 5th–95th)
-  - Padding added beyond percentile bounds: ___ units
+If Other / Fit-All:
+  - Domain source: extent of visible series at selectedDate, including tailLength
+    points leading into that date
+  - Padding added beyond data extent: 5 units (default; configurable as fitPadding)
+  - Outlier clipping: none
+  - Domain stability: round bounds to nearest 0.5 unit to reduce replay jitter
 
-If Fixed Cap:
-  - X axis range: ___ – ___
-  - Y axis range: ___ – ___
+Acceptance scenario verification (updated for Fit-All):
+  - 15 tickers near 100/100 + one at 150/50: [PASS expected] outlier remains
+    on-chart; cluster is smaller — accepted tradeoff
+  - All tickers clustered: [PASS expected] viewport fits tightly with padding
+  - Single ticker only: [PASS expected] padding around the single point; fall
+    back to center domain only if no visible points
 
-Acceptance scenario verification:
-  - 15 tickers near 100/100 + one at 150/50: [PASS/FAIL] viewport shows cluster clearly
-  - All tickers clustered: [PASS/FAIL] viewport fits without excessive padding
-  - Single ticker only: [PASS/FAIL] viewport is sensible
-
-Decision rationale: ___
+Decision rationale:
+  Series data is already provided to the component, so the correct "cap" is
+  derived from that data (min/max + padding), not a hardcoded or percentile
+  window. Fit should mean fit everything currently in view. Protecting the
+  cluster by hiding outliers is deferred; use center for a fixed window and
+  max for full-history extent.
 ```
+
+**C8 must implement Fit-All** — see [`C8-viewport.md`](./C8-viewport.md). Cross-refs also updated in [`00-overview.md`](./00-overview.md) and [`C11-adversarial-review.md`](./C11-adversarial-review.md).
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] One strategy is chosen and documented above
-- [ ] Acceptance scenario: dense cluster near 100/100 with one point at 150/50 renders the cluster clearly
-- [ ] The outlier is either visible in the chart or accessible via `max` viewport mode
-- [ ] Axis labels/grid are readable in the cluster region when outlier is present
-- [ ] Decision is referenced in C8 implementation spec
+- [x] One strategy is chosen and documented above
+- [x] Acceptance scenarios updated for Fit-All (outlier stays visible; cluster may compress)
+- [x] Outlier is visible in `fit` (on-chart); `max` still differs by covering all dates
+- [x] Decision is referenced in C8 implementation spec
+- [ ] Axis readability with outliers present — verified when C8 is implemented

@@ -19,11 +19,13 @@ The viewport controls which region of the x/y space is visible. Three modes are 
 
 | Mode | Behavior |
 |------|----------|
-| `fit` | Focuses on the visible current points and visible tails with padding. Applies the outlier strategy decided in PRE-C1-B. |
+| `fit` | Extent of visible current points **and** their tails, plus padding. **No outlier clipping** (PRE-C1-B Fit-All). |
 | `max` | Shows the full loaded x/y range across all series points (all dates). |
 | `center` | Fixed symmetric window around 100/100, configurable radius. |
 
 The default mode is `fit`.
+
+**PRE-C1-B decision:** [`PRE-C1-B-outlier-strategy.md`](./PRE-C1-B-outlier-strategy.md) — Fit-All (data extent + padding, no clipping).
 
 ---
 
@@ -41,9 +43,8 @@ import { extent } from 'd3-array'
 
 export interface ViewportOptions {
   centerRadius?: number         // for 'center' mode (default: 10, i.e. 90–110)
-  fitPadding?: number           // padding added to fit bounds (default: 5)
-  fitPercentileLow?: number     // low percentile for fit outlier clipping (default: 0.05)
-  fitPercentileHigh?: number    // high percentile for fit outlier clipping (default: 0.95)
+  fitPadding?: number           // padding added to fit data extent (default: 5)
+  maxPadding?: number           // padding added to max extent (default: 2)
 }
 
 export function useRrgViewport(
@@ -57,8 +58,7 @@ export function useRrgViewport(
   const {
     centerRadius = 10,
     fitPadding = 5,
-    fitPercentileLow = 0.05,
-    fitPercentileHigh = 0.95,
+    maxPadding = 2,
   } = options
 
   return computed((): RrgDomain => {
@@ -66,10 +66,10 @@ export function useRrgViewport(
       case 'center':
         return centerDomain(centerRadius)
       case 'max':
-        return maxDomain(series.value)
+        return maxDomain(series.value, maxPadding)
       case 'fit':
       default:
-        return fitDomain(series.value, selectedDate.value, tailLength.value, fitPadding, fitPercentileLow, fitPercentileHigh)
+        return fitDomain(series.value, selectedDate.value, tailLength.value, fitPadding)
     }
   })
 }
@@ -91,17 +91,16 @@ function centerDomain(radius: number): RrgDomain {
 
 **`maxDomain`**
 ```ts
-function maxDomain(series: RrgRenderSeries[]): RrgDomain {
+function maxDomain(series: RrgRenderSeries[], pad = 2): RrgDomain {
   const allX = series.flatMap(s => s.points.map(p => p.x))
   const allY = series.flatMap(s => s.points.map(p => p.y))
   const [xMin, xMax] = extent(allX) as [number, number]
   const [yMin, yMax] = extent(allY) as [number, number]
-  const pad = 2
   return { xMin: xMin - pad, xMax: xMax + pad, yMin: yMin - pad, yMax: yMax + pad }
 }
 ```
 
-**`fitDomain`** — implements the outlier strategy from PRE-C1-B
+**`fitDomain`** — Fit-All from PRE-C1-B (no outlier clipping)
 
 ```ts
 function fitDomain(
@@ -109,8 +108,6 @@ function fitDomain(
   selectedDate: string,
   tailLength: number,
   padding: number,
-  pLow: number,
-  pHigh: number,
 ): RrgDomain {
   // Collect all visible points: current frame + tail points
   const visibleSeries = series.filter(s => s.visible !== false)
@@ -130,27 +127,34 @@ function fitDomain(
 
   if (allVisibleX.length === 0) return centerDomain(10)
 
-  // Apply percentile-based outlier clipping (from PRE-C1-B decision)
-  const xBounds = percentileBounds(allVisibleX, pLow, pHigh)
-  const yBounds = percentileBounds(allVisibleY, pLow, pHigh)
+  const [xMin, xMax] = extent(allVisibleX) as [number, number]
+  const [yMin, yMax] = extent(allVisibleY) as [number, number]
+
+  // Optional: round to 0.5 for replay stability
+  const round = (v: number) => Math.floor(v * 2) / 2
 
   return {
-    xMin: xBounds[0] - padding,
-    xMax: xBounds[1] + padding,
-    yMin: yBounds[0] - padding,
-    yMax: yBounds[1] + padding,
+    xMin: round(xMin - padding),
+    xMax: round(xMax + padding),
+    yMin: round(yMin - padding),
+    yMax: round(yMax + padding),
   }
 }
 ```
 
 **`src/utils/bounds.ts`**
 ```ts
-export function percentileBounds(values: number[], low: number, high: number): [number, number] {
-  const sorted = [...values].sort((a, b) => a - b)
-  const n = sorted.length
-  const lowIdx = Math.floor(low * (n - 1))
-  const highIdx = Math.ceil(high * (n - 1))
-  return [sorted[lowIdx], sorted[highIdx]]
+/** Shared helpers for domain math (extent padding, rounding). Percentile clipping is not used in v1. */
+export function padExtent(
+  min: number,
+  max: number,
+  padding: number,
+): [number, number] {
+  return [min - padding, max + padding]
+}
+
+export function roundDomainBound(value: number, step = 0.5): number {
+  return Math.floor(value / step) * step
 }
 ```
 
@@ -162,7 +166,7 @@ The viewport must be **stable** during date replay — axes must not jump or jit
 
 Implementation notes to ensure stability:
 - The domain calculation is `computed()` — it reacts to `selectedDate` changes correctly without extra watchers
-- In `fit` mode, small floating-point variations in percentile bounds between frames can cause subtle axis movement. Consider rounding domain bounds to the nearest 0.5 unit: `Math.floor(min × 2) / 2`
+- In `fit` mode, round domain bounds to the nearest 0.5 unit to reduce small frame-to-frame jumps: `Math.floor(min × 2) / 2`
 - In `max` mode, domain only changes when new series data is loaded — not during replay
 - In `center` mode, domain never changes
 
@@ -184,13 +188,13 @@ All child components receive `xScale` and `yScale` via `provide()` or props — 
 
 ## Outlier Strategy Implementation
 
-Per the decision in PRE-C1-B, implement the chosen strategy here. The code above shows the percentile-based approach. If a different strategy was selected in PRE-C1-B, adapt accordingly.
+Per [`PRE-C1-B`](./PRE-C1-B-outlier-strategy.md): **Fit-All — no outlier clipping.**
 
 **Validation**: After implementing `fitDomain`, manually test with this scenario:
 - 15 tickers clustered between 98–103
 - 1 ticker at x=145, y=60
-- Expected: viewport focuses on the 98–103 cluster; the outlier at 145/60 is off-chart
-- Verify by: switch to `max` mode and confirm outlier becomes visible
+- Expected: viewport expands to include the outlier; cluster appears smaller (accepted)
+- Contrast: switch to `center` for a fixed 100±radius window; switch to `max` for full-history extent
 
 ---
 
@@ -203,15 +207,15 @@ tests/
     - center mode is not affected by series data
     - max mode returns bounds covering all series points
     - max mode adds padding beyond extent
-    - fit mode: clustered data produces tight domain
-    - fit mode: single outlier does not expand domain to include it (percentile-based)
+    - fit mode: clustered data produces tight domain (extent + padding)
+    - fit mode: single outlier expands domain to include it (Fit-All)
     - fit mode: selectedDate change updates domain reactively
     - fit mode: empty visible points falls back to center domain
+    - fit vs max: fit uses current+tails only; max uses all dates
 
   bounds.test.ts
-    - percentileBounds([1,2,3,4,5], 0, 1) returns [1, 5]
-    - percentileBounds([...], 0.05, 0.95) excludes extreme values
-    - percentileBounds handles single-element array
+    - padExtent applies padding symmetrically
+    - roundDomainBound rounds down to step
 ```
 
 ---
@@ -227,8 +231,8 @@ Extend `demo/mockSeries.ts` with:
 ## Acceptance Criteria
 
 - [ ] `fit` mode produces a readable viewport for default sector-like clustered data
-- [ ] `fit` mode applies the outlier strategy from PRE-C1-B (percentile clipping or chosen alternative)
-- [ ] Scenario: 15 tickers near 100/100 + 1 at 145/65 — fit mode shows cluster clearly, outlier off-chart
+- [ ] `fit` mode applies Fit-All from PRE-C1-B (data extent + padding; no outlier clipping)
+- [ ] Scenario: 15 tickers near 100/100 + 1 at 145/65 — fit mode keeps outlier on-chart
 - [ ] `max` mode shows the full range of all loaded series data
 - [ ] `center` mode produces a stable symmetric window around 100/100
 - [ ] `center` mode accepts configurable radius prop

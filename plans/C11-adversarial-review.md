@@ -38,7 +38,7 @@ Answer all 10 questions honestly before proceeding to integration:
    - Load the default sector-like mock. Are labels readable? Any fusing? Any labels missing that should be visible?
 
 5. **Does one outlier ruin the default view?**
-   - Load the outlier mock. Does fit mode show the cluster well? Is the outlier situation apparent?
+   - Load the outlier mock. Fit-All keeps the outlier on-chart (cluster may compress). Is the situation still usable? Does `center` give a better cluster view when needed?
 
 6. **Can colorblind users still identify tickers through labels/tooltips?**
    - Apply DevTools colorblind filters. Check Protanopia, Deuteranopia, and Achromatopsia.
@@ -64,7 +64,7 @@ Create or verify these datasets in `demo/mockSeries.ts` and run each one:
 | Dataset | Description | What to Check |
 |---------|-------------|---------------|
 | `denseClusterMock` | 15+ tickers within ±5 units of 100/100 | Labels not fused, hover works on each ticker |
-| `farRightOutlierMock` | 10 tickers near 100/100 + 1 at x=145, y=105 | Fit mode shows cluster; max mode shows outlier |
+| `farRightOutlierMock` | 10 tickers near 100/100 + 1 at x=145, y=105 | Fit includes outlier (cluster compresses); `center` keeps fixed window; `max` shows full history |
 | `farLeftOutlierMock` | 10 tickers near 100/100 + 1 at x=65, y=95 | Same as above, opposite side |
 | `manyOverlappingMock` | 5 pairs of tickers at exactly the same x/y | Points stack correctly; both are accessible via hover |
 | `noisyTailMock` | Tickers with counterclockwise/zigzag tail movement | Directionality is readable despite noisy data |
@@ -102,10 +102,11 @@ Capture screenshots for the following states and attach to this review doc:
 2. Default sector mock — `fit` mode, dark theme  
 3. Dense cluster mock — `auto` label mode (show collision avoidance)
 4. Dense cluster mock — `always` label mode (show all labels)
-5. Outlier mock — `fit` mode (outlier should be off-chart)
-6. Outlier mock — `max` mode (outlier visible)
-7. Stress mock (50 tickers) — `hover` label mode
-8. Hover state — one ticker hovered, others faded
+5. Outlier mock — `fit` mode (outlier on-chart; cluster may look smaller — Fit-All)
+6. Outlier mock — `center` mode (fixed window; outlier may be off-chart)
+7. Outlier mock — `max` mode (full-history extent)
+8. Stress mock (50 tickers) — `hover` label mode
+9. Hover state — one ticker hovered, others faded
 
 Screenshots are stored in `plans/screenshots/` (created during review).
 
