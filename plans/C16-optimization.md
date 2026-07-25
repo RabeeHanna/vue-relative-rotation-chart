@@ -49,9 +49,10 @@ Investigate and implement optimizations so long RRG histories and dense ticker s
 
 - ~~Demo **full-history tail** toggle (off by default)~~ — **done** (`fullHistoryTail` in demo controls / URL / session)
 - ~~Public **`copy` prop** + demo Copy / labels panel~~ — **done** (`RrgChartCopy` / `RrgPlaybackCopy`; session-persisted overrides)
+- ~~**C17** performance testing / profiling~~ — **done** ([plan](./C17-performance-profiling.md), [scrutiny](./C17-research.md), [results](./C17-results.md))
 - Optional `maxTailSegments` / simplify if full-history node counts hurt  
 - Hit LOD if full-history mode proves heavy in the browser  
-- **Next draft:** performance testing / profiling unit under likely use cases (browser FPS + harness)
+- Revisit C17 must-pass profiles after [C10](./C10-sector-orbit-integration.md)
 
 ---
 
@@ -60,4 +61,4 @@ Investigate and implement optimizations so long RRG histories and dense ticker s
 - Research: [C16-research.md](./C16-research.md)  
 - Playback CX / C12: [C12-playback-controls.md](./C12-playback-controls.md)  
 - Tail hover: [C15-tail-hover.md](./C15-tail-hover.md)  
-- Order: C14 → C15 → **C16** → C10 (deferred)
+- Order: C14 → C15 → **C16** → [C17](./C17-performance-profiling.md) → C10 (deferred)

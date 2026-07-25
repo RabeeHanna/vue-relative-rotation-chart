@@ -7,7 +7,14 @@ import vueParser from 'vue-eslint-parser'
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'spikes/label-collision/artifacts/**'],
+    ignores: [
+      'dist/**',
+      'demo-dist/**',
+      'test-results/**',
+      'node_modules/**',
+      'coverage/**',
+      'spikes/label-collision/artifacts/**',
+    ],
   },
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],

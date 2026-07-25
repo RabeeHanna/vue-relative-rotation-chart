@@ -1,0 +1,38 @@
+name: Perf nightly (C17 Layer B)
+
+on:
+  schedule:
+    # 06:00 UTC daily
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: perf-nightly
+  cancel-in-progress: true
+
+jobs:
+  fps:
+    name: Playwright FPS (soft ≥55 · P0/P2 + ceiling)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PERF_CEILING: '1'
+      # Soft by default — do not set PERF_HARD_GATE on shared runners
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:perf
+      - name: Upload perf artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: perf-results
+          path: |
+            test-results/perf/
+          if-no-files-found: warn
+          retention-days: 30
