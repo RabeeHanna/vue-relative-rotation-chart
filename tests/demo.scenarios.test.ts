@@ -92,6 +92,7 @@ describe('demo URL round-trip', () => {
     expect(state.viewportRight).toBe('center')
     expect(state.compare).toBe(false)
     expect(state.showTailFade).toBe(false)
+    expect(state.fullHistoryTail).toBe(false)
     expect(state.playbackLoop).toBe(false)
   })
 })

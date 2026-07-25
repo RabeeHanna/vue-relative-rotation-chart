@@ -57,8 +57,17 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
           type="number"
           min="1"
           max="60"
+          :disabled="state.fullHistoryTail"
           data-testid="demo-tail-length"
         />
+      </label>
+      <label class="check">
+        <input
+          v-model="state.fullHistoryTail"
+          type="checkbox"
+          data-testid="demo-full-history-tail"
+        />
+        Full history
       </label>
       <label>
         Theme

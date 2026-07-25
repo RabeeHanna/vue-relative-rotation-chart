@@ -15,6 +15,8 @@ export type DemoUrlState = {
   showPatterns: boolean
   tickerLabelAlwaysVisible: boolean
   showTailFade: boolean
+  /** When true, chart uses full series history as tailLength (off by default). */
+  fullHistoryTail: boolean
   playbackLoop: boolean
   size: ChartSizePreset
   compare: boolean
@@ -83,6 +85,7 @@ export function parseDemoUrl(search: string): DemoUrlState {
     showPatterns: asBool(params.get('showPatterns')),
     tickerLabelAlwaysVisible: asBool(params.get('tickerLabelAlwaysVisible')),
     showTailFade: asBool(params.get('showTailFade')),
+    fullHistoryTail: asBool(params.get('fullHistoryTail')),
     playbackLoop: asBool(params.get('playbackLoop')),
     size: sizeRaw && SIZES.has(sizeRaw as ChartSizePreset) ? (sizeRaw as ChartSizePreset) : 'default',
     compare: asBool(params.get('compare')),
@@ -117,6 +120,7 @@ export function serializeDemoUrl(state: DemoUrlState): string {
   params.set('showPatterns', String(state.showPatterns))
   params.set('tickerLabelAlwaysVisible', String(state.tickerLabelAlwaysVisible))
   params.set('showTailFade', String(state.showTailFade))
+  params.set('fullHistoryTail', String(state.fullHistoryTail))
   params.set('playbackLoop', String(state.playbackLoop))
   params.set('size', state.size)
   params.set('compare', String(state.compare))

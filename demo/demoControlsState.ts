@@ -12,6 +12,7 @@ export type DemoControlsState = {
   showPatterns: boolean
   tickerLabelAlwaysVisible: boolean
   showTailFade: boolean
+  fullHistoryTail: boolean
   playbackLoop: boolean
   size: ChartSizePreset
   compare: boolean

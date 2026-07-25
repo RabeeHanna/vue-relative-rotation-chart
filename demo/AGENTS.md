@@ -10,6 +10,7 @@ Local Vite playground for visual development and adoption of `RrgChart` (C13).
 - Scenario catalog / UI metadata (`scenarios.ts`; series fixtures imported from `src/scenarios`)
 - Thin re-exports (`mockSeries.ts`, `longPlayback.ts`; `adversarialMocks.ts` for C11 tests)
 - Playground helpers (`copySnippet.ts`, `generateSeries.ts`, `parseSeriesJson.ts`, `demoUrl.ts`, `demoSession.ts`, `useDemoAppState.ts`)
+- Full-history tail toggle (`fullHistoryTail`, off by default — expands effective `tailLength` to series length)
 - Power-user panel (`DemoPowerUser.vue` — radii, speeds, selectedTicker, CSS vars)
 - Tab session persistence (`sessionStorage` via `demoSession.ts` — C13.5)
 

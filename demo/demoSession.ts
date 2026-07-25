@@ -40,6 +40,7 @@ const URL_KEYS: Array<keyof DemoUrlState> = [
   'showPatterns',
   'tickerLabelAlwaysVisible',
   'showTailFade',
+  'fullHistoryTail',
   'playbackLoop',
   'size',
   'compare',

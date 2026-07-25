@@ -12,6 +12,26 @@ export function demoCurrentPoints(series: RrgRenderSeries[], selectedDate: strin
     })
 }
 
+/** Longest visible series point count — used for full-history tail mode. */
+export function maxSeriesPointCount(series: RrgRenderSeries[]): number {
+  let max = 1
+  for (const s of series) {
+    if (s.visible === false) continue
+    max = Math.max(max, s.points.length)
+  }
+  return max
+}
+
+/** Slider length, or full history when the demo toggle is on. */
+export function effectiveDemoTailLength(
+  tailLength: number,
+  fullHistoryTail: boolean,
+  series: RrgRenderSeries[],
+): number {
+  if (!fullHistoryTail) return Math.max(1, Math.floor(tailLength) || 1)
+  return maxSeriesPointCount(series)
+}
+
 export function demoChartProps(input: {
   series: RrgRenderSeries[]
   selectedDate: string
@@ -56,6 +76,7 @@ export function demoChartPropsFromControls(
   controls: {
     labelMode: RrgLabelMode
     tailLength: number
+    fullHistoryTail?: boolean
     showPatterns: boolean
     tickerLabelAlwaysVisible: boolean
     showTailFade: boolean
@@ -72,5 +93,10 @@ export function demoChartPropsFromControls(
   selectedDate: string,
   viewportMode: RrgViewportMode,
 ) {
-  return demoChartProps({ ...controls, series, selectedDate, viewportMode })
+  const tailLength = effectiveDemoTailLength(
+    controls.tailLength,
+    Boolean(controls.fullHistoryTail),
+    series,
+  )
+  return demoChartProps({ ...controls, tailLength, series, selectedDate, viewportMode })
 }

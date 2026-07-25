@@ -47,8 +47,9 @@ Investigate and implement optimizations so long RRG histories and dense ticker s
 
 ## Follow-ups (not C16)
 
-- Demo **full-history tail** toggle (off by default) + optional `maxTailSegments` / simplify if node counts hurt  
-- Hit LOD if full-history mode ships  
+- ~~Demo **full-history tail** toggle (off by default)~~ — **done** (`fullHistoryTail` in demo controls / URL / session)
+- Optional `maxTailSegments` / simplify if full-history node counts hurt  
+- Hit LOD if full-history mode proves heavy in the browser  
 - Browser FPS harness (optional)
 
 ---

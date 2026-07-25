@@ -3,7 +3,7 @@ import type { RrgRenderPoint, RrgRenderSeries } from '../src/types/rrg'
 import { useRrgChartSummary } from '../src/composables/useRrgChartSummary'
 import { applyDemoJson, copyDemoText, generateDemoSeries } from './demoActions'
 import { buildCopySnippet } from './copySnippet'
-import { demoChartPropsFromControls, demoCurrentPoints } from './demoChartProps'
+import { demoChartPropsFromControls, demoCurrentPoints, effectiveDemoTailLength } from './demoChartProps'
 import type { DemoControlsState } from './demoControlsState'
 import {
   mergeDemoControls,
@@ -65,7 +65,11 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
         ? controls.value.viewportLeft
         : controls.value.viewportMode,
       labelMode: controls.value.labelMode,
-      tailLength: controls.value.tailLength,
+      tailLength: effectiveDemoTailLength(
+        controls.value.tailLength,
+        controls.value.fullHistoryTail,
+        series.value,
+      ),
       tickerLabelAlwaysVisible: controls.value.tickerLabelAlwaysVisible,
       showTailFade: controls.value.showTailFade,
       showQuadrantLabels: controls.value.showQuadrantLabels,

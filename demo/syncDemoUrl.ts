@@ -12,6 +12,7 @@ export function syncDemoUrl(controls: DemoControlsState): void {
     showPatterns: controls.showPatterns,
     tickerLabelAlwaysVisible: controls.tickerLabelAlwaysVisible,
     showTailFade: controls.showTailFade,
+    fullHistoryTail: controls.fullHistoryTail,
     playbackLoop: controls.playbackLoop,
     size: controls.size,
     compare: controls.compare,
