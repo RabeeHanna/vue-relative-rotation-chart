@@ -16,6 +16,7 @@
       "import": "./dist/vue-relative-rotation-chart.js",
       "require": "./dist/vue-relative-rotation-chart.umd.cjs"
     },
+    "./style.css": "./dist/vue-relative-rotation-chart.css",
     "./scenarios": {
       "types": "./dist/scenarios/index.d.ts",
       "import": "./dist/scenarios.js"
