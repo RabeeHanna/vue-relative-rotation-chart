@@ -116,7 +116,7 @@ These types protect the component from Sector Orbit-specific state shape.
 |------|-------|-------|------|
 | [PRE-C1-A](./PRE-C1-A-label-collision-spike.md) | Label Collision Algorithm Spike (**done — Spatial Bin**) | Pre-Start | 1 day |
 | [PRE-C1-B](./PRE-C1-B-outlier-strategy.md) | Fit Mode Outlier Strategy Decision (**done — Fit-All**) | Pre-Start | 0.5 day |
-| [PRE-C1-C](./PRE-C1-C-accessibility-requirements.md) | Colorblind Accessibility Requirement | Pre-Start | 0.5 day |
+| [PRE-C1-C](./PRE-C1-C-accessibility-requirements.md) | Colorblind Accessibility Requirement (**done**) | Pre-Start | 0.5 day |
 | [C1](./C1-skeleton.md) | Component Project Skeleton | Foundation | 1–2 days |
 | [C2](./C2-types.md) | Public Data Contract and Types | Foundation | 0.5–1 day |
 | [C3](./C3-axes-quadrants.md) | Static SVG Axes and Quadrants | Foundation | 1–2 days |
@@ -139,7 +139,7 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 
 1. PRE-C1-A — Label Collision Spike (**complete: Spatial Bin** — [decision](./PRE-C1-A-label-collision-spike.md#label-collision-algorithm-decision-completed))
 2. PRE-C1-B — Outlier Strategy Decision (**complete: Fit-All** — [decision](./PRE-C1-B-outlier-strategy.md#decision-record-completed))
-3. PRE-C1-C — Colorblind Accessibility Requirement
+3. PRE-C1-C — Colorblind Accessibility Requirement (**complete** — [decision](./PRE-C1-C-accessibility-requirements.md#decisions-completed))
 4. C1 — Component Project Skeleton
 5. C2 — Public Data Contract and Types
 6. C3 — Static SVG Axes and Quadrants
@@ -158,7 +158,7 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 
 | Gate | Trigger | Decision |
 |------|---------|----------|
-| Pre-Start complete | After PRE-C1-A, B, C | Label spike proves chosen algorithm works on worst-case mock. **PRE-C1-A done:** Spatial Bin. **PRE-C1-B done:** Fit-All (no outlier clipping). Proceed to C1 after C. |
+| Pre-Start complete | After PRE-C1-A, B, C | **A/B/C done.** Spatial Bin; Fit-All; colorblind props + core requirement. Proceed to C1. |
 | Performance baseline | After C5 | If 50 tickers × 30 points fails ≥ 55 fps, scope v1 to 30 tickers and document ceiling. |
 | Label proof | After C6 | If algorithm doesn't hold on real data, iterate before proceeding to C7. |
 | Integration ready | After C11 | Final decision: replace ECharts as default renderer or continue iteration. |

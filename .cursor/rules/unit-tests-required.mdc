@@ -1,0 +1,22 @@
+---
+description: Require unit tests for all production code changes
+alwaysApply: true
+---
+
+# Unit Tests Required
+
+Every production code change in this repo must ship with unit tests in the same unit of work / commit.
+
+## Requirements
+
+- Add or update Vitest tests for new/changed components, composables, utils, and public types
+- Prefer colocated or `tests/` mirrors; name files `*.test.ts` / `*.spec.ts`
+- Cover happy path, edge cases called out in the unit plan, and regression cases you fix
+- Run `npm test` (or the unit’s targeted Vitest command) before committing; leave tests green
+- Documentation-only or plan-only units may omit code tests, but must still document required test cases for later implementation units
+
+## Do not
+
+- Land chart/render logic, public API types, or utilities without corresponding assertions
+- Skip tests because a feature is a “placeholder” — placeholders get smoke/mount or type-contract tests at minimum
+- Treat Playwright/manual checks as a substitute for unit tests (they complement, not replace)

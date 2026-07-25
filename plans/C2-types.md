@@ -2,7 +2,7 @@
 
 **Phase:** Foundation  
 **Estimate:** 0.5–1 day  
-**Depends on:** C1 complete, PRE-C1-C decisions documented  
+**Depends on:** C1 complete, [PRE-C1-C](./PRE-C1-C-accessibility-requirements.md) decisions documented  
 **Priority:** Standard
 
 ---
@@ -122,9 +122,9 @@ export type RrgChartProps = {
   width?: number                    // default: responsive to container
   height?: number                   // default: responsive to container
 
-  // Accessibility (see PRE-C1-C)
-  showPatterns?: boolean            // render hatch patterns in addition to color
-  tickerLabelAlwaysVisible?: boolean // override collision system; always show all labels
+  // Accessibility (see PRE-C1-C — both props required in the public contract)
+  showPatterns?: boolean            // default false; hatch patterns in addition to color (render in C9)
+  tickerLabelAlwaysVisible?: boolean // default false; override collision hide; always show all labels
 }
 
 export type RrgLabelMode = 'auto' | 'always' | 'hover'

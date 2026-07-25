@@ -2,7 +2,7 @@
 
 **Phase:** Polish  
 **Estimate:** 1 day  
-**Depends on:** C7 complete, PRE-C1-C (colorblind requirement) documented  
+**Depends on:** C7 complete, [PRE-C1-C](./PRE-C1-C-accessibility-requirements.md) (colorblind requirement) documented  
 **Priority:** Standard
 
 ---
@@ -73,7 +73,7 @@ This is a v1 minimum — not full keyboard navigation, but allows screen readers
 
 ---
 
-### Colorblind Verification (from PRE-C1-C)
+### Colorblind Verification (from [PRE-C1-C](./PRE-C1-C-accessibility-requirements.md))
 
 Perform manual colorblind simulation tests using Chrome DevTools:
 
@@ -84,22 +84,23 @@ Perform manual colorblind simulation tests using Chrome DevTools:
 
 | Test | Filter | Pass Criteria |
 |------|--------|---------------|
-| Protanopia | Protanopia | Every ticker identifiable by label or tooltip |
-| Deuteranopia | Deuteranopia | Every ticker identifiable by label or tooltip |
-| Achromatopsia | Achromatopsia | Tickers distinguishable (labels or patterns) |
+| 1 — Protanopia | Protanopia | Every ticker identifiable by label or tooltip |
+| 2 — Deuteranopia | Deuteranopia | Every ticker identifiable by label or tooltip |
+| 3 — Monochrome | Achromatopsia | Tickers distinguishable (labels or patterns) |
+| 4 — Hover accessibility | (no filter) `labelMode="auto"` dense cluster | Hovering a hidden-label point reveals ticker in tooltip |
 
 **Core requirement (non-optional):**
 - The tooltip always includes ticker symbol — never only color or position
 - In `auto` label mode: hovering a hidden-label point always reveals the ticker
 - In `hover` label mode: hovering always shows the label
+- `tickerLabelAlwaysVisible=true` forces all labels visible (overrides `labelMode` / collision hide)
 
-**`showPatterns` prop (if time allows):**
+**`showPatterns` prop:**
 - When `showPatterns = true`, render a distinct SVG fill pattern on each point in addition to its color
 - Pattern types: `hatch-0°`, `hatch-45°`, `hatch-90°`, `dots`, `cross`
 - Patterns cycle through assigned tickers (same deterministic order as color assignment)
 - Implementation: SVG `<defs>` with `<pattern>` elements, referenced via `fill="url(#pattern-{ticker})"`
-
-If `showPatterns` is not implemented in v1, document it as a v2 feature.
+- Prop is part of the C2 public contract; rendering lands in this unit (C9)
 
 ---
 
@@ -184,10 +185,13 @@ tests/
 - [ ] Every tail group has `data-testid="rrg-tail-{ticker}"`
 - [ ] Tooltip has `data-testid="rrg-tooltip"` and `data-ticker` when visible
 - [ ] All `data-testid` values are stable across rerenders and date changes
-- [ ] **COLORBLIND: Protanopia simulation — all tickers identifiable by label/tooltip**
-- [ ] **COLORBLIND: Deuteranopia simulation — all tickers identifiable by label/tooltip**
-- [ ] **COLORBLIND: Achromatopsia — tickers distinguishable without color**
+- [ ] **COLORBLIND Test 1:** Protanopia — all tickers identifiable by label/tooltip
+- [ ] **COLORBLIND Test 2:** Deuteranopia — all tickers identifiable by label/tooltip
+- [ ] **COLORBLIND Test 3:** Achromatopsia — tickers distinguishable without color
+- [ ] **COLORBLIND Test 4:** Hover on hidden-label point reveals ticker in tooltip
 - [ ] Tooltip always includes ticker symbol in all interaction states
+- [ ] `tickerLabelAlwaysVisible` overrides collision hide when true
+- [ ] `showPatterns` renders deterministic SVG `<pattern>` fills when true
 - [ ] Points are focusable via Tab key and announce themselves to screen readers
 - [ ] Playwright smoke tests pass (`tests/e2e/chart.spec.ts`)
 - [ ] `npm run typecheck` passes
