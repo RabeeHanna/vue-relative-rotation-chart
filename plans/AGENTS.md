@@ -7,10 +7,10 @@ Unit-of-work specifications and recorded design decisions.
 ## Belongs here
 
 - `00-overview.md` and `PRE-C1-*` / `C*` plan files
-- Scrutiny / research companions (e.g. `C16-research.md`, `C17-research.md`, `C19-public-library-scrutiny.md`) before or beside unit stubs
-- Unit plans for publish cuts (e.g. `C19-first-public-publish.md`, `C19.5-demo-ux-simplify.md`)
+- Scrutiny / research companions (e.g. `C16-research.md`, `C17-research.md`, `C19-public-library-scrutiny.md`, `C21-profiling-scrutiny.md`) before or beside unit stubs
+- Unit plans for publish cuts and perf follow-ups (e.g. `C19-first-public-publish.md`, `C19.5-demo-ux-simplify.md`, `C20-bundle-size-perf-playbook.md`, `C21-deep-profiling.md`)
 - Decision records appended when a pre-start unit completes
-- Optional results appendices (e.g. `C17-results.md` or `C17-results/`) — **append-only / dated runs**, never overwrite prior baselines
+- Optional results appendices (e.g. `C17-results.md`, `C21-profile-results.md`) — **append-only / dated runs**, never overwrite prior baselines
 - Dogfood notes from real-caller exercises (e.g. `C19-dogfood-notes.md`) when a unit requires them
 
 ## Does not belong here

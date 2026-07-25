@@ -91,6 +91,7 @@ Full rationale: [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.m
 - [ ] Real-data dogfood notes committed (worked / broke / fixed)  
 - [ ] [C19.5](./C19.5-demo-ux-simplify.md) done (or explicitly deferred with reason — prefer done before publish)  
 - [ ] Pack dry-run confirms `dist/` only (demo not in tarball)  
+- [x] Prefer [C20](./C20-bundle-size-perf-playbook.md) bundle-size tracking landed (or explicitly deferred with reason)  
 - [ ] Host default branch still untouched by this unit  
 - [ ] Package published to npm; README install + badges updated  
 - [ ] Vitest green; typecheck/lint/build green if touched  
@@ -132,6 +133,8 @@ Full rationale: [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.m
 
 - Scrutiny: [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.md)  
 - Demo UX: [C19.5-demo-ux-simplify.md](./C19.5-demo-ux-simplify.md)  
+- Bundle size / playbook: [C20-bundle-size-perf-playbook.md](./C20-bundle-size-perf-playbook.md)  
+- Deep profiling (deferred): [C21-deep-profiling.md](./C21-deep-profiling.md)  
 - Pre-npm polish: [C18-pre-npm-polish.md](./C18-pre-npm-polish.md)  
 - Host integration: [C10-host-integration.md](./C10-host-integration.md)  
 
@@ -143,3 +146,4 @@ Full rationale: [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.m
 |------|------|
 | 2026-07-25 | Unit drafted from locked scrutiny feedback (D1–D5 + changelog + dogfood-before-publish) |
 | 2026-07-25 | Added C19.5 demo UX sequencing + packaging `files: ["dist"]` confirmation |
+| 2026-07-25 | Cross-link C20 bundle/playbook; prefer before publish; C21 profiling deferred |

@@ -95,6 +95,8 @@ This package started as a **host-first RRG SVG renderer**. That build-out is lar
 - [ ] Getting-started path verified cold (`npm i` + minimal example)  
 - [ ] Demo UX polish ([C19.5](./C19.5-demo-ux-simplify.md)) — Simple/Customize, closed snippet, Tail/Full history  
 - [x] **Packaging:** `"files": ["dist"]` — demo/tests/plans/spikes **not** in npm tarball (confirmed; no change)  
+- [x] **Bundle size tracked** ([C20](./C20-bundle-size-perf-playbook.md) — soft warn; independent of deep profiling)  
+- [ ] Optional: demo **page** Lighthouse sanity (document-only; **not** chart FPS — see C21 O2)  
 - [ ] Deliberate `npm publish` + restore version badges  
 
 ---
@@ -147,3 +149,4 @@ Do **not** say “quadrant is caller-defined” without that caveat.
 | 2026-07-25 | Initial scrutiny draft |
 | 2026-07-25 | **Locked D1–D5** from review: pitch A firm; keep name; changelog gate; G0+precise G1 docs; dogfood-before-publish (not master merge) |
 | 2026-07-25 | Packaging confirmed (`files: ["dist"]`); C19.5 demo UX added as publish-adjacent P1.2 |
+| 2026-07-25 | C21 review: bundle-size → C20 checklist; optional demo Lighthouse one-liner (≠ chart FPS); deep profiling deferred |

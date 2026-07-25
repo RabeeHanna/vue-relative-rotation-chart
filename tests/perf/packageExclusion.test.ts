@@ -5,6 +5,8 @@ import { join } from 'node:path'
 
 const root = process.cwd()
 const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm'
+/** npm pack under parallel Vitest load on Windows can exceed the 5s default. */
+const PACK_TIMEOUT_MS = 30_000
 
 describe('perf harness package exclusion', () => {
   it('package.json files allowlist is dist-only (no tests/ or demo/)', () => {
@@ -18,18 +20,28 @@ describe('perf harness package exclusion', () => {
     }
   })
 
-  it('npm pack dry-run does not include tests/perf or demo sources', () => {
-    const result = spawnSync(npmBin, ['pack', '--dry-run'], {
-      cwd: root,
-      encoding: 'utf8',
-      shell: process.platform === 'win32',
-    })
-    expect(result.status).toBe(0)
-    const blob = `${result.stdout ?? ''}\n${result.stderr ?? ''}`.toLowerCase()
-    expect(blob).not.toMatch(/tests\/perf/)
-    expect(blob).not.toMatch(/demo\/demoperf/)
-    expect(blob).not.toMatch(/demo\/demoapp/)
-    // Pack notice lists included paths on stderr for modern npm.
-    expect(blob.length).toBeGreaterThan(0)
-  })
+  it(
+    'npm pack dry-run does not include tests/perf or demo sources',
+    () => {
+      const result = spawnSync(npmBin, ['pack', '--dry-run'], {
+        cwd: root,
+        encoding: 'utf8',
+        shell: process.platform === 'win32',
+        timeout: PACK_TIMEOUT_MS,
+      })
+
+      if (result.error) {
+        throw result.error
+      }
+      expect(result.status, `npm pack stderr:\n${result.stderr ?? ''}`).toBe(0)
+
+      const blob = `${result.stdout ?? ''}\n${result.stderr ?? ''}`.toLowerCase()
+      expect(blob).not.toMatch(/tests\/perf/)
+      expect(blob).not.toMatch(/demo\/demoperf/)
+      expect(blob).not.toMatch(/demo\/demoapp/)
+      // Pack notice lists included paths on stderr for modern npm.
+      expect(blob.length).toBeGreaterThan(0)
+    },
+    PACK_TIMEOUT_MS,
+  )
 })

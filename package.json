@@ -32,6 +32,7 @@
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
     "test:perf": "playwright test --config=playwright.perf.config.ts",
+    "check:bundle-size": "vitest run tests/perf/bundleSize.test.ts",
     "review:artifacts": "playwright test --config=playwright.review.config.ts",
     "review:screenshots": "npm run review:artifacts",
     "typecheck": "vue-tsc -p tsconfig.app.json --noEmit && vue-tsc -p tsconfig.build.json --noEmit",

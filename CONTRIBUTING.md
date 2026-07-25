@@ -25,6 +25,15 @@ npm run test:e2e
 
 See root [`AGENTS.md`](./AGENTS.md) and directory `AGENTS.md` files for placement rules. Cursor rules live in `.cursor/rules/`.
 
+## Performance
+
+Chart smoothness and bundle-size checks: see [`docs/perf.md`](./docs/perf.md) (C17 FPS layers, C20 bundle ceilings, manual Chrome Performance steps). Lighthouse is not a chart FPS gate.
+
+```bash
+npm run test:perf          # Layer B — Chromium FPS (soft ≥55)
+npm run build && npm run check:bundle-size
+```
+
 ## Pull requests
 
 - Prefer focused PRs that match a single plan unit.
