@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Vue is peer-only (removed from `dependencies`; still required by consumers)
 
+### Notes
+
+- First **npm publish** is deferred until a deliberate public release; use git/`file:` installs until then
+
 ## [0.1.0] - 2026-07-25
 
 ### Added

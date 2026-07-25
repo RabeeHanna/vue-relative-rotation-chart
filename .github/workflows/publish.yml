@@ -1,3 +1,5 @@
+# Publish to npm — DEFERRED until deliberate public release (see plans/C14-public-release.md).
+# Do not run this workflow until the owner decides to cut a public npm version.
 name: Publish npm
 
 on:

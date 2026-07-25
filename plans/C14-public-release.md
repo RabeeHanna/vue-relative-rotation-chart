@@ -63,9 +63,14 @@ Scenario modules remain **demo/fixture data only** — no Sector Orbit types, no
 - [x] Deploy public demo workflow — `.github/workflows/deploy-demo.yml` (`npm run build:demo` → GitHub Pages)  
 - [x] `npm publish` via CI with **provenance attestation** — `.github/workflows/publish.yml` (`workflow_dispatch`; requires `NPM_TOKEN` + trusted publishing setup)  
 
+### npm publish (owner note) — DEFERRED
+
+**Do not publish to npm yet.** Packaging + publish workflow are ready, but the first `npm publish` is intentionally delayed until the project is more ready for a public release (post C15/C16 polish at minimum). Consumers should use `file:` / git / workspace links until then.
+
 ### Demo URL (owner note)
 
-**Deferred live URL:** this clone has no `git remote` / GitHub origin yet. Workflows and `build:demo` are ready; enable GitHub Pages after pushing and replace README `OWNER` badge placeholders + the demo link.
+- Repo: https://github.com/RabeeHanna/vue-relative-rotation-chart  
+- Live demo: https://rabeehanna.github.io/vue-relative-rotation-chart/ (GitHub Pages via `deploy-demo.yml`)
 
 ---
 
@@ -88,9 +93,10 @@ Scenario modules remain **demo/fixture data only** — no Sector Orbit types, no
 - [x] Packaging checklist items verified or fixed  
 - [x] Trust files + README badges present  
 - [x] CI gates defined for PRs  
-- [x] Demo deploy workflow present; live URL deferred with owner note (no remote yet)  
+- [x] Demo deploy workflow present; live demo linked (GitHub Pages)  
 - [x] Scenarios subpath in scope: export works from library build / `npm pack`  
-- [x] Docs-site decision recorded (demo-only for v1)
+- [x] Docs-site decision recorded (demo-only for v1)  
+- [x] npm publish **deferred** by owner decision (workflow ready; not executed)
 
 ---
 

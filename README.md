@@ -1,6 +1,6 @@
 # vue-relative-rotation-chart
 
-[![CI](https://github.com/OWNER/vue-relative-rotation-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/vue-relative-rotation-chart/actions/workflows/ci.yml)
+[![CI](https://github.com/RabeeHanna/vue-relative-rotation-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/RabeeHanna/vue-relative-rotation-chart/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/vue-relative-rotation-chart.svg)](https://www.npmjs.com/package/vue-relative-rotation-chart)
 [![bundle size](https://img.shields.io/bundlephobia/minzip/vue-relative-rotation-chart)](https://bundlephobia.com/package/vue-relative-rotation-chart)
 [![license](https://img.shields.io/npm/l/vue-relative-rotation-chart.svg)](./LICENSE)
@@ -9,12 +9,15 @@ A Vue SVG component for rendering RRG-style relative rotation charts from precom
 
 **This component is a renderer only** — it does not fetch data or perform RRG calculations. All RS-Ratio / RS-Momentum values must be pre-calculated and passed as series props.
 
-> **Demo:** local `npm run dev`, or the GitHub Pages demo once a remote is connected and Pages is enabled (`npm run build:demo`). Live URL deferred until the repo has an origin remote.
+> **Try it live:** [GitHub Pages demo](https://rabeehanna.github.io/vue-relative-rotation-chart/) · or locally with `npm run dev`
 
 ## Install
 
+**npm publish is deferred** until a deliberate public release (workflow exists; not run yet). Until then, prefer a workspace / git / `file:` link:
+
 ```bash
-npm install vue-relative-rotation-chart
+# After public release:
+# npm install vue-relative-rotation-chart
 ```
 
 Peer dependency: Vue `^3.5.0`.
