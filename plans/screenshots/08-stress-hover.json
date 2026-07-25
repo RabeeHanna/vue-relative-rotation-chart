@@ -1,0 +1,10 @@
+{
+  "name": "08-stress-hover",
+  "query": "?scenario=stress&labelMode=hover&theme=light",
+  "selectedDate": "2024-01-01",
+  "dateStatus": "exact",
+  "viewportMode": "fit",
+  "theme": "light",
+  "pointCount": 50,
+  "capturedAt": "2026-07-25T20:05:00.644Z"
+}

@@ -65,7 +65,7 @@ Scenario modules remain **demo/fixture data only** — no Sector Orbit types, no
 
 ### npm publish (owner note) — DEFERRED
 
-**Do not publish to npm yet.** Packaging + publish workflow are ready, but the first `npm publish` is intentionally delayed until pre-npm polish ([C18](./C18-pre-npm-polish.md)) and preferably [C10](./C10-sector-orbit-integration.md) confidence. Consumers should use `file:` / git / workspace links until then.
+**Do not publish to npm yet.** Packaging + publish workflow are ready, but the first `npm publish` is intentionally delayed until pre-npm polish ([C18](./C18-pre-npm-polish.md)) and preferably [C10](./C10-host-integration.md) confidence. Consumers should use `file:` / git / workspace links until then.
 
 ### Demo URL (owner note)
 
@@ -82,7 +82,7 @@ Scenario modules remain **demo/fixture data only** — no Sector Orbit types, no
 
 ## Out of Scope
 
-- Sector Orbit feature-flag integration ([C10](./C10-sector-orbit-integration.md))  
+- Host application feature-flag integration ([C10](./C10-host-integration.md))  
 - Changing chart rendering behavior  
 - Mandatory docs site before first tag  
 
@@ -102,6 +102,6 @@ Scenario modules remain **demo/fixture data only** — no Sector Orbit types, no
 
 ## Cross-refs
 
-- Packaging order: [C14](./C14-public-release.md) → [C15](./C15-tail-hover.md) → [C10](./C10-sector-orbit-integration.md) (deferred)  
+- Packaging order: [C14](./C14-public-release.md) → [C15](./C15-tail-hover.md) → [C10](./C10-host-integration.md) (deferred)  
 - Demo copy-as-code / fixtures: [C13](./C13-demo-playground.md)  
 - Overview order: [00-overview](./00-overview.md)  

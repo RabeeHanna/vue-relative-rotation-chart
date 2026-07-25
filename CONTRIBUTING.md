@@ -4,7 +4,7 @@ Thanks for helping improve `vue-relative-rotation-chart`.
 
 ## Scope
 
-This package is a **renderer only**. Do not add price fetching, RS-Ratio / RS-Momentum calculation, caching, or Sector Orbit app shell code.
+This package is a **renderer only**. Do not add price fetching, RS-Ratio / RS-Momentum calculation, caching, or host-application shell / routing / store code.
 
 ## Workflow
 

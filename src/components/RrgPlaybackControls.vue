@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import {
   RRG_PLAYBACK_DEFAULTS,
   type RrgPlaybackControlsProps,
@@ -13,6 +14,7 @@ const props = withDefaults(defineProps<RrgPlaybackControlsProps>(), {
   maxSpeed: RRG_PLAYBACK_DEFAULTS.maxSpeed,
   loop: RRG_PLAYBACK_DEFAULTS.loop,
   speedMode: RRG_PLAYBACK_DEFAULTS.speedMode,
+  labelStyle: RRG_PLAYBACK_DEFAULTS.labelStyle,
 })
 
 const emit = defineEmits<{
@@ -40,6 +42,8 @@ const {
   onScrubCommit,
   nudgeSpeed,
 } = useRrgPlaybackControls(props, emit)
+
+const showTextLabels = computed(() => props.labelStyle === 'icon-text')
 
 function onKeydown(event: KeyboardEvent) {
   switch (event.key) {
@@ -82,6 +86,7 @@ function onKeydown(event: KeyboardEvent) {
     :data-speed="String(clampedSpeed)"
     :data-speed-mode="speedMode"
     :data-loop="loop ? 'true' : 'false'"
+    :data-label-style="labelStyle"
     :data-frame-index="frameIndex >= 0 ? String(frameIndex) : undefined"
     @keydown="onKeydown"
   >
@@ -92,9 +97,11 @@ function onKeydown(event: KeyboardEvent) {
         data-testid="rrg-playback-step-back"
         :disabled="stepBackDisabled"
         :aria-label="resolvedCopy.stepBackward"
+        :title="resolvedCopy.stepBackward"
         @click="stepBy(-1)"
       >
-        ⏮
+        <span aria-hidden="true">⏮</span>
+        <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.stepBackward }}</span>
       </button>
       <button
         type="button"
@@ -102,9 +109,13 @@ function onKeydown(event: KeyboardEvent) {
         data-testid="rrg-playback-toggle"
         :disabled="!canInteract || (!loop && atEnd && !playing)"
         :aria-label="playing ? resolvedCopy.pause : resolvedCopy.play"
+        :title="playing ? resolvedCopy.pause : resolvedCopy.play"
         @click="togglePlaying"
       >
-        {{ playing ? '⏸' : '▶' }}
+        <span aria-hidden="true">{{ playing ? '⏸' : '▶' }}</span>
+        <span v-if="showTextLabels" class="rrg-playback__btn-text">
+          {{ playing ? resolvedCopy.pause : resolvedCopy.play }}
+        </span>
       </button>
       <button
         type="button"
@@ -112,9 +123,11 @@ function onKeydown(event: KeyboardEvent) {
         data-testid="rrg-playback-step-forward"
         :disabled="stepForwardDisabled"
         :aria-label="resolvedCopy.stepForward"
+        :title="resolvedCopy.stepForward"
         @click="stepBy(1)"
       >
-        ⏭
+        <span aria-hidden="true">⏭</span>
+        <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.stepForward }}</span>
       </button>
     </div>
 
@@ -153,6 +166,7 @@ function onKeydown(event: KeyboardEvent) {
         class="rrg-playback__btn"
         data-testid="rrg-playback-speed-down"
         :aria-label="resolvedCopy.decreaseSpeed"
+        :title="resolvedCopy.decreaseSpeed"
         :disabled="clampedSpeed <= minSpeed"
         @click="nudgeSpeed(-0.5)"
       >
@@ -166,6 +180,7 @@ function onKeydown(event: KeyboardEvent) {
         class="rrg-playback__btn"
         data-testid="rrg-playback-speed-up"
         :aria-label="resolvedCopy.increaseSpeed"
+        :title="resolvedCopy.increaseSpeed"
         :disabled="clampedSpeed >= maxSpeed"
         @click="nudgeSpeed(0.5)"
       >

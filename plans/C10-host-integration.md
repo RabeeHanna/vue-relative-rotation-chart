@@ -1,33 +1,34 @@
-# C10: Sector Orbit Feature-Flag Integration
+# C10: Host Application Feature-Flag Integration
 
 **Phase:** Integration  
 **Estimate:** 1–2 days  
-**Depends on:** C11 complete (adversarial review passed)  
-**Priority:** Standard
+**Depends on:** C11 complete (adversarial review passed); prefer after [C18](./C18-pre-npm-polish.md)  
+**Priority:** Standard  
+**Suggested schedule:** After C18
 
 ---
 
 ## Goal
 
-Drop the custom SVG renderer into Sector Orbit behind a feature flag, without removing or breaking the existing chart implementation. Both renderers consume the same calculated data. No calculation code changes.
+Drop the custom SVG renderer into the **host application** behind a feature flag, without removing or breaking the existing chart implementation. Both renderers consume the same calculated data. No calculation code changes.
 
 ---
 
 ## Prerequisite
 
-**Do not begin this unit until C11 (adversarial review) is complete and the integration decision is recorded.**
+**Do not begin this unit until C11 (adversarial review) is complete and the integration decision is recorded.** Prefer completing [C18](./C18-pre-npm-polish.md) first so the public package surface is stable.
 
-The component is integrated into Sector Orbit only after it has proven it can handle real-world RRG data in standalone testing.
+The component is integrated into the host app only after it has proven it can handle real-world RRG data in standalone testing.
 
 ---
 
 ## Scope
 
-All work in this unit happens in the **Sector Orbit** codebase, not in this package. This unit connects the two repositories.
+All work in this unit happens in the **host application** codebase, not in this package. This unit connects the two repositories.
 
 ### Step 1: Install the Package
 
-Add `vue-relative-rotation-chart` to Sector Orbit's `package.json` as a local workspace link:
+Add `vue-relative-rotation-chart` to the host app's `package.json` as a local workspace link:
 
 ```json
 {
@@ -46,15 +47,15 @@ import type { RrgRenderSeries } from 'vue-relative-rotation-chart'
 
 ### Step 2: Create the Renderer Adapter
 
-Create a new file in Sector Orbit: `src/adapters/rrgChartAdapter.ts`
+Create a new file in the host app: `src/adapters/rrgChartAdapter.ts`
 
-This adapter converts Sector Orbit's internal state to the `RrgChartInput` type that the component expects.
+This adapter converts the host app's internal state to the `RrgChartInput` type that the component expects.
 
 ```ts
 import type { RrgRenderSeries, RrgChartInput } from 'vue-relative-rotation-chart'
-import type { SectorOrbitRrgState } from '../types' // Sector Orbit's internal type
+import type { HostRrgState } from '../types' // host app internal type
 
-export function adaptToRrgChart(state: SectorOrbitRrgState): RrgChartInput {
+export function adaptToRrgChart(state: HostRrgState): RrgChartInput {
   return {
     selectedDate: state.selectedDate,
     tailLength: state.tailLength,
@@ -63,7 +64,7 @@ export function adaptToRrgChart(state: SectorOrbitRrgState): RrgChartInput {
   }
 }
 
-function adaptTicker(ticker: SectorOrbitTicker, state: SectorOrbitRrgState): RrgRenderSeries {
+function adaptTicker(ticker: HostTicker, state: HostRrgState): RrgRenderSeries {
   return {
     ticker: ticker.symbol,
     label: ticker.symbol,
@@ -92,11 +93,11 @@ function adaptViewportMode(mode: string): 'fit' | 'max' | 'center' {
 }
 ```
 
-**Critical constraint:** The adapter contains all knowledge of Sector Orbit's internal state shape. The `vue-relative-rotation-chart` package must not import anything from Sector Orbit.
+**Critical constraint:** The adapter contains all knowledge of the host app's internal state shape. The `vue-relative-rotation-chart` package must not import anything from the host application.
 
 ### Step 3: Implement the Feature Flag
 
-Add a `renderer` query parameter handler to Sector Orbit:
+Add a `renderer` query parameter handler in the host app:
 
 ```ts
 // src/utils/rendererFlag.ts
@@ -122,7 +123,7 @@ export function getRendererFlag(): ChartRenderer {
 
 ### Step 4: Wire the Renderer Switch
 
-In Sector Orbit's chart container component, conditionally render the correct renderer:
+In the host app's chart container component, conditionally render the correct renderer:
 
 ```vue
 <template>
@@ -174,7 +175,7 @@ After wiring, verify the following manually:
 - [ ] Navigate with `?renderer=svg` → SVG renderer renders
 - [ ] All tickers appear at correct positions
 - [ ] Replay / playback works — `selectedDate` changes update the chart
-- [ ] Prefer wiring [`RrgPlaybackControls`](./C12-playback-controls.md) (C12) instead of the legacy ambiguous Sector Orbit slider when available
+- [ ] Prefer wiring [`RrgPlaybackControls`](./C12-playback-controls.md) (C12) instead of the legacy ambiguous host slider when available
 - [ ] Hover shows tooltip with correct ticker/data values
 - [ ] Viewport mode toggle works (fit/max/center)
 - [ ] `data-testid` attributes are present (check in DevTools)
@@ -191,7 +192,7 @@ After wiring, verify the following manually:
 
 ---
 
-## Unit Tests (in Sector Orbit)
+## Unit Tests (in the host application)
 
 ```
 tests/
@@ -216,7 +217,7 @@ tests/
 
 ## Acceptance Criteria
 
-- [ ] `vue-relative-rotation-chart` installed as a workspace link in Sector Orbit
+- [ ] `vue-relative-rotation-chart` installed as a workspace / `file:` link in the host application
 - [ ] Renderer adapter `src/adapters/rrgChartAdapter.ts` created with correct field mappings
 - [ ] Feature flag `?renderer=svg` toggles to SVG renderer
 - [ ] Feature flag `?renderer=echarts` (or no flag) uses ECharts renderer
@@ -224,6 +225,6 @@ tests/
 - [ ] SVG renderer renders correct tickers at correct positions
 - [ ] Both renderers consume the same calculated data (no separate calculation path)
 - [ ] Zero changes to any RRG calculation code
-- [ ] Debug panel values (if present in Sector Orbit) match SVG chart point positions
+- [ ] Debug panel values (if present in the host app) match SVG chart point positions
 - [ ] `npm run typecheck` passes in both repos
 - [ ] Adapter unit tests pass

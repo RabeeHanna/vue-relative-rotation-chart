@@ -1,7 +1,7 @@
 /** Hex palettes for demo color pickers — mirrors `RrgChart.css` light/dark tokens. */
 export function themeCssDefaults(theme: 'light' | 'dark') {
   if (theme === 'dark') {
-    return { cssBg: '#1a1a2e', cssLabel: '#eeeeee', cssGrid: '#404058' }
+    return { cssBg: '#242424', cssLabel: '#f5f5f5', cssGrid: '#555555' }
   }
   return { cssBg: '#ffffff', cssLabel: '#222222', cssGrid: '#d0d0cc' }
 }

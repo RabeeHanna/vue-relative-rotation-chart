@@ -40,8 +40,13 @@
   opacity: 0.7;
 }
 .rrg-playback__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
   min-width: 2rem;
   height: 2rem;
+  padding: 0 0.45rem;
   border: 1px solid rgba(0, 0, 0, 0.2);
   background: #fff;
   color: inherit;
@@ -55,6 +60,16 @@
   min-width: 2.5rem;
   font-weight: 600;
 }
+.rrg-playback__btn-text {
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.rrg-playback[data-label-style='icon-text'] .rrg-playback__btn {
+  min-width: auto;
+  height: auto;
+  min-height: 2rem;
+}
 .rrg-playback__speed-label {
   min-width: 2.5rem;
   text-align: center;
@@ -64,25 +79,25 @@
 
 .rrg-playback.dark,
 .dark .rrg-playback {
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(26, 26, 46, 0.92);
-  color: #eee;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(36, 36, 36, 0.95);
+  color: #f5f5f5;
 }
 .rrg-playback.dark:focus-visible,
 .dark .rrg-playback:focus-visible {
-  box-shadow: 0 0 0 2px #eee;
+  box-shadow: 0 0 0 2px #f5f5f5;
 }
 .rrg-playback.dark .rrg-playback__scrubber,
 .dark .rrg-playback .rrg-playback__scrubber {
-  accent-color: #eee;
+  accent-color: #f5f5f5;
 }
 .rrg-playback.dark .rrg-playback__meta,
 .dark .rrg-playback .rrg-playback__meta {
-  color: #aaa;
+  color: #c8c8c8;
 }
 .rrg-playback.dark .rrg-playback__btn,
 .dark .rrg-playback .rrg-playback__btn {
   border-color: rgba(255, 255, 255, 0.28);
-  background: #22223a;
-  color: #eee;
+  background: #333;
+  color: #f5f5f5;
 }

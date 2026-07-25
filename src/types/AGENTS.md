@@ -14,7 +14,7 @@ Public TypeScript contract for the package.
 ## Does not belong here
 
 - Internal-only layout types (keep next to composables unless exported on purpose)
-- Sector Orbit app types
+- Host application / consumer app types
 - Runtime logic beyond small constant defaults and copy merge helpers
 
 ## Depends on

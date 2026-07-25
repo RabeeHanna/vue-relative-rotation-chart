@@ -3,7 +3,7 @@
 **Phase:** Performance / Quality  
 **Estimate:** 2–4 days (harness + matrix + first results)  
 **Depends on:** [C16](./C16-optimization.md) complete; C13 long-playback fixtures; demo `fullHistoryTail`  
-**Suggested schedule:** After C16 follow-ups; before further LOD work; independent of deferred [C10](./C10-sector-orbit-integration.md)  
+**Suggested schedule:** After C16 follow-ups; before further LOD work; independent of deferred [C10](./C10-host-integration.md)  
 **Priority:** High for confidence; blocks informed optimization follow-ups  
 **Status:** Complete (Layer A on PR CI; Layer B nightly/manual; first local baseline in [C17-results.md](./C17-results.md))
 
@@ -67,7 +67,7 @@ See [C17-research.md § Locked decisions](./C17-research.md#locked-decisions). S
 - Hit LOD / simplify if documented full-history numbers warrant it  
 - Date→index map if profiles show find cost  
 - Revisit must-pass profiles after C10  
-- **Next:** [C18](./C18-pre-npm-polish.md) pre-npm polish → then [C10](./C10-sector-orbit-integration.md)  
+- **Next:** [C18](./C18-pre-npm-polish.md) pre-npm polish → then [C10](./C10-host-integration.md)  
 
 ---
 

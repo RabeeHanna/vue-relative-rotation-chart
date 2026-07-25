@@ -26,16 +26,24 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
       : (overrideSeries.value ?? scenarioById[controls.value.scenario].series),
   )
   const dates = computed(() => datesForSeries(series.value))
+  const firstDate = dates.value[0] ?? ''
+  const hasSavedDate =
+    typeof saved?.playback?.selectedDate === 'string' &&
+    saved.playback.selectedDate.length > 0
   const playback = mergeDemoPlayback(
     saved?.playback,
-    dates.value[dates.value.length - 1] ?? '',
+    firstDate,
   )
   const selectedDate = ref(
     dates.value.includes(playback.selectedDate)
       ? playback.selectedDate
-      : (dates.value[dates.value.length - 1] ?? ''),
+      : firstDate,
   )
-  const playing = ref(false)
+  // First visit / no saved date → play from start; otherwise still autoplay the demo.
+  const playing = ref(true)
+  if (!hasSavedDate && dates.value.length > 0) {
+    selectedDate.value = firstDate
+  }
   const speed = ref(playback.speed)
   const hovered = ref<RrgRenderPoint | null>(null)
   const copyStatus = ref('')

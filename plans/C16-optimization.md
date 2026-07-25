@@ -52,7 +52,7 @@ Investigate and implement optimizations so long RRG histories and dense ticker s
 - ~~**C17** performance testing / profiling~~ — **done** ([plan](./C17-performance-profiling.md), [scrutiny](./C17-research.md), [results](./C17-results.md))
 - Optional `maxTailSegments` / simplify if full-history node counts hurt  
 - Hit LOD if full-history mode proves heavy in the browser  
-- Revisit C17 must-pass profiles after [C10](./C10-sector-orbit-integration.md)
+- Revisit C17 must-pass profiles after [C10](./C10-host-integration.md)
 
 ---
 

@@ -72,20 +72,16 @@ describe('accessibility and test hooks', () => {
     expect(wrapper.get('[data-testid="rrg-point-XLK"]').attributes('data-x')).toBe('104')
   })
 
-  it('ignores deprecated showPatterns (no swimming hatch fills)', () => {
+  it('does not render hatch pattern fills (labels-first a11y)', () => {
     const wrapper = mount(RrgChart, {
       props: {
         series,
         selectedDate: '2024-03-01',
         width: 640,
         height: 480,
-        showPatterns: true,
       },
     })
 
-    expect(wrapper.get('[data-testid="rrg-chart"]').attributes('data-show-patterns')).toBe(
-      'true',
-    )
     expect(wrapper.find('[data-testid="rrg-patterns"]').exists()).toBe(false)
     expect(wrapper.find('.rrg-point-pattern').exists()).toBe(false)
   })

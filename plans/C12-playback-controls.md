@@ -224,5 +224,5 @@ Export `RrgPlaybackControls` from `src/index.ts`.
 
 - Chart frame prop: [`C2-types.md`](./C2-types.md) (`selectedDate`)
 - Replay stability: [`C8-viewport.md`](./C8-viewport.md)
-- Sector Orbit wiring: [`C10-sector-orbit-integration.md`](./C10-sector-orbit-integration.md) — prefer `RrgPlaybackControls` over legacy ambiguous slider when integrating
+- Host wiring: [`C10-host-integration.md`](./C10-host-integration.md) — prefer `RrgPlaybackControls` over legacy ambiguous slider when integrating
 - A11y/e2e: [`C9-accessibility.md`](./C9-accessibility.md)

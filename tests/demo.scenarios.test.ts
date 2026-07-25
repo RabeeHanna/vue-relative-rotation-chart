@@ -63,14 +63,13 @@ describe('scenario registry', () => {
 describe('demo URL round-trip', () => {
   it('round-trips Tier 1 knobs', () => {
     const state = parseDemoUrl(
-      'scenario=stress&viewportMode=center&labelMode=hover&theme=dark&tailLength=12&showPatterns=true&tickerLabelAlwaysVisible=true&showTailFade=true&playbackLoop=true&size=wide&compare=true&viewportLeft=fit&viewportRight=max&source=preset',
+      'scenario=stress&viewportMode=center&labelMode=hover&theme=dark&tailLength=12&tickerLabelAlwaysVisible=true&showTailFade=true&playbackLoop=true&size=wide&compare=true&viewportLeft=fit&viewportRight=max&source=preset',
     )
     expect(state.scenario).toBe('stress')
     expect(state.viewportMode).toBe('center')
     expect(state.labelMode).toBe('hover')
     expect(state.theme).toBe('dark')
     expect(state.tailLength).toBe(12)
-    expect(state.showPatterns).toBe(true)
     expect(state.tickerLabelAlwaysVisible).toBe(true)
     expect(state.showTailFade).toBe(true)
     expect(state.playbackLoop).toBe(true)
@@ -83,8 +82,9 @@ describe('demo URL round-trip', () => {
     expect(again).toEqual(state)
   })
 
-  it('defaults maxSpeed to 5, compare Fit|Center, and treats missing URL nums as fallbacks', () => {
+  it('defaults dark theme, loop on, maxSpeed 5, compare Fit|Center', () => {
     const state = parseDemoUrl('')
+    expect(state.theme).toBe('dark')
     expect(state.maxSpeed).toBe(5)
     expect(state.minSpeed).toBe(0.5)
     expect(state.speedMode).toBe('interval')
@@ -93,6 +93,8 @@ describe('demo URL round-trip', () => {
     expect(state.compare).toBe(false)
     expect(state.showTailFade).toBe(false)
     expect(state.fullHistoryTail).toBe(false)
-    expect(state.playbackLoop).toBe(false)
+    expect(state.playbackLoop).toBe(true)
+    expect(parseDemoUrl('theme=light').theme).toBe('light')
+    expect(parseDemoUrl('playbackLoop=false').playbackLoop).toBe(false)
   })
 })

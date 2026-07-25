@@ -1,0 +1,10 @@
+{
+  "name": "06-outlier-center",
+  "query": "?scenario=farRightOutlier&viewportMode=center&theme=light",
+  "selectedDate": "2024-01-01",
+  "dateStatus": "exact",
+  "viewportMode": "center",
+  "theme": "light",
+  "pointCount": 11,
+  "capturedAt": "2026-07-25T20:04:59.946Z"
+}

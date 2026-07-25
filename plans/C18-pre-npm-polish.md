@@ -3,9 +3,9 @@
 **Phase:** Polish / Trust (pre-publish)  
 **Estimate:** 2–3 days  
 **Depends on:** [C14](./C14-public-release.md), [C11](./C11-adversarial-review.md) screenshot harness, [C17](./C17-performance-profiling.md) complete  
-**Suggested schedule:** After C17; **before** [C10](./C10-sector-orbit-integration.md) and before first npm publish  
+**Suggested schedule:** After C17; **before** [C10](./C10-host-integration.md) and before first npm publish  
 **Priority:** High for publish readiness; not required for local `file:` use  
-**Status:** Draft — decisions locked from review (2026-07-25)
+**Status:** Complete — awaiting unit commit  
 
 ---
 
@@ -13,7 +13,7 @@
 
 Close the gap between “CI + demo exist” and “safe public / pre-npm repo”: honest README, predictable public chart behavior, remove day-one deprecated props, demo defaults that feel finished, dark-theme polish, a **public-surface scrub** (no private consumer brand / inappropriate content), and `review:artifacts` (screenshots + debug JSON).
 
-**Not in scope:** `npm publish`; VitePress/Histoire; host-app feature-flag wiring ([C10](./C10-sector-orbit-integration.md) — next after this unit).
+**Not in scope:** `npm publish`; VitePress/Histoire; host-app feature-flag wiring ([C10](./C10-host-integration.md) — next after this unit).
 
 ---
 
@@ -75,7 +75,7 @@ Strings / concepts that must **not** appear in shipped or visitor-facing trees:
 ### Plans / roadmap (soft rewrite)
 
 - Prefer **“host application”** / **“primary consumer”** in overview and unit plans instead of a private product name.
-- [C10](./C10-sector-orbit-integration.md): keep as the **integration unit** but rename file/title narrative to host-app integration during C18 if residual brand strings remain; content stays “work happens in the consumer repo.”
+- [C10](./C10-host-integration.md): keep as the **integration unit** but rename file/title narrative to host-app integration during C18 if residual brand strings remain; content stays “work happens in the consumer repo.”
 - Historical decision logs may note “original consumer” only if unavoidable — prefer scrub.
 
 ### Also remove / sanitize if found
@@ -142,16 +142,16 @@ Strings / concepts that must **not** appear in shipped or visitor-facing trees:
 
 ## Acceptance criteria
 
-- [ ] Locked decisions honored (including **tail fade false**, **dark default**, **grey dark theme**, **play from start + loop**)  
-- [ ] `npm run review:artifacts` → screenshots + debug JSON  
-- [ ] Badges / install honesty  
-- [ ] `showPatterns` removed  
-- [ ] `selectedDate` snap / empty-state tested  
-- [ ] Playback visual label option  
-- [ ] README: real example + tables + renderer-only; no private brand  
-- [ ] Public scrub + automated hard-gate test green  
-- [ ] Vitest + e2e smoke green  
-- [ ] Overview → next is C10 (host integration)  
+- [x] Locked decisions honored (including **tail fade false**, **dark default**, **grey dark theme**, **play from start + loop**)  
+- [x] `npm run review:artifacts` → screenshots + debug JSON  
+- [x] Badges / install honesty  
+- [x] `showPatterns` removed  
+- [x] `selectedDate` snap / empty-state tested  
+- [x] Playback visual label option  
+- [x] README: real example + tables + renderer-only; no private brand  
+- [x] Public scrub + automated hard-gate test green  
+- [x] Vitest + e2e smoke green  
+- [x] Overview → next is C10 (host integration)  
 
 ---
 
@@ -190,7 +190,7 @@ Strings / concepts that must **not** appear in shipped or visitor-facing trees:
 - C11 screenshots: [C11-adversarial-review.md](./C11-adversarial-review.md)  
 - C14 packaging: [C14-public-release.md](./C14-public-release.md)  
 - C17 perf: [C17-performance-profiling.md](./C17-performance-profiling.md)  
-- Order: C17 → **C18** → **C10**
+- Order: C17 → **C18** → **C10** ([host integration](./C10-host-integration.md))
 
 ---
 
@@ -200,3 +200,4 @@ Strings / concepts that must **not** appear in shipped or visitor-facing trees:
 |------|------|
 | 2026-07-25 | Initial draft |
 | 2026-07-25 | Locked: keep `showTailFade` false; demo start+loop+playing; dark default; grey dark theme + whiter chrome; full public-surface / brand scrub |
+| 2026-07-25 | Implementation: API snap/empty, patterns removed, labelStyle, demo defaults, artifacts, scrub, README |

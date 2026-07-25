@@ -166,7 +166,7 @@ Hot-path files below also define the **manual FPS re-run trigger** before releas
 | P2 | Long history, capped trail | T=8, P=200–500, **L=10**, `fit`, hover | **Must-pass** (FPS ≥55 scrub + play) — primary C16/C17 pain point |
 | P3 | Stress density | T=50, P=30, L=10–30, `labelMode=hover` | Document-only |
 
-**Assumption (flag explicitly):** Must-pass vs document-only rests on “capped trails is the real product mode; full history is not,” carried from C16. That remains the right call **today**, but it predates [C10](./C10-sector-orbit-integration.md). **Revisit P0–P3 definitions once C10 lands**, using actual Sector Orbit usage instead of these assumed shapes.
+**Assumption (flag explicitly):** Must-pass vs document-only rests on “capped trails is the real product mode; full history is not,” carried from C16. That remains the right call **today**, but it predates [C10](./C10-host-integration.md). **Revisit P0–P3 definitions once C10 lands**, using actual Sector Orbit usage instead of these assumed shapes.
 
 ### Demo / extreme
 

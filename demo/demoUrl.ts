@@ -12,7 +12,6 @@ export type DemoUrlState = {
   labelMode: RrgLabelMode
   theme: 'light' | 'dark'
   tailLength: number
-  showPatterns: boolean
   tickerLabelAlwaysVisible: boolean
   showTailFade: boolean
   /** When true, chart uses full series history as tailLength (off by default). */
@@ -80,13 +79,12 @@ export function parseDemoUrl(search: string): DemoUrlState {
       params.get('labelMode') && LABELS.has(params.get('labelMode') as RrgLabelMode)
         ? (params.get('labelMode') as RrgLabelMode)
         : 'auto',
-    theme: params.get('theme') === 'dark' ? 'dark' : 'light',
+    theme: params.get('theme') === 'light' ? 'light' : 'dark',
     tailLength: Number.isFinite(tail) && tail > 0 ? Math.min(60, Math.floor(tail)) : 8,
-    showPatterns: asBool(params.get('showPatterns')),
     tickerLabelAlwaysVisible: asBool(params.get('tickerLabelAlwaysVisible')),
     showTailFade: asBool(params.get('showTailFade')),
     fullHistoryTail: asBool(params.get('fullHistoryTail')),
-    playbackLoop: asBool(params.get('playbackLoop')),
+    playbackLoop: params.get('playbackLoop') !== 'false',
     size: sizeRaw && SIZES.has(sizeRaw as ChartSizePreset) ? (sizeRaw as ChartSizePreset) : 'default',
     compare: asBool(params.get('compare')),
     viewportLeft: asViewport(params.get('viewportLeft'), 'fit'),
@@ -117,7 +115,6 @@ export function serializeDemoUrl(state: DemoUrlState): string {
   params.set('labelMode', state.labelMode)
   params.set('theme', state.theme)
   params.set('tailLength', String(state.tailLength))
-  params.set('showPatterns', String(state.showPatterns))
   params.set('tickerLabelAlwaysVisible', String(state.tickerLabelAlwaysVisible))
   params.set('showTailFade', String(state.showTailFade))
   params.set('fullHistoryTail', String(state.fullHistoryTail))

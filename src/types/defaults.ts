@@ -1,4 +1,9 @@
-import type { RrgLabelMode, RrgPlaybackSpeedMode, RrgViewportMode } from './rrg'
+import type {
+  RrgLabelMode,
+  RrgPlaybackLabelStyle,
+  RrgPlaybackSpeedMode,
+  RrgViewportMode,
+} from './rrg'
 
 /** Default prop values shared by the component and tests. */
 export const RRG_CHART_DEFAULTS = {
@@ -8,7 +13,6 @@ export const RRG_CHART_DEFAULTS = {
   showQuadrantLabels: true,
   showGrid: true,
   showAxes: true,
-  showPatterns: false,
   tickerLabelAlwaysVisible: false,
   showTailFade: false,
   pointRadius: 5.5,
@@ -23,4 +27,5 @@ export const RRG_PLAYBACK_DEFAULTS = {
   maxSpeed: 5,
   loop: true,
   speedMode: 'interval' as RrgPlaybackSpeedMode,
+  labelStyle: 'icon' as RrgPlaybackLabelStyle,
 } as const

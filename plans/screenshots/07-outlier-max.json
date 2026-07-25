@@ -1,0 +1,10 @@
+{
+  "name": "07-outlier-max",
+  "query": "?scenario=farRightOutlier&viewportMode=max&theme=light",
+  "selectedDate": "2024-01-01",
+  "dateStatus": "exact",
+  "viewportMode": "max",
+  "theme": "light",
+  "pointCount": 11,
+  "capturedAt": "2026-07-25T20:05:00.234Z"
+}

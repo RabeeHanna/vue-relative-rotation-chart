@@ -39,7 +39,6 @@ export function demoChartProps(input: {
   labelMode: RrgLabelMode
   viewportMode: RrgViewportMode
   tailLength: number
-  showPatterns: boolean
   tickerLabelAlwaysVisible: boolean
   showTailFade: boolean
   showQuadrantLabels: boolean
@@ -59,7 +58,6 @@ export function demoChartProps(input: {
     labelMode: input.labelMode,
     viewportMode: input.viewportMode,
     tailLength: input.tailLength,
-    showPatterns: input.showPatterns,
     tickerLabelAlwaysVisible: input.tickerLabelAlwaysVisible,
     showTailFade: input.showTailFade,
     showQuadrantLabels: input.showQuadrantLabels,
@@ -80,7 +78,6 @@ export function demoChartPropsFromControls(
     labelMode: RrgLabelMode
     tailLength: number
     fullHistoryTail?: boolean
-    showPatterns: boolean
     tickerLabelAlwaysVisible: boolean
     showTailFade: boolean
     showQuadrantLabels: boolean

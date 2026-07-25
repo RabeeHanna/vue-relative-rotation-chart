@@ -26,7 +26,7 @@ alwaysApply: true
 
 - **Vue owns the DOM. D3 provides math only** (scales, ticks, paths) — never D3 DOM selection/mutation
 - **One primary responsibility per module.** If a composable both layouts labels *and* owns hover state, split it
-- **No Sector Orbit types** in the public API (`AppState`, app stores, etc.)
+- **No host-application types** in the public API (`AppState`, app stores, etc.)
 - **Renderer only** — no price fetch, no RRG calculation, no caching
 
 ## Review checklist

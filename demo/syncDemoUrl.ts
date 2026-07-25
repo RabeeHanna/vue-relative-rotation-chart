@@ -9,7 +9,6 @@ export function syncDemoUrl(controls: DemoControlsState): void {
     labelMode: controls.labelMode,
     theme: controls.theme,
     tailLength: controls.tailLength,
-    showPatterns: controls.showPatterns,
     tickerLabelAlwaysVisible: controls.tickerLabelAlwaysVisible,
     showTailFade: controls.showTailFade,
     fullHistoryTail: controls.fullHistoryTail,

@@ -197,7 +197,7 @@ Production `src/` unchanged except if C14 later adds `scenarios` export (not req
 
 ## Out of Scope
 
-- [C10](./C10-sector-orbit-integration.md) Sector Orbit wiring  
+- [C10](./C10-host-integration.md) host application wiring  
 - RRG calculation / fetching  
 - Truncating or inlining series in the primary snippet  
 - Full docs site / Histoire / npm publish ([C14](./C14-public-release.md))  

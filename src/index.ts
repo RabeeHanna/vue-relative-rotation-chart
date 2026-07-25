@@ -13,10 +13,14 @@ export type {
   RrgPlaybackControlsProps,
   RrgPlaybackControlsEmits,
   RrgPlaybackSpeedMode,
+  RrgPlaybackLabelStyle,
   RrgQuadrant,
   RrgViewportMode,
   RrgLabelMode,
 } from './types/rrg'
+
+export type { ChartDateStatus, ResolvedChartDate } from './utils/chartDate'
+export { collectSeriesDates, resolveChartDate } from './utils/chartDate'
 
 export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from './types/rrg'
 export {

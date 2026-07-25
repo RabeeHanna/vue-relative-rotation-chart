@@ -12,7 +12,7 @@ alwaysApply: true
 - Price / market data fetching
 - RS-Ratio or RS-Momentum calculation
 - Caching, IndexedDB, or HTTP clients
-- Sector Orbit store shapes or app routing
+- Host application store shapes or app routing
 
 ## Always require from the caller
 
@@ -21,4 +21,4 @@ alwaysApply: true
 
 ## If tempted to “just calculate here”
 
-Push calculation to the consumer (e.g. Sector Orbit). Keep this package a pure presentation boundary so the adapter in C10 stays thin.
+Push calculation to the consumer (host application). Keep this package a pure presentation boundary so the adapter in C10 stays thin.

@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { RrgChart, RRG_CHART_DEFAULTS } from '../src'
+import { RrgChart, RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from '../src'
 import type {
   RrgChartEmits,
   RrgChartInput,
@@ -8,6 +8,7 @@ import type {
   RrgLabelMode,
   RrgPlaybackControlsEmits,
   RrgPlaybackControlsProps,
+  RrgPlaybackLabelStyle,
   RrgQuadrant,
   RrgRenderPoint,
   RrgRenderSeries,
@@ -34,20 +35,21 @@ describe('public type contract', () => {
     >()
     expectTypeOf<RrgViewportMode>().toEqualTypeOf<'fit' | 'max' | 'center'>()
     expectTypeOf<RrgLabelMode>().toEqualTypeOf<'auto' | 'always' | 'hover'>()
+    expectTypeOf<RrgPlaybackLabelStyle>().toEqualTypeOf<'icon' | 'icon-text'>()
     expectTypeOf<RrgSeriesPoint>().toHaveProperty('date')
     expectTypeOf<RrgRenderPoint>().toHaveProperty('ticker')
     expectTypeOf<RrgRenderSeries>().toHaveProperty('points')
     expectTypeOf<RrgChartInput>().toHaveProperty('selectedDate')
-    expectTypeOf<RrgChartProps>().toHaveProperty('showPatterns')
+    expectTypeOf<RrgChartProps>().not.toHaveProperty('showPatterns')
     expectTypeOf<RrgChartProps>().toHaveProperty('tickerLabelAlwaysVisible')
     expectTypeOf<RrgChartProps>().toHaveProperty('showTailFade')
     expectTypeOf<RrgChartEmits>().toHaveProperty('pointHover')
     expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('dates')
+    expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('labelStyle')
     expectTypeOf<RrgPlaybackControlsEmits>().toHaveProperty('update:selectedDate')
   })
 
   it('includes PRE-C1-C accessibility props as optional booleans', () => {
-    expectTypeOf<RrgChartProps['showPatterns']>().toEqualTypeOf<boolean | undefined>()
     expectTypeOf<RrgChartProps['tickerLabelAlwaysVisible']>().toEqualTypeOf<
       boolean | undefined
     >()
@@ -57,11 +59,11 @@ describe('public type contract', () => {
     expect(RRG_CHART_DEFAULTS.tailLength).toBe(10)
     expect(RRG_CHART_DEFAULTS.viewportMode).toBe('fit')
     expect(RRG_CHART_DEFAULTS.labelMode).toBe('auto')
-    expect(RRG_CHART_DEFAULTS.showPatterns).toBe(false)
     expect(RRG_CHART_DEFAULTS.tickerLabelAlwaysVisible).toBe(false)
     expect(RRG_CHART_DEFAULTS.showTailFade).toBe(false)
     expect(RRG_CHART_DEFAULTS.pointRadius).toBe(5.5)
     expect(RRG_CHART_DEFAULTS.hitRadius).toBe(12)
+    expect(RRG_PLAYBACK_DEFAULTS.labelStyle).toBe('icon')
   })
 })
 
@@ -76,25 +78,23 @@ describe('RrgChart props wiring', () => {
 
     const root = wrapper.get('[data-testid="rrg-chart"]')
     expect(root.attributes('data-selected-date')).toBe('2024-03-01')
+    expect(root.attributes('data-date-status')).toBe('exact')
     expect(root.attributes('data-viewport-mode')).toBe('fit')
-    expect(root.attributes('data-show-patterns')).toBe('false')
     expect(root.attributes('data-ticker-label-always-visible')).toBe('false')
     expect(root.attributes('data-show-tail-fade')).toBe('false')
   })
 
-  it('honors showPatterns and tickerLabelAlwaysVisible overrides', () => {
+  it('honors tickerLabelAlwaysVisible overrides', () => {
     const wrapper = mount(RrgChart, {
       props: {
         series: sampleSeries,
         selectedDate: '2024-03-01',
-        showPatterns: true,
         tickerLabelAlwaysVisible: true,
         viewportMode: 'center',
       },
     })
 
     const root = wrapper.get('[data-testid="rrg-chart"]')
-    expect(root.attributes('data-show-patterns')).toBe('true')
     expect(root.attributes('data-ticker-label-always-visible')).toBe('true')
     expect(root.attributes('data-viewport-mode')).toBe('center')
   })

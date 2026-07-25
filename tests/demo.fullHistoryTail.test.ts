@@ -28,7 +28,6 @@ describe('demo full-history tail', () => {
         labelMode: 'hover',
         tailLength: 8,
         fullHistoryTail: true,
-        showPatterns: false,
         tickerLabelAlwaysVisible: false,
         showTailFade: false,
         showQuadrantLabels: true,

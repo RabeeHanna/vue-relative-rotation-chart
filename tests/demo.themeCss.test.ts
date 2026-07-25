@@ -9,7 +9,8 @@ import {
 describe('demoThemeCss', () => {
   it('exposes distinct light and dark picker defaults', () => {
     expect(themeCssDefaults('light').cssBg).toBe('#ffffff')
-    expect(themeCssDefaults('dark').cssBg).toBe('#1a1a2e')
+    expect(themeCssDefaults('dark').cssBg).toBe('#242424')
+    expect(themeCssDefaults('dark').cssLabel).toBe('#f5f5f5')
     expect(themeCssDefaults('dark').cssLabel).not.toBe(themeCssDefaults('light').cssLabel)
   })
 

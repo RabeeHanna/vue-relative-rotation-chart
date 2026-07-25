@@ -22,4 +22,6 @@ Playwright smoke tests against the Vite demo for agent/Playwright inspectability
 ## Used by
 
 - `npm run test:e2e`
+- `npm run review:artifacts` (adversarial screenshots + JSON via `playwright.review.config.ts`)
 - C9 accessibility / agent-testability acceptance
+- C18 pre-npm review artifacts

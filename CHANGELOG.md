@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- C18: `resolveChartDate` / empty-state UI; `data-date-status` (`exact` \| `snapped` \| `empty`)
+- C18: playback `labelStyle` (`icon` \| `icon-text`)
+- C18: `npm run review:artifacts` (screenshots + debug JSON; `review:screenshots` alias)
+- C18: public-surface scrub Vitest hard gate
 - C17 performance harness: Vitest node-count hard gates + soft date-patch timings (`tests/perf/`); Playwright FPS sampler (`npm run test:perf`); nightly workflow; demo local perf sample panel
 - Optional `copy` prop on `RrgChart` and `RrgPlaybackControls` for quadrant, tooltip, a11y, and control labels (`mergeChartCopy` / `mergePlaybackCopy` / `formatCopy`)
 - Demo **Copy / labels** panel to override strings (session-persisted; blank = package default)
@@ -21,6 +25,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- C18: remove deprecated `showPatterns` from public API / demo
+- C18: demo defaults — dark theme, grey dark palette, play from first date with loop on
+- C18: README install honesty (not on npm yet); prop/event tables; generic consumer wording
 - Vue is peer-only (removed from `dependencies`; still required by consumers)
 
 ### Notes

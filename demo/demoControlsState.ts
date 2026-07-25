@@ -10,7 +10,6 @@ export type DemoControlsState = {
   labelMode: RrgLabelMode
   tailLength: number
   theme: 'light' | 'dark'
-  showPatterns: boolean
   tickerLabelAlwaysVisible: boolean
   showTailFade: boolean
   fullHistoryTail: boolean

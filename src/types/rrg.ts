@@ -74,8 +74,9 @@ export type RrgLabelMode = 'auto' | 'always' | 'hover'
 /**
  * Convenience input shape matching chart props for adapters.
  *
- * `selectedDate` must exactly match one of the `date` strings in the series points.
- * The component does not validate or transform input — malformed input yields undefined rendering.
+ * `selectedDate` should be an ISO date present in the series. When it does not match,
+ * the chart snaps to the nearest series date (see `resolveChartDate`). Empty series
+ * yields the empty-state UI rather than blank undefined rendering.
  */
 export type RrgChartInput = {
   selectedDate: string
@@ -87,11 +88,15 @@ export type RrgChartInput = {
 /**
  * Public props for `<RrgChart />`.
  *
- * Accessibility props (`showPatterns`, `tickerLabelAlwaysVisible`) are defined in PRE-C1-C.
+ * Accessibility: prefer `tickerLabelAlwaysVisible` / labels + tooltip (PRE-C1-C).
  */
 export type RrgChartProps = {
   series: RrgRenderSeries[]
-  /** ISO date string selecting the current frame; must match a series point date */
+  /**
+   * ISO date selecting the current frame. Exact matches render as-is; mismatches
+   * snap to the nearest series date (`data-date-status="snapped"`). Empty series
+   * or no dates → empty-state (`data-date-status="empty"`).
+   */
   selectedDate: string
 
   /** How many historical points to show as tail (default: 10) */
@@ -115,12 +120,6 @@ export type RrgChartProps = {
   /** Invisible pointer hit radius in SVG px (default 12) */
   hitRadius?: number
 
-  /**
-   * @deprecated Hatch fill patterns swim under moving points (`userSpaceOnUse`) and are
-   * a poor fit for small RRG markers. Prefer `tickerLabelAlwaysVisible` / labels + tooltip.
-   * Prop retained for API compatibility; rendering is a no-op.
-   */
-  showPatterns?: boolean
   /**
    * When true, override labelMode / collision hide and always show all labels.
    * Primary colorblind / monochrome identity strategy (see PRE-C1-C).
@@ -148,6 +147,9 @@ export type RrgChartEmits = {
  */
 export type RrgPlaybackSpeedMode = 'interval' | 'skip'
 
+/** Visual labels on playback transport buttons. */
+export type RrgPlaybackLabelStyle = 'icon' | 'icon-text'
+
 export type RrgPlaybackControlsProps = {
   /** Ordered ascending ISO date strings */
   dates: string[]
@@ -165,6 +167,11 @@ export type RrgPlaybackControlsProps = {
   loop?: boolean
   /** Default `interval`. */
   speedMode?: RrgPlaybackSpeedMode
+  /**
+   * `icon` (default): glyph buttons with `aria-label` + `title`.
+   * `icon-text`: glyphs plus visible `copy` strings.
+   */
+  labelStyle?: RrgPlaybackLabelStyle
   /** Optional UI copy overrides (buttons, frame label, aria). */
   copy?: RrgPlaybackCopy
 }

@@ -13,7 +13,7 @@ Standalone Vue 3 SVG package that renders RRG-style relative rotation charts fro
 ## Does not belong here
 
 - Price fetching or RRG score calculation
-- Sector Orbit app shell, routing, or stores
+- Host application shell, routing, or stores
 - Backend / API services
 
 ## Depends on
@@ -24,7 +24,7 @@ Standalone Vue 3 SVG package that renders RRG-style relative rotation charts fro
 
 ## Used by
 
-- Sector Orbit via `file:` / workspace link (C10)
+- Host applications via `file:` / workspace / git link (integration unit C10)
 - Local demo (`npm run dev`)
 
 ## Agent map

@@ -80,6 +80,27 @@ describe('RrgPlaybackControls', () => {
     expect(wrapper.get('[data-testid="rrg-playback-toggle"]').attributes('aria-label')).toBe(
       'Play',
     )
+    expect(wrapper.get('[data-testid="rrg-playback"]').attributes('data-label-style')).toBe(
+      'icon',
+    )
+    expect(wrapper.find('.rrg-playback__btn-text').exists()).toBe(false)
+  })
+
+  it('shows copy text beside icons when labelStyle is icon-text', () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-12',
+        labelStyle: 'icon-text',
+      },
+    })
+    expect(wrapper.get('[data-testid="rrg-playback"]').attributes('data-label-style')).toBe(
+      'icon-text',
+    )
+    expect(wrapper.get('[data-testid="rrg-playback-toggle"]').text()).toContain('Play')
+    expect(wrapper.get('[data-testid="rrg-playback-step-back"]').text()).toContain(
+      'Step backward',
+    )
   })
 
   it('accepts dark class for package theme styling', () => {

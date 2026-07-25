@@ -30,9 +30,9 @@ export const DEMO_CONTROL_DEFAULTS: DemoControlsState = {
   copyOpen: false,
   chartCopy: { ...EMPTY_CHART_COPY },
   playbackCopy: { ...EMPTY_PLAYBACK_COPY },
-  cssBg: '#ffffff',
-  cssLabel: '#222222',
-  cssGrid: '#d0d0cc',
+  cssBg: '#242424',
+  cssLabel: '#f5f5f5',
+  cssGrid: '#555555',
 }
 
 const URL_KEYS: Array<keyof DemoUrlState> = [
@@ -41,7 +41,6 @@ const URL_KEYS: Array<keyof DemoUrlState> = [
   'labelMode',
   'theme',
   'tailLength',
-  'showPatterns',
   'tickerLabelAlwaysVisible',
   'showTailFade',
   'fullHistoryTail',

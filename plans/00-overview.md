@@ -3,14 +3,14 @@
 **Package name:** `vue-relative-rotation-chart`  
 **Public positioning:** A Vue SVG component for rendering RRG-style relative rotation charts from precomputed relative strength and momentum data.  
 **Stack:** Vue 3 · TypeScript · Vite · Custom SVG renderer · D3 (math/helpers only)  
-**Repo:** Standalone from day one — consumed by Sector Orbit via `file:` workspace link  
+**Repo:** Standalone from day one — consumed by a host application via `file:` / workspace link  
 **Date started:** July 2026
 
 ---
 
 ## What This Is
 
-A custom SVG-based chart component that replaces the ECharts-based RRG renderer in Sector Orbit. The renderer consumes already-calculated RRG point series and renders them as an interactive SVG chart optimised for readability:
+A custom SVG-based chart component that replaces an ECharts-based RRG renderer in the host application. The renderer consumes already-calculated RRG point series and renders them as an interactive SVG chart optimised for readability:
 
 - clearer axes
 - readable ticker labels (no cluster fusing)
@@ -29,20 +29,20 @@ This project **only replaces the chart renderer**. It does not touch price data,
 - Not a calculation engine
 - Not a JdK RRG clone or official implementation
 - Not a Canvas/WebGL renderer (v1 is SVG only)
-- Not a full UI replacement for Sector Orbit
+- Not a full UI replacement for the host application
 
 ---
 
 ## Design Principles
 
-**SECTOR-ORBIT-FIRST, PUBLIC-LATER**
+**HOST-FIRST, PUBLIC-LATER**
 
-v1 is optimised for Sector Orbit's specific RRG use case:
+v1 is optimised for the primary consumer's RRG use case:
 - Fixed quadrant definitions (leading/weakening/lagging/improving)
 - Specific tail interpretation (RS-Ratio × RS-Momentum series)
 - Date-based replay (not real-time streaming)
 - 11–50 ticker range
-- Sector Orbit color palette and playback pattern
+- Host color palette and playback pattern
 
 Public genericization is deferred to v2. The API may change between v1 and public release.
 
@@ -87,7 +87,7 @@ export type RrgChartInput = {
 }
 ```
 
-These types protect the component from Sector Orbit-specific state shape.
+These types protect the component from host-application-specific state shape.
 
 ---
 
@@ -134,8 +134,8 @@ These types protect the component from Sector Orbit-specific state shape.
 | [C15](./C15-tail-hover.md) | Tail Hit-Target Hover (**done**) | Interaction / Polish | 1–2 days |
 | [C16](./C16-optimization.md) | Render / Playback Optimization (**done**) | Performance | 2–4 days |
 | [C17](./C17-performance-profiling.md) | Performance Testing & Profiling (**done**) | Performance / Quality | 2–4 days |
-| [C18](./C18-pre-npm-polish.md) | Pre-npm Polish — Review Artifacts + Public API / Docs (**draft**) | Polish / Trust | 2–3 days |
-| [C10](./C10-sector-orbit-integration.md) | Sector Orbit Feature-Flag Integration (deferred → **next after C18**) | Integration | 1–2 days |
+| [C18](./C18-pre-npm-polish.md) | Pre-npm Polish — Review Artifacts + Public API / Docs (**done**) | Polish / Trust | 2–3 days |
+| [C10](./C10-host-integration.md) | Host Application Feature-Flag Integration (**next**) | Integration | 1–2 days |
 
 **Total estimated: ~20–25 days** (or ~4–5 weeks at 1/3 time)
 
@@ -165,8 +165,8 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 17. C15 — Tail Hit-Target Hover (investigate + implement after C14) (**complete**)
 18. C16 — Render / Playback Optimization (long histories, redraw avoidance) (**complete**)
 19. C17 — Performance Testing & Profiling (harness + use-case matrix) (**complete** — [scrutiny](./C17-research.md), [results](./C17-results.md))
-20. C18 — Pre-npm Polish (review artifacts, API cleanup, README) (**draft** — [plan](./C18-pre-npm-polish.md))
-21. C10 — Sector Orbit Feature-Flag Integration (**after C18**; **revisit C17 P0–P3 profiles when C10 lands**)
+20. C18 — Pre-npm Polish (review artifacts, API cleanup, README) (**complete** — [plan](./C18-pre-npm-polish.md))
+21. C10 — Host Application Feature-Flag Integration (**next**; **revisit C17 P0–P3 profiles when C10 lands**)
 
 ---
 
@@ -177,13 +177,13 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 | Pre-Start complete | After PRE-C1-A, B, C | **A/B/C done.** Spatial Bin; Fit-All; colorblind props + core requirement. Proceed to C1. |
 | Performance baseline | After C5 | If 50 tickers × 30 points fails ≥ 55 fps, scope v1 to 30 tickers and document ceiling. |
 | Label proof | After C6 | If algorithm doesn't hold on real data, iterate before proceeding to C7. |
-| Integration ready | After C11 | Standalone chart ready. C13/C14 for public demo/release; C10 deferred until Sector Orbit wiring is scheduled. |
+| Integration ready | After C11 | Standalone chart ready. C13/C14 for public demo/release; C10 deferred until host-app wiring is scheduled. |
 
 ---
 
 ## Definition of Done
 
-The component is ready to integrate into Sector Orbit when:
+The component is ready to integrate into a host application when:
 
 - [x] Renders plain, readable RRG-style chart from mock data
 - [x] Clear axes, quadrant labels, 100/100 center lines
@@ -192,11 +192,11 @@ The component is ready to integrate into Sector Orbit when:
 - [x] Hover makes individual tickers easy to inspect
 - [x] Playback controls (when used) make play state, speed, and position unambiguous ([C12](./C12-playback-controls.md))
 - [x] Viewport modes (fit/max/center) are predictable and stable
-- [x] Component API accepts generic `RrgRenderSeries[]` — no Sector Orbit assumptions
+- [x] Component API accepts generic `RrgRenderSeries[]` — no host-app assumptions
 - [x] No calculation logic inside the component
 - [x] Playwright can inspect chart elements via `data-testid`
 - [x] Adversarial review passes (see C11)
-- [ ] Sector Orbit can switch renderers via feature flag
+- [ ] Host application can switch renderers via feature flag
 - [x] Colorblind accessibility verified (Protanopia + Deuteranopia)
 - [x] Performance: 50 tickers × 30 points at ≥ 55 fps
 
