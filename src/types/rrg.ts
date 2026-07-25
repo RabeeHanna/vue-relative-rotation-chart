@@ -123,6 +123,28 @@ export type RrgChartEmits = {
 }
 
 /**
+ * Controlled timeline UI props (`RrgPlaybackControls`) — separate from chart rendering.
+ */
+export type RrgPlaybackControlsProps = {
+  /** Ordered ascending ISO date strings */
+  dates: string[]
+  /** Current frame; snapped to nearest when not in `dates` */
+  selectedDate: string
+  playing?: boolean
+  /** Frames per second */
+  speed?: number
+  minSpeed?: number
+  maxSpeed?: number
+  loop?: boolean
+}
+
+export type RrgPlaybackControlsEmits = {
+  'update:selectedDate': [date: string]
+  'update:playing': [playing: boolean]
+  'update:speed': [speed: number]
+}
+
+/**
  * Computed viewport domain in data space (internal; not part of the caller input contract).
  */
 export type RrgDomain = {
@@ -142,4 +164,13 @@ export const RRG_CHART_DEFAULTS = {
   showAxes: true,
   showPatterns: false,
   tickerLabelAlwaysVisible: false,
+} as const
+
+/** Defaults for `<RrgPlaybackControls />`. */
+export const RRG_PLAYBACK_DEFAULTS = {
+  playing: false,
+  speed: 2,
+  minSpeed: 0.5,
+  maxSpeed: 8,
+  loop: true,
 } as const

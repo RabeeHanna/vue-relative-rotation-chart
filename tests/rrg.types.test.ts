@@ -6,6 +6,8 @@ import type {
   RrgChartInput,
   RrgChartProps,
   RrgLabelMode,
+  RrgPlaybackControlsEmits,
+  RrgPlaybackControlsProps,
   RrgQuadrant,
   RrgRenderPoint,
   RrgRenderSeries,
@@ -39,6 +41,8 @@ describe('public type contract', () => {
     expectTypeOf<RrgChartProps>().toHaveProperty('showPatterns')
     expectTypeOf<RrgChartProps>().toHaveProperty('tickerLabelAlwaysVisible')
     expectTypeOf<RrgChartEmits>().toHaveProperty('pointHover')
+    expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('dates')
+    expectTypeOf<RrgPlaybackControlsEmits>().toHaveProperty('update:selectedDate')
   })
 
   it('includes PRE-C1-C accessibility props as optional booleans', () => {

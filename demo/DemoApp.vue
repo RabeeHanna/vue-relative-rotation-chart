@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RrgChart, type RrgRenderPoint } from '../src'
-import { mockSelectedDate, mockSeries } from './mockSeries'
+import {
+  RrgChart,
+  RrgPlaybackControls,
+  type RrgRenderPoint,
+} from '../src'
+import { mockDates, mockSelectedDate, mockSeries } from './mockSeries'
 
+const selectedDate = ref(mockSelectedDate)
+const playing = ref(false)
+const speed = ref(2)
 const hovered = ref<RrgRenderPoint | null>(null)
 </script>
 
@@ -14,12 +21,18 @@ const hovered = ref<RrgRenderPoint | null>(null)
     </header>
     <RrgChart
       :series="mockSeries"
-      :selected-date="mockSelectedDate"
+      :selected-date="selectedDate"
       @point-hover="hovered = $event"
       @point-leave="hovered = null"
     />
+    <RrgPlaybackControls
+      :dates="mockDates"
+      v-model:selected-date="selectedDate"
+      v-model:playing="playing"
+      v-model:speed="speed"
+    />
     <pre class="meta">
-selectedDate={{ mockSelectedDate }} · series={{ mockSeries.length }}
+selectedDate={{ selectedDate }} · playing={{ playing }} · speed={{ speed }}x
 hovered={{ hovered ? `${hovered.ticker} @ ${hovered.date}` : 'none' }}
     </pre>
   </main>
@@ -65,5 +78,9 @@ header p {
   color: #666;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   white-space: pre-wrap;
+}
+
+.rrg-playback {
+  margin-top: 0.75rem;
 }
 </style>

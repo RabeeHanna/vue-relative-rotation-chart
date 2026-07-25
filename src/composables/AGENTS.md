@@ -9,6 +9,7 @@ Reactive derivation between props and renderable chart state.
 - `useRrgScales`, `useRrgViewport`, `useRrgTailSlices`
 - `useRrgLabelLayout` (Spatial Bin — PRE-C1-A)
 - `useRrgHoverState`
+- `useRrgPlayback` / `useRrgPlaybackControls` (C12 timeline)
 
 ## Does not belong here
 

@@ -52,4 +52,5 @@ export const mockSeries = [
   },
 ]
 
-export const mockSelectedDate = '2024-01-19'
+export const mockDates = mockSeries[0].points.map((p) => p.date)
+export const mockSelectedDate = mockDates[mockDates.length - 1]

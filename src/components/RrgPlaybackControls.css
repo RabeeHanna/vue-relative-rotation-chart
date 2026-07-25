@@ -1,0 +1,62 @@
+.rrg-playback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.72);
+  color: #222;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  outline: none;
+}
+.rrg-playback:focus-visible {
+  box-shadow: 0 0 0 2px #222;
+}
+.rrg-playback__transport,
+.rrg-playback__speed {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.rrg-playback__timeline {
+  flex: 1 1 12rem;
+  min-width: 10rem;
+}
+.rrg-playback__scrubber {
+  width: 100%;
+  accent-color: #222;
+}
+.rrg-playback__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  margin-top: 0.25rem;
+  color: #555;
+  font-variant-numeric: tabular-nums;
+}
+.rrg-playback__loop {
+  opacity: 0.7;
+}
+.rrg-playback__btn {
+  min-width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: #fff;
+  cursor: pointer;
+}
+.rrg-playback__btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.rrg-playback__btn--play {
+  min-width: 2.5rem;
+  font-weight: 600;
+}
+.rrg-playback__speed-label {
+  min-width: 2.5rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}

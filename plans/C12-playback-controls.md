@@ -5,7 +5,7 @@
 **Depends on:** C4 complete (renderable chart to drive); independent of C5–C6 label/tail work  
 **Suggested schedule:** After C7 (or in parallel with C7). Ideal earliest slot was after C4 — those units are already done.  
 **Priority:** Standard — addresses Sector Orbit “ambiguous playback controls” UX issue  
-**Status:** Planned (not started)
+**Status:** Complete
 
 ---
 
@@ -207,16 +207,16 @@ Export `RrgPlaybackControls` from `src/index.ts`.
 
 ## Acceptance Criteria
 
-- [ ] Play/pause is a single unambiguous toggle
-- [ ] Current date always visible as text
-- [ ] Speed visible and adjustable without a hidden menu
-- [ ] Scrubbing does not cause chart jitter
-- [ ] Fully controlled (props + emits)
-- [ ] Keyboard controls work
-- [ ] Playback loop cleans up on unmount and pause
-- [ ] Section edge cases verified
-- [ ] Resolves Sector Orbit “ambiguous playback controls” complaint
-- [ ] Unit tests green; exported from package entry
+- [x] Play/pause is a single unambiguous toggle
+- [x] Current date always visible as text
+- [x] Speed visible and adjustable without a hidden menu
+- [x] Scrubbing does not cause chart jitter
+- [x] Fully controlled (props + emits)
+- [x] Keyboard controls work
+- [x] Playback loop cleans up on unmount and pause
+- [x] Section edge cases verified
+- [x] Resolves Sector Orbit “ambiguous playback controls” complaint
+- [x] Unit tests green; exported from package entry
 
 ---
 
