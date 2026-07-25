@@ -70,7 +70,23 @@ describe('useRrgTailSlices tailData', () => {
     return scale as import('../src/composables/useRrgScales').RrgScale
   })
 
-  it('builds opacity-faded segments up to selectedDate', () => {
+  it('builds opacity-faded segments when showTailFade is true', () => {
+    const { tailData } = useRrgTailSlices(
+      computed(() => series),
+      computed(() => '2024-03-01'),
+      computed(() => 10),
+      identity,
+      identity,
+      computed(() => true),
+    )
+    const xlk = tailData.value.find((t) => t.ticker === 'XLK')
+    expect(xlk?.segments).toHaveLength(2)
+    expect(xlk!.segments[0].opacity).toBeLessThan(xlk!.segments[1].opacity)
+    expect(xlk!.segments[0].date).toBe('2024-02-01')
+    expect(xlk!.segments[1].date).toBe('2024-03-01')
+  })
+
+  it('uses uniform opacity when showTailFade is false (default)', () => {
     const { tailData } = useRrgTailSlices(
       computed(() => series),
       computed(() => '2024-03-01'),
@@ -80,9 +96,7 @@ describe('useRrgTailSlices tailData', () => {
     )
     const xlk = tailData.value.find((t) => t.ticker === 'XLK')
     expect(xlk?.segments).toHaveLength(2)
-    expect(xlk!.segments[0].opacity).toBeLessThan(xlk!.segments[1].opacity)
-    expect(xlk!.segments[0].date).toBe('2024-02-01')
-    expect(xlk!.segments[1].date).toBe('2024-03-01')
+    expect(xlk!.segments[0].opacity).toBe(xlk!.segments[1].opacity)
   })
 
   it('respects tailLength', () => {

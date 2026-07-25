@@ -2,8 +2,6 @@
 import type { PropType } from 'vue'
 import type { RrgRenderPoint } from '../types/rrg'
 import type { RrgScale } from '../composables/useRrgScales'
-import { patternElementId } from '../utils/patterns'
-import RrgPointPatterns from './RrgPointPatterns.vue'
 
 defineProps({
   currentPoints: {
@@ -15,7 +13,7 @@ defineProps({
   pointRadius: { type: Number, default: 5.5 },
   hitRadius: { type: Number, default: 12 },
   hoveredTicker: { type: String as PropType<string | null>, default: null },
-  showPatterns: { type: Boolean, default: false },
+  selectedTicker: { type: String as PropType<string | null>, default: null },
 })
 
 defineEmits<{
@@ -31,10 +29,6 @@ function ariaLabel(point: RrgRenderPoint): string {
 
 <template>
   <g class="rrg-points" data-testid="rrg-points">
-    <RrgPointPatterns
-      v-if="showPatterns"
-      :tickers="currentPoints.map((p) => p.ticker)"
-    />
     <g
       v-for="point in currentPoints"
       :key="point.ticker"
@@ -44,6 +38,7 @@ function ariaLabel(point: RrgRenderPoint): string {
       :data-x="point.x"
       :data-y="point.y"
       :data-quadrant="point.quadrant"
+      :data-selected="selectedTicker === point.ticker ? 'true' : undefined"
       :opacity="hoveredTicker && point.ticker !== hoveredTicker ? 0.25 : 1"
     >
       <circle
@@ -64,6 +59,18 @@ function ariaLabel(point: RrgRenderPoint): string {
         @keydown.enter.prevent="$emit('pointClick', point)"
       />
       <circle
+        v-if="selectedTicker === point.ticker"
+        class="rrg-point-selected"
+        :cx="xScale(point.x)"
+        :cy="yScale(point.y)"
+        :r="pointRadius + 3.5"
+        fill="none"
+        stroke="var(--rrg-label)"
+        stroke-width="1.5"
+        stroke-dasharray="3 2"
+        style="pointer-events: none"
+      />
+      <circle
         class="rrg-point"
         :cx="xScale(point.x)"
         :cy="yScale(point.y)"
@@ -71,16 +78,6 @@ function ariaLabel(point: RrgRenderPoint): string {
         :fill="point.color ?? '#4e79a7'"
         stroke="var(--rrg-point-stroke, #fff)"
         stroke-width="1.5"
-        style="pointer-events: none"
-      />
-      <circle
-        v-if="showPatterns"
-        class="rrg-point-pattern"
-        :cx="xScale(point.x)"
-        :cy="yScale(point.y)"
-        :r="pointRadius"
-        :fill="`url(#${patternElementId(point.ticker)})`"
-        stroke="none"
         style="pointer-events: none"
       />
     </g>

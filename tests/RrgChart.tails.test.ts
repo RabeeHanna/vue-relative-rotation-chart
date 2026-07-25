@@ -30,5 +30,28 @@ describe('RrgChart tails', () => {
     expect(wrapper.get('[data-testid="rrg-tail-XLK"]').exists()).toBe(true)
     expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('line').length).toBe(2)
     expect(wrapper.get('[data-testid="rrg-point-XLK"]').exists()).toBe(true)
+    expect(wrapper.get('[data-testid="rrg-chart"]').attributes('data-show-tail-fade')).toBe(
+      'false',
+    )
+  })
+
+  it('applies segment opacity gradient when showTailFade is true', () => {
+    const wrapper = mount(RrgChart, {
+      props: {
+        series,
+        selectedDate: '2024-03-01',
+        showTailFade: true,
+        width: 640,
+        height: 480,
+      },
+    })
+
+    const lines = wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('line')
+    const o0 = Number(lines[0].attributes('stroke-opacity'))
+    const o1 = Number(lines[1].attributes('stroke-opacity'))
+    expect(o0).toBeLessThan(o1)
+    expect(wrapper.get('[data-testid="rrg-chart"]').attributes('data-show-tail-fade')).toBe(
+      'true',
+    )
   })
 })

@@ -1,4 +1,5 @@
 import type { RrgQuadrant, RrgRenderSeries } from '../src/types/rrg'
+import { weeklyDates } from './longPlayback'
 
 export type GenerateSeriesOptions = {
   tickerCount: number
@@ -23,17 +24,12 @@ function quadrant(x: number, y: number): RrgQuadrant {
   return 'improving'
 }
 
-function dateAt(index: number): string {
-  const day = String((index % 28) + 1).padStart(2, '0')
-  const month = String(Math.floor(index / 28) + 1).padStart(2, '0')
-  return `2024-${month}-${day}`
-}
-
 /** Seeded random-walk RRG series for Advanced generator. */
 export function generateSeries(options: GenerateSeriesOptions): RrgRenderSeries[] {
   const tickerCount = Math.max(1, Math.min(100, Math.floor(options.tickerCount)))
-  const pointsPerTicker = Math.max(1, Math.min(60, Math.floor(options.pointsPerTicker)))
+  const pointsPerTicker = Math.max(1, Math.min(500, Math.floor(options.pointsPerTicker)))
   const rand = mulberry32(options.seed >>> 0)
+  const dates = weeklyDates(pointsPerTicker)
 
   return Array.from({ length: tickerCount }, (_, t) => {
     let x = 90 + rand() * 20
@@ -43,7 +39,7 @@ export function generateSeries(options: GenerateSeriesOptions): RrgRenderSeries[
         x += (rand() - 0.5) * 2.5
         y += (rand() - 0.5) * 2.5
       }
-      return { date: dateAt(i), x, y, quadrant: quadrant(x, y) }
+      return { date: dates[i], x, y, quadrant: quadrant(x, y) }
     })
     const ticker = `G${String(t).padStart(2, '0')}`
     return { ticker, label: ticker, name: `Generated ${ticker}`, points }

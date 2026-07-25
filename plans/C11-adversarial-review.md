@@ -99,7 +99,7 @@ The component must meet **all** of these before integration:
 3. Tail direction: opacity fade oldest→newest reads as motion toward the head.
 4. Clustered labels: dense mock shows separated Spatial Bin placements (no fused AABBs in unit tests).
 5. Outliers: Fit-All keeps OUT on-chart; `center`/`max` behave as documented (screenshots 05–07).
-6. Colorblind: ticker always in tooltip; hover reveals labels; `showPatterns` available (C9).
+6. Colorblind: ticker always in tooltip; hover reveals labels; prefer `tickerLabelAlwaysVisible` (`showPatterns` deprecated).
 7. Hover: fades non-hovered series and shows tooltip — clarifies focus (screenshot 09).
 8. `labelMode=hover`: tooltip + focusable points remain sufficient to identify tickers.
 9. Visual tone: plain report chart (light grid, muted quadrant labels) — not decorative dashboard.

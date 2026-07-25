@@ -20,10 +20,14 @@ export function demoChartProps(input: {
   tailLength: number
   showPatterns: boolean
   tickerLabelAlwaysVisible: boolean
+  showTailFade: boolean
   showQuadrantLabels: boolean
   showGrid: boolean
   showAxes: boolean
   highlightedTicker: string
+  selectedTicker: string
+  pointRadius: number
+  hitRadius: number
   size: ChartSizePreset
 }) {
   const { width, height } = CHART_SIZE_PX[input.size]
@@ -35,11 +39,38 @@ export function demoChartProps(input: {
     tailLength: input.tailLength,
     showPatterns: input.showPatterns,
     tickerLabelAlwaysVisible: input.tickerLabelAlwaysVisible,
+    showTailFade: input.showTailFade,
     showQuadrantLabels: input.showQuadrantLabels,
     showGrid: input.showGrid,
     showAxes: input.showAxes,
     highlightedTicker: input.highlightedTicker || null,
+    selectedTicker: input.selectedTicker || null,
+    pointRadius: input.pointRadius,
+    hitRadius: input.hitRadius,
     width,
     height,
   }
+}
+
+export function demoChartPropsFromControls(
+  controls: {
+    labelMode: RrgLabelMode
+    tailLength: number
+    showPatterns: boolean
+    tickerLabelAlwaysVisible: boolean
+    showTailFade: boolean
+    showQuadrantLabels: boolean
+    showGrid: boolean
+    showAxes: boolean
+    highlightedTicker: string
+    selectedTicker: string
+    pointRadius: number
+    hitRadius: number
+    size: ChartSizePreset
+  },
+  series: RrgRenderSeries[],
+  selectedDate: string,
+  viewportMode: RrgViewportMode,
+) {
+  return demoChartProps({ ...controls, series, selectedDate, viewportMode })
 }

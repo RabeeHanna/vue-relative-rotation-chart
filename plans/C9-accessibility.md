@@ -95,11 +95,14 @@ Perform manual colorblind simulation tests using Chrome DevTools:
 - In `hover` label mode: hovering always shows the label
 - `tickerLabelAlwaysVisible=true` forces all labels visible (overrides `labelMode` / collision hide)
 
-**`showPatterns` prop:**
-- When `showPatterns = true`, render a distinct SVG fill pattern on each point in addition to its color
-- Pattern types: `hatch-0°`, `hatch-45°`, `hatch-90°`, `dots`, `cross`
-- Patterns cycle through assigned tickers (same deterministic order as color assignment)
-- Implementation: SVG `<defs>` with `<pattern>` elements, referenced via `fill="url(#pattern-{ticker})"`
+**`showPatterns` prop (deprecated):**
+- Originally: SVG hatch/dot fills per ticker
+- **Deprecated:** fills use chart-space tiling and appear to move under animating points; poor at ~5px radius
+- Prop remains accepted (data attribute only); **no pattern rendering**
+- Prefer `tickerLabelAlwaysVisible` for monochrome / colorblind demos
+
+**`tickerLabelAlwaysVisible` prop:**
+- Primary non-color identity strategy alongside tooltip ticker text
 - Prop is part of the C2 public contract; rendering lands in this unit (C9)
 
 ---
@@ -191,11 +194,11 @@ tests/
 - [x] **COLORBLIND Test 4:** Hover on hidden-label point reveals ticker in tooltip
 - [x] Tooltip always includes ticker symbol in all interaction states
 - [x] `tickerLabelAlwaysVisible` overrides collision hide when true
-- [x] `showPatterns` renders deterministic SVG `<pattern>` fills when true
+- [x] `showPatterns` deprecated — prop accepted, no hatch rendering (labels-first a11y)
 - [x] Points are focusable via Tab key and announce themselves to screen readers
 - [x] Playwright smoke tests pass (`tests/e2e/chart.spec.ts`)
 - [x] `npm run typecheck` passes
 
 ### Colorblind verification notes (C9)
 
-Identity is never color-only: tooltip always includes ticker; hover reveals labels; `showPatterns` / `tickerLabelAlwaysVisible` opt-in for monochrome. Automated coverage: `tests/accessibility.test.ts`, `tests/e2e/chart.spec.ts`. Manual DevTools vision filters remain recommended for visual QA.
+Identity is never color-only: tooltip always includes ticker; hover reveals labels; `tickerLabelAlwaysVisible` for monochrome. `showPatterns` is deprecated (no rendering). Automated coverage: `tests/accessibility.test.ts`, `tests/e2e/chart.spec.ts`. Manual DevTools vision filters remain recommended for visual QA.

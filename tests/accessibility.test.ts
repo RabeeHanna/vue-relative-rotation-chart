@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import RrgChart from '../src/components/RrgChart.vue'
-import { patternElementId, patternKindForIndex } from '../src/utils/patterns'
 
 const series = [
   {
@@ -73,7 +72,7 @@ describe('accessibility and test hooks', () => {
     expect(wrapper.get('[data-testid="rrg-point-XLK"]').attributes('data-x')).toBe('104')
   })
 
-  it('renders deterministic pattern fills when showPatterns is true', () => {
+  it('ignores deprecated showPatterns (no swimming hatch fills)', () => {
     const wrapper = mount(RrgChart, {
       props: {
         series,
@@ -84,11 +83,11 @@ describe('accessibility and test hooks', () => {
       },
     })
 
-    expect(wrapper.get('[data-testid="rrg-patterns"]').exists()).toBe(true)
-    expect(wrapper.get(`#${patternElementId('XLK')}`).attributes('data-pattern-kind')).toBe(
-      patternKindForIndex(0),
+    expect(wrapper.get('[data-testid="rrg-chart"]').attributes('data-show-patterns')).toBe(
+      'true',
     )
-    expect(wrapper.find('.rrg-point-pattern').exists()).toBe(true)
+    expect(wrapper.find('[data-testid="rrg-patterns"]').exists()).toBe(false)
+    expect(wrapper.find('.rrg-point-pattern').exists()).toBe(false)
   })
 
   it('makes points focusable and includes ticker in tooltip', async () => {

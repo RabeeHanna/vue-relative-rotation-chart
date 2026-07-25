@@ -87,16 +87,20 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
         Accessible summary {{ state.showSummary ? '▾' : '▸' }}
       </button>
       <label class="check">
-        <input v-model="state.showPatterns" type="checkbox" data-testid="demo-show-patterns" />
-        Patterns
-      </label>
-      <label class="check">
         <input
           v-model="state.tickerLabelAlwaysVisible"
           type="checkbox"
           data-testid="demo-labels-always"
         />
         Always labels
+      </label>
+      <label class="check">
+        <input v-model="state.showTailFade" type="checkbox" data-testid="demo-tail-fade" />
+        Tail fade
+      </label>
+      <label class="check">
+        <input v-model="state.playbackLoop" type="checkbox" data-testid="demo-playback-loop" />
+        Loop playback
       </label>
     </div>
 

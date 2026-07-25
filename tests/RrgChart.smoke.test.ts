@@ -21,4 +21,16 @@ describe('RrgChart smoke', () => {
     expect(wrapper.get('[data-testid="rrg-chart"]').exists()).toBe(true)
     expect(wrapper.get('[data-testid="rrg-svg-root"]').exists()).toBe(true)
   })
+
+  it('applies dark theme class for CSS variable overrides', () => {
+    const wrapper = mount(RrgChart, {
+      props: {
+        series,
+        selectedDate: '2024-03-01',
+      },
+      attrs: { class: 'dark' },
+    })
+    expect(wrapper.get('[data-testid="rrg-chart"]').classes()).toContain('dark')
+    expect(wrapper.get('.rrg-bg').attributes('fill')).toContain('--rrg-bg')
+  })
 })

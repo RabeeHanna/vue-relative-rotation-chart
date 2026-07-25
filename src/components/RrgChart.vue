@@ -16,6 +16,7 @@ import RrgPoints from './RrgPoints.vue'
 import RrgLabels from './RrgLabels.vue'
 import RrgTails from './RrgTails.vue'
 import RrgTooltip from './RrgTooltip.vue'
+import './RrgChart.css'
 
 const props = withDefaults(defineProps<RrgChartProps>(), {
   tailLength: RRG_CHART_DEFAULTS.tailLength,
@@ -26,6 +27,9 @@ const props = withDefaults(defineProps<RrgChartProps>(), {
   showAxes: RRG_CHART_DEFAULTS.showAxes,
   showPatterns: RRG_CHART_DEFAULTS.showPatterns,
   tickerLabelAlwaysVisible: RRG_CHART_DEFAULTS.tickerLabelAlwaysVisible,
+  showTailFade: RRG_CHART_DEFAULTS.showTailFade,
+  pointRadius: RRG_CHART_DEFAULTS.pointRadius,
+  hitRadius: RRG_CHART_DEFAULTS.hitRadius,
   highlightedTicker: null,
   selectedTicker: null,
 })
@@ -41,6 +45,7 @@ const seriesRef = coloredSeries
 const selectedDateRef = toRef(props, 'selectedDate')
 const tailLengthRef = toRef(props, 'tailLength')
 const viewportModeRef = toRef(props, 'viewportMode')
+const showTailFadeRef = toRef(props, 'showTailFade')
 const domain = useRrgViewport(seriesRef, selectedDateRef, tailLengthRef, viewportModeRef)
 const plotWidth = computed(() => {
   const w = props.width ?? 640
@@ -58,6 +63,7 @@ const { currentPoints, tailData } = useRrgTailSlices(
   tailLengthRef,
   xScale,
   yScale,
+  showTailFadeRef,
 )
 
 const { hoveredTicker, hoveredPoint, onPointEnter, onPointLeave, onPointClick } =
@@ -117,6 +123,7 @@ const resolvedLabels = useRrgLabelLayout(
     :data-selected-date="selectedDate"
     :data-show-patterns="showPatterns ? 'true' : 'false'"
     :data-ticker-label-always-visible="tickerLabelAlwaysVisible ? 'true' : 'false'"
+    :data-show-tail-fade="showTailFade ? 'true' : 'false'"
     :data-hovered-ticker="effectiveHoveredTicker ?? undefined"
     @pointerleave="handleChartLeave"
   >
@@ -143,7 +150,9 @@ const resolvedLabels = useRrgLabelLayout(
         :x-scale="xScale"
         :y-scale="yScale"
         :hovered-ticker="effectiveHoveredTicker"
-        :show-patterns="showPatterns"
+        :selected-ticker="selectedTicker"
+        :point-radius="pointRadius"
+        :hit-radius="hitRadius"
         @point-enter="handlePointEnter"
         @point-leave="handlePointLeave"
         @point-click="handlePointClick"
@@ -159,35 +168,3 @@ const resolvedLabels = useRrgLabelLayout(
     </RrgSvgRoot>
   </div>
 </template>
-
-<style>
-.rrg-chart {
-  --rrg-bg: #ffffff;
-  --rrg-grid: rgba(0, 0, 0, 0.08);
-  --rrg-axis: rgba(0, 0, 0, 0.3);
-  --rrg-center-line: rgba(0, 0, 0, 0.25);
-  --rrg-axis-label: rgba(0, 0, 0, 0.5);
-  --rrg-quadrant-label: rgba(0, 0, 0, 0.15);
-  --rrg-label: #222;
-  --rrg-muted-label: #888;
-  --rrg-point-stroke: #fff;
-  --rrg-tooltip-bg: rgba(255, 255, 255, 0.95);
-  width: 100%;
-  color: var(--rrg-label);
-  font-family: ui-sans-serif, system-ui, sans-serif;
-}
-
-.rrg-chart.dark,
-.dark .rrg-chart {
-  --rrg-bg: #1a1a2e;
-  --rrg-grid: rgba(255, 255, 255, 0.08);
-  --rrg-axis: rgba(255, 255, 255, 0.3);
-  --rrg-center-line: rgba(255, 255, 255, 0.25);
-  --rrg-axis-label: rgba(255, 255, 255, 0.5);
-  --rrg-quadrant-label: rgba(255, 255, 255, 0.12);
-  --rrg-label: #eee;
-  --rrg-muted-label: #aaa;
-  --rrg-point-stroke: #1a1a2e;
-  --rrg-tooltip-bg: rgba(20, 20, 30, 0.95);
-}
-</style>

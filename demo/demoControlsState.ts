@@ -11,6 +11,8 @@ export type DemoControlsState = {
   theme: 'light' | 'dark'
   showPatterns: boolean
   tickerLabelAlwaysVisible: boolean
+  showTailFade: boolean
+  playbackLoop: boolean
   size: ChartSizePreset
   compare: boolean
   viewportLeft: RrgViewportMode
@@ -21,6 +23,15 @@ export type DemoControlsState = {
   showAxes: boolean
   embedWidth: EmbedWidth
   highlightedTicker: string
+  selectedTicker: string
+  minSpeed: number
+  maxSpeed: number
+  pointRadius: number
+  hitRadius: number
+  speedMode: 'interval' | 'skip'
+  cssBg: string
+  cssLabel: string
+  cssGrid: string
   jsonText: string
   jsonError: string
   genTickers: number

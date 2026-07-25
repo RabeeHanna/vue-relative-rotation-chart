@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { RrgViewportMode } from '../src/types/rrg'
 import type { DemoControlsState } from './demoControlsState'
+import DemoPowerUser from './DemoPowerUser.vue'
 
 const state = defineModel<DemoControlsState>({ required: true })
 
@@ -33,7 +34,7 @@ const embeds: Array<320 | 480 | 720> = [320, 480, 720]
     <div class="adv-block">
       <h3>Generate</h3>
       <label>Tickers <input v-model.number="state.genTickers" type="number" min="1" max="100" /></label>
-      <label>Points <input v-model.number="state.genPoints" type="number" min="1" max="60" /></label>
+      <label>Points <input v-model.number="state.genPoints" type="number" min="1" max="500" /></label>
       <label>Seed <input v-model.number="state.genSeed" type="number" data-testid="demo-gen-seed" /></label>
       <button type="button" data-testid="demo-generate" @click="emit('generate')">Generate</button>
       <button
@@ -81,5 +82,7 @@ const embeds: Array<320 | 480 | 720> = [320, 480, 720]
         <input v-model="state.highlightedTicker" type="text" data-testid="demo-highlight" />
       </label>
     </div>
+
+    <DemoPowerUser v-model="state" />
   </details>
 </template>

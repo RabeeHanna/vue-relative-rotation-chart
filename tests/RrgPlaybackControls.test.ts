@@ -5,7 +5,10 @@ import RrgPlaybackControls from '../src/components/RrgPlaybackControls.vue'
 import {
   clampSpeed,
   nextFrameIndex,
+  playbackFrameStep,
+  playbackTickRate,
   prevFrameIndex,
+  skipFrameIndex,
   snapDateIndex,
 } from '../src/utils/playback'
 
@@ -21,9 +24,18 @@ describe('playback utils', () => {
   })
 
   it('clamps speed to range', () => {
-    expect(clampSpeed(0.1, 0.5, 8)).toBe(0.5)
-    expect(clampSpeed(99, 0.5, 8)).toBe(8)
-    expect(clampSpeed(2, 0.5, 8)).toBe(2)
+    expect(clampSpeed(0.1, 0.5, 5)).toBe(0.5)
+    expect(clampSpeed(99, 0.5, 5)).toBe(5)
+    expect(clampSpeed(2, 0.5, 5)).toBe(2)
+  })
+
+  it('maps speedMode to tick rate and frame step', () => {
+    expect(playbackTickRate(5, 'interval')).toBe(5)
+    expect(playbackFrameStep(5, 'interval')).toBe(1)
+    expect(playbackTickRate(5, 'skip')).toBe(1)
+    expect(playbackFrameStep(5, 'skip')).toBe(5)
+    expect(skipFrameIndex(0, 10, false, 3)).toBe(3)
+    expect(skipFrameIndex(8, 10, false, 5)).toBe(9)
   })
 
   it('snaps out-of-range dates to nearest', () => {
@@ -68,6 +80,17 @@ describe('RrgPlaybackControls', () => {
     expect(wrapper.get('[data-testid="rrg-playback-toggle"]').attributes('aria-label')).toBe(
       'Play',
     )
+  })
+
+  it('accepts dark class for package theme styling', () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-12',
+      },
+      attrs: { class: 'dark' },
+    })
+    expect(wrapper.get('[data-testid="rrg-playback"]').classes()).toContain('dark')
   })
 
   it('emits controlled updates for step, scrub, and speed', async () => {

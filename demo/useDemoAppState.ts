@@ -1,29 +1,23 @@
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import type { RrgRenderPoint, RrgRenderSeries } from '../src/types/rrg'
 import { useRrgChartSummary } from '../src/composables/useRrgChartSummary'
 import { applyDemoJson, copyDemoText, generateDemoSeries } from './demoActions'
 import { buildCopySnippet } from './copySnippet'
-import { demoChartProps, demoCurrentPoints } from './demoChartProps'
-import { parseDemoUrl } from './demoUrl'
+import { demoChartPropsFromControls, demoCurrentPoints } from './demoChartProps'
 import type { DemoControlsState } from './demoControlsState'
+import {
+  mergeDemoControls,
+  mergeDemoPlayback,
+  readDemoSession,
+} from './demoSession'
+import { chartThemeStyle, syncThemeCssPickers } from './demoThemeCss'
 import { datesForSeries, scenarioById } from './scenarios'
-import { syncDemoUrl } from './syncDemoUrl'
+import { watchDemoSideEffects } from './watchDemoSideEffects'
 
 export function useDemoAppState(search = typeof window !== 'undefined' ? window.location.search : '') {
-  const initial = parseDemoUrl(search)
-  const meta = scenarioById[initial.scenario]
-  const controls = ref<DemoControlsState>({
-    ...initial,
-    jsonText: '',
-    jsonError: '',
-    genTickers: 20,
-    genPoints: 15,
-    genSeed: 42,
-    dataHint: '',
-    showSummary: false,
-    advancedOpen: false,
-    labelMode: initial.labelMode === 'auto' ? meta.suggestedLabelMode : initial.labelMode,
-  })
+  const saved = readDemoSession()
+  const controls = ref<DemoControlsState>(mergeDemoControls(saved?.controls, search))
+  Object.assign(controls.value, syncThemeCssPickers(controls.value.theme, controls.value))
 
   const overrideSeries = ref<RrgRenderSeries[] | null>(null)
   const series = computed(() =>
@@ -32,9 +26,17 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
       : (overrideSeries.value ?? scenarioById[controls.value.scenario].series),
   )
   const dates = computed(() => datesForSeries(series.value))
-  const selectedDate = ref(dates.value[dates.value.length - 1] ?? '')
+  const playback = mergeDemoPlayback(
+    saved?.playback,
+    dates.value[dates.value.length - 1] ?? '',
+  )
+  const selectedDate = ref(
+    dates.value.includes(playback.selectedDate)
+      ? playback.selectedDate
+      : (dates.value[dates.value.length - 1] ?? ''),
+  )
   const playing = ref(false)
-  const speed = ref(2)
+  const speed = ref(playback.speed)
   const hovered = ref<RrgRenderPoint | null>(null)
   const copyStatus = ref('')
 
@@ -43,6 +45,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
       ? { maxWidth: `${controls.value.embedWidth}px`, marginInline: 'auto' }
       : undefined,
   )
+  const themeStyle = computed(() => chartThemeStyle(controls.value.theme, controls.value))
   const dark = computed(() => controls.value.theme === 'dark')
   const dataNotInLink = computed(() => controls.value.source !== 'preset')
   const currentPoints = computed(() => demoCurrentPoints(series.value, selectedDate.value))
@@ -63,8 +66,8 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
         : controls.value.viewportMode,
       labelMode: controls.value.labelMode,
       tailLength: controls.value.tailLength,
-      showPatterns: controls.value.showPatterns,
       tickerLabelAlwaysVisible: controls.value.tickerLabelAlwaysVisible,
+      showTailFade: controls.value.showTailFade,
       showQuadrantLabels: controls.value.showQuadrantLabels,
       showGrid: controls.value.showGrid,
       showAxes: controls.value.showAxes,
@@ -72,47 +75,36 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
       source: controls.value.source,
       scenarioId: controls.value.scenario,
       includePlayback: true,
+      playbackLoop: controls.value.playbackLoop,
     }),
   )
 
-  function propsFor(mode: typeof controls.value.viewportMode) {
-    const c = controls.value
-    return demoChartProps({
-      series: series.value,
-      selectedDate: selectedDate.value,
-      labelMode: c.labelMode,
-      viewportMode: mode,
-      tailLength: c.tailLength,
-      showPatterns: c.showPatterns,
-      tickerLabelAlwaysVisible: c.tickerLabelAlwaysVisible,
-      showQuadrantLabels: c.showQuadrantLabels,
-      showGrid: c.showGrid,
-      showAxes: c.showAxes,
-      highlightedTicker: c.highlightedTicker,
-      size: c.size,
-    })
-  }
-
-  const singleProps = computed(() => propsFor(controls.value.viewportMode))
-  const leftProps = computed(() => propsFor(controls.value.viewportLeft))
-  const rightProps = computed(() => propsFor(controls.value.viewportRight))
-
-  watch(dates, (next) => {
-    if (!next.includes(selectedDate.value)) {
-      selectedDate.value = next[next.length - 1] ?? ''
-    }
-  })
-  watch(
-    () => controls.value.scenario,
-    (id) => {
-      controls.value.source = 'preset'
-      overrideSeries.value = null
-      const m = scenarioById[id]
-      controls.value.viewportMode = m.suggestedViewport
-      controls.value.labelMode = m.suggestedLabelMode
-    },
+  const singleProps = computed(() =>
+    demoChartPropsFromControls(
+      controls.value,
+      series.value,
+      selectedDate.value,
+      controls.value.viewportMode,
+    ),
   )
-  watch(controls, () => syncDemoUrl(controls.value), { deep: true })
+  const leftProps = computed(() =>
+    demoChartPropsFromControls(
+      controls.value,
+      series.value,
+      selectedDate.value,
+      controls.value.viewportLeft,
+    ),
+  )
+  const rightProps = computed(() =>
+    demoChartPropsFromControls(
+      controls.value,
+      series.value,
+      selectedDate.value,
+      controls.value.viewportRight,
+    ),
+  )
+
+  watchDemoSideEffects({ controls, dates, selectedDate, speed, overrideSeries })
 
   return {
     controls,
@@ -124,6 +116,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
     hovered,
     copyStatus,
     hostStyle,
+    themeStyle,
     dark,
     dataNotInLink,
     summaryTitle,

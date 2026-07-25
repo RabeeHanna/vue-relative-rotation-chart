@@ -2,8 +2,8 @@
 
 **Phase:** Packaging / Trust  
 **Estimate:** 1–2 days  
-**Depends on:** C13 demo playground implemented (or at least scenario fixtures stable)  
-**Suggested schedule:** After C13 implementation; before first public npm release  
+**Depends on:** C13 (+ C13.5 session persistence recommended)  
+**Suggested schedule:** After C13 / C13.5; before first public npm release; **before** [C15](./C15-tail-hover.md)  
 **Priority:** Standard for public launch; **not** required for Sector Orbit file: linking  
 **Status:** Planned (checklist stub)
 
@@ -98,5 +98,6 @@ Decide after C13 + C14: polished playground alone may be enough for first public
 
 ## Cross-refs
 
+- Packaging order: [C14](./C14-public-release.md) → [C15](./C15-tail-hover.md) → [C10](./C10-sector-orbit-integration.md) (deferred)  
 - Demo copy-as-code / fixtures: [C13](./C13-demo-playground.md)  
 - Overview order: [00-overview](./00-overview.md)  

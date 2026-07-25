@@ -1,10 +1,13 @@
-import { computed, toRef, watch, type Ref } from 'vue'
+import { computed, toRef, watch } from 'vue'
 import type { RrgPlaybackControlsProps } from '../types/rrg'
 import { useRrgPlayback } from './useRrgPlayback'
 import {
   clampSpeed,
   nextFrameIndex,
+  playbackFrameStep,
+  playbackTickRate,
   prevFrameIndex,
+  skipFrameIndex,
   snapDateIndex,
 } from '../utils/playback'
 
@@ -17,31 +20,13 @@ export type PlaybackControlsEmit = {
 type ResolvedProps = Required<
   Pick<
     RrgPlaybackControlsProps,
-    'dates' | 'selectedDate' | 'playing' | 'speed' | 'minSpeed' | 'maxSpeed' | 'loop'
+    'dates' | 'selectedDate' | 'playing' | 'speed' | 'minSpeed' | 'maxSpeed' | 'loop' | 'speedMode'
   >
 >
 
 /** Controlled playback frame/transport state + rAF advancement. */
-export function useRrgPlaybackControls(
-  props: ResolvedProps,
-  emit: PlaybackControlsEmit,
-): {
-  frameIndex: Ref<number>
-  frameCount: Ref<number>
-  canInteract: Ref<boolean>
-  atEnd: Ref<boolean>
-  stepBackDisabled: Ref<boolean>
-  stepForwardDisabled: Ref<boolean>
-  clampedSpeed: Ref<number>
-  speedLabel: Ref<string>
-  displayDate: Ref<string>
-  frameLabel: Ref<string>
-  togglePlaying: () => void
-  stepBy: (delta: -1 | 1) => void
-  goToIndex: (index: number) => void
-  onScrubInput: (event: Event) => void
-  nudgeSpeed: (delta: number) => void
-} {  const frameIndex = computed(() => snapDateIndex(props.dates, props.selectedDate))
+export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackControlsEmit) {
+  const frameIndex = computed(() => snapDateIndex(props.dates, props.selectedDate))
   const frameCount = computed(() => props.dates.length)
   const canInteract = computed(() => frameCount.value > 1)
   const atStart = computed(() => frameIndex.value <= 0)
@@ -64,6 +49,10 @@ export function useRrgPlaybackControls(
       ? 'Frame —'
       : `Frame ${Math.max(frameIndex.value, 0) + 1} of ${frameCount.value}`,
   )
+
+  /** Interval mode: fps = speed. Skip mode: 1 tick/sec, jump round(speed) frames. */
+  const tickRate = computed(() => playbackTickRate(clampedSpeed.value, props.speedMode))
+  const frameStep = computed(() => playbackFrameStep(clampedSpeed.value, props.speedMode))
 
   watch(
     () => [props.dates, props.selectedDate] as const,
@@ -105,14 +94,17 @@ export function useRrgPlaybackControls(
   }
 
   function advanceFrame() {
-    const next = nextFrameIndex(frameIndex.value, frameCount.value, props.loop)
+    const next =
+      frameStep.value <= 1
+        ? nextFrameIndex(frameIndex.value, frameCount.value, props.loop)
+        : skipFrameIndex(frameIndex.value, frameCount.value, props.loop, frameStep.value)
     if (next == null) emit('update:playing', false)
     else goToIndex(next)
   }
 
   useRrgPlayback({
     playing: toRef(props, 'playing'),
-    speed: clampedSpeed,
+    speed: tickRate,
     onFrame: advanceFrame,
   })
 

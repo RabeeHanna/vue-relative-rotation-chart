@@ -8,8 +8,8 @@ export type CopySnippetInput = {
   viewportMode: RrgViewportMode
   labelMode: RrgLabelMode
   tailLength: number
-  showPatterns?: boolean
   tickerLabelAlwaysVisible?: boolean
+  showTailFade?: boolean
   showQuadrantLabels?: boolean
   showGrid?: boolean
   showAxes?: boolean
@@ -17,6 +17,7 @@ export type CopySnippetInput = {
   source: DemoDataSource
   scenarioId?: ScenarioId
   includePlayback?: boolean
+  playbackLoop?: boolean
 }
 
 /**
@@ -51,8 +52,8 @@ export function buildCopySnippet(input: CopySnippetInput): string {
     `  :tail-length="${input.tailLength}"`,
   ]
 
-  if (input.showPatterns) attrs.push('  :show-patterns="true"')
   if (input.tickerLabelAlwaysVisible) attrs.push('  :ticker-label-always-visible="true"')
+  if (input.showTailFade) attrs.push('  :show-tail-fade="true"')
   if (input.showQuadrantLabels === false) attrs.push('  :show-quadrant-labels="false"')
   if (input.showGrid === false) attrs.push('  :show-grid="false"')
   if (input.showAxes === false) attrs.push('  :show-axes="false"')
@@ -71,6 +72,7 @@ export function buildCopySnippet(input: CopySnippetInput): string {
     lines.push('  v-model:selected-date="selectedDate"')
     lines.push('  v-model:playing="playing"')
     lines.push('  v-model:speed="speed"')
+    if (input.playbackLoop) lines.push('  :loop="true"')
     lines.push('/>')
   }
 

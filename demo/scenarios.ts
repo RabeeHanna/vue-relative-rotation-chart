@@ -1,7 +1,21 @@
 import type { RrgLabelMode, RrgQuadrant, RrgRenderSeries, RrgViewportMode } from '../src/types/rrg'
 import { mockSeries as defaultSectorMock } from './mockSeries'
+import {
+  longPlayback50Mock,
+  longPlayback100Mock,
+  longPlayback200Mock,
+  longPlayback500Mock,
+} from './longPlayback'
 
 export { mockSeries as defaultSectorMock, mockDates, mockSelectedDate } from './mockSeries'
+export {
+  longPlayback50Mock,
+  longPlayback100Mock,
+  longPlayback200Mock,
+  longPlayback500Mock,
+  makeLongPlaybackSeries,
+  LONG_PLAYBACK_LENGTHS,
+} from './longPlayback'
 
 type Point = { date: string; x: number; y: number; quadrant: RrgQuadrant }
 
@@ -158,26 +172,93 @@ export const longLabelMock: RrgRenderSeries[] = [
   ]),
 ]
 
-/** One ticker parked in each quadrant. */
+/** One ticker parked in each quadrant — longer trails for playback. */
 export const quadrantTourMock: RrgRenderSeries[] = [
-  trail('LEAD', 'LEAD', { x: 108, y: 108 }, [{ dx: 0.3, dy: -0.2 }, { dx: 0.2, dy: 0.1 }], 'Leading'),
-  trail('WEAK', 'WEAK', { x: 108, y: 92 }, [{ dx: 0.2, dy: -0.3 }, { dx: -0.1, dy: -0.2 }], 'Weakening'),
-  trail('LAGG', 'LAGG', { x: 92, y: 92 }, [{ dx: -0.3, dy: -0.1 }, { dx: -0.2, dy: 0.2 }], 'Lagging'),
-  trail('IMPR', 'IMPR', { x: 92, y: 108 }, [{ dx: -0.2, dy: 0.3 }, { dx: 0.2, dy: 0.1 }], 'Improving'),
+  trail(
+    'LEAD',
+    'LEAD',
+    { x: 106, y: 108 },
+    [
+      { dx: 0.4, dy: -0.3 },
+      { dx: 0.5, dy: -0.2 },
+      { dx: 0.3, dy: 0.1 },
+      { dx: 0.4, dy: -0.2 },
+      { dx: 0.2, dy: 0.2 },
+      { dx: 0.3, dy: -0.1 },
+      { dx: 0.2, dy: 0.1 },
+    ],
+    'Leading',
+  ),
+  trail(
+    'WEAK',
+    'WEAK',
+    { x: 108, y: 96 },
+    [
+      { dx: 0.3, dy: -0.4 },
+      { dx: 0.2, dy: -0.5 },
+      { dx: -0.1, dy: -0.3 },
+      { dx: 0.2, dy: -0.4 },
+      { dx: -0.2, dy: -0.2 },
+      { dx: 0.1, dy: -0.3 },
+      { dx: -0.1, dy: -0.2 },
+    ],
+    'Weakening',
+  ),
+  trail(
+    'LAGG',
+    'LAGG',
+    { x: 94, y: 94 },
+    [
+      { dx: -0.4, dy: -0.2 },
+      { dx: -0.3, dy: 0.1 },
+      { dx: -0.4, dy: -0.2 },
+      { dx: -0.2, dy: 0.3 },
+      { dx: -0.3, dy: -0.1 },
+      { dx: -0.2, dy: 0.2 },
+      { dx: -0.1, dy: 0.1 },
+    ],
+    'Lagging',
+  ),
+  trail(
+    'IMPR',
+    'IMPR',
+    { x: 94, y: 106 },
+    [
+      { dx: -0.3, dy: 0.4 },
+      { dx: 0.2, dy: 0.3 },
+      { dx: -0.2, dy: 0.4 },
+      { dx: 0.3, dy: 0.2 },
+      { dx: -0.1, dy: 0.3 },
+      { dx: 0.2, dy: 0.2 },
+      { dx: 0.1, dy: 0.1 },
+    ],
+    'Improving',
+  ),
 ]
 
 /** Classic clockwise rotation through all four quadrants. */
 export const rotationCycleMock: RrgRenderSeries[] = [
-  trail('CYCLE', 'CYCLE', { x: 105, y: 105 }, [
-    { dx: 2, dy: -4 },
-    { dx: 1, dy: -4 },
-    { dx: -4, dy: -2 },
-    { dx: -4, dy: 1 },
-    { dx: -2, dy: 4 },
-    { dx: 1, dy: 4 },
-    { dx: 4, dy: 2 },
-    { dx: 3, dy: -1 },
-  ], 'Rotation cycle'),
+  trail(
+    'CYCLE',
+    'CYCLE',
+    { x: 105, y: 105 },
+    [
+      { dx: 1.5, dy: -2 },
+      { dx: 1.2, dy: -3 },
+      { dx: 0.5, dy: -3 },
+      { dx: -2, dy: -2 },
+      { dx: -3, dy: -1 },
+      { dx: -3, dy: 1.5 },
+      { dx: -2, dy: 3 },
+      { dx: -0.5, dy: 3 },
+      { dx: 2, dy: 2 },
+      { dx: 3, dy: 1 },
+      { dx: 2.5, dy: -1 },
+      { dx: 1.5, dy: -2 },
+      { dx: 0.8, dy: -1.5 },
+    ],
+    'Rotation cycle',
+  ),
 ]
 
 /** Single date — sparse frame; paste `[]` in BYO for fully empty. */
@@ -192,10 +273,64 @@ export const emptyOrSparseMock: RrgRenderSeries[] = [
 
 /** Two visible, two hidden via `visible: false`. */
 export const mixedVisibilityMock: RrgRenderSeries[] = [
-  trail('SHOW', 'SHOW', { x: 104, y: 103 }, [{ dx: 0.4, dy: 0.2 }, { dx: 0.3, dy: -0.1 }], 'Visible A'),
-  trail('HIDE', 'HIDE', { x: 96, y: 97 }, [{ dx: -0.3, dy: -0.2 }, { dx: -0.2, dy: 0.1 }], 'Hidden', false),
-  trail('SHOW2', 'SHOW2', { x: 102, y: 96 }, [{ dx: 0.2, dy: -0.3 }, { dx: 0.1, dy: -0.2 }], 'Visible B'),
-  trail('HIDE2', 'HIDE2', { x: 97, y: 104 }, [{ dx: -0.2, dy: 0.3 }, { dx: 0.1, dy: 0.2 }], 'Hidden B', false),
+  trail(
+    'SHOW',
+    'SHOW',
+    { x: 103, y: 104 },
+    [
+      { dx: 0.3, dy: 0.2 },
+      { dx: 0.4, dy: -0.1 },
+      { dx: 0.3, dy: 0.2 },
+      { dx: 0.2, dy: -0.2 },
+      { dx: 0.3, dy: 0.1 },
+      { dx: 0.2, dy: -0.1 },
+    ],
+    'Visible A',
+  ),
+  trail(
+    'HIDE',
+    'HIDE',
+    { x: 97, y: 97 },
+    [
+      { dx: -0.3, dy: -0.2 },
+      { dx: -0.2, dy: 0.1 },
+      { dx: -0.3, dy: -0.1 },
+      { dx: -0.2, dy: 0.2 },
+      { dx: -0.1, dy: -0.1 },
+      { dx: -0.2, dy: 0.1 },
+    ],
+    'Hidden',
+    false,
+  ),
+  trail(
+    'SHOW2',
+    'SHOW2',
+    { x: 103, y: 97 },
+    [
+      { dx: 0.2, dy: -0.3 },
+      { dx: 0.1, dy: -0.2 },
+      { dx: 0.3, dy: -0.2 },
+      { dx: 0.2, dy: -0.1 },
+      { dx: 0.1, dy: -0.2 },
+      { dx: 0.2, dy: -0.1 },
+    ],
+    'Visible B',
+  ),
+  trail(
+    'HIDE2',
+    'HIDE2',
+    { x: 97, y: 103 },
+    [
+      { dx: -0.2, dy: 0.3 },
+      { dx: 0.1, dy: 0.2 },
+      { dx: -0.2, dy: 0.2 },
+      { dx: -0.1, dy: 0.3 },
+      { dx: 0.1, dy: 0.2 },
+      { dx: -0.1, dy: 0.1 },
+    ],
+    'Hidden B',
+    false,
+  ),
 ]
 
 export type ScenarioId =
@@ -213,6 +348,14 @@ export type ScenarioId =
   | 'rotationCycle'
   | 'emptyOrSparse'
   | 'mixedVisibility'
+  | 'longPlayback50'
+  | 'longPlayback100'
+  | 'longPlayback200'
+  | 'longPlayback500'
+  | 'longPlayback50'
+  | 'longPlayback100'
+  | 'longPlayback200'
+  | 'longPlayback500'
 
 export type ScenarioMeta = {
   id: ScenarioId
@@ -228,8 +371,8 @@ export const scenarioCatalog: ScenarioMeta[] = [
   {
     id: 'default',
     displayName: 'Sector baseline',
-    intent: 'Everyday multi-ticker view',
-    check: 'Four sectors render with tails and readable labels',
+    intent: 'Everyday multi-ticker view with multi-week playback',
+    check: 'Six sectors rotate over 16 weeks — Play shows clear motion',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
     series: defaultSectorMock,
@@ -350,6 +493,42 @@ export const scenarioCatalog: ScenarioMeta[] = [
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
     series: mixedVisibilityMock,
+  },
+  {
+    id: 'longPlayback50',
+    displayName: 'Long playback 50',
+    intent: '8 tickers × 50 weeks — playback stress baseline',
+    check: 'Scrub/Play through 50 frames without throw',
+    suggestedViewport: 'fit',
+    suggestedLabelMode: 'hover',
+    series: longPlayback50Mock,
+  },
+  {
+    id: 'longPlayback100',
+    displayName: 'Long playback 100',
+    intent: '8 tickers × 100 weeks',
+    check: 'Playback remains usable; note any scrub lag',
+    suggestedViewport: 'fit',
+    suggestedLabelMode: 'hover',
+    series: longPlayback100Mock,
+  },
+  {
+    id: 'longPlayback200',
+    displayName: 'Long playback 200',
+    intent: '8 tickers × 200 weeks — optimization candidate',
+    check: 'Mount + one scrub step; document ceiling if laggy',
+    suggestedViewport: 'fit',
+    suggestedLabelMode: 'hover',
+    series: longPlayback200Mock,
+  },
+  {
+    id: 'longPlayback500',
+    displayName: 'Long playback 500',
+    intent: '8 tickers × 500 weeks — upper stress',
+    check: 'Mount + tail compute; expect future optimization',
+    suggestedViewport: 'fit',
+    suggestedLabelMode: 'hover',
+    series: longPlayback500Mock,
   },
 ]
 

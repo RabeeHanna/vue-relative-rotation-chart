@@ -8,6 +8,7 @@ defineProps<{
   singleProps: RrgChartProps
   dark: boolean
   hostStyle?: Record<string, string>
+  themeStyle?: Record<string, string>
 }>()
 
 const emit = defineEmits<{
@@ -21,6 +22,7 @@ const emit = defineEmits<{
     <div v-if="!compare" class="rrg-chart-wrap" :class="{ dark }">
       <RrgChart
         :class="{ dark }"
+        :style="themeStyle"
         v-bind="singleProps"
         @point-hover="emit('pointHover', $event)"
         @point-leave="emit('pointLeave')"
@@ -31,6 +33,7 @@ const emit = defineEmits<{
         <p class="pane-label">{{ leftProps.viewportMode }}</p>
         <RrgChart
           :class="{ dark }"
+          :style="themeStyle"
           v-bind="leftProps"
           @point-hover="emit('pointHover', $event)"
           @point-leave="emit('pointLeave')"
@@ -40,6 +43,7 @@ const emit = defineEmits<{
         <p class="pane-label">{{ rightProps.viewportMode }}</p>
         <RrgChart
           :class="{ dark }"
+          :style="themeStyle"
           v-bind="rightProps"
           @point-hover="emit('pointHover', $event)"
           @point-leave="emit('pointLeave')"

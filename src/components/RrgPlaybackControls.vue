@@ -12,6 +12,7 @@ const props = withDefaults(defineProps<RrgPlaybackControlsProps>(), {
   minSpeed: RRG_PLAYBACK_DEFAULTS.minSpeed,
   maxSpeed: RRG_PLAYBACK_DEFAULTS.maxSpeed,
   loop: RRG_PLAYBACK_DEFAULTS.loop,
+  speedMode: RRG_PLAYBACK_DEFAULTS.speedMode,
 })
 
 const emit = defineEmits<{
@@ -77,6 +78,7 @@ function onKeydown(event: KeyboardEvent) {
     aria-label="Playback controls. Space play pause, arrows step, Home End jump."
     :data-playing="playing ? 'true' : 'false'"
     :data-speed="String(clampedSpeed)"
+    :data-speed-mode="speedMode"
     :data-loop="loop ? 'true' : 'false'"
     :data-frame-index="frameIndex >= 0 ? String(frameIndex) : undefined"
     @keydown="onKeydown"

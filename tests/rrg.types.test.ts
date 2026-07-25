@@ -40,6 +40,7 @@ describe('public type contract', () => {
     expectTypeOf<RrgChartInput>().toHaveProperty('selectedDate')
     expectTypeOf<RrgChartProps>().toHaveProperty('showPatterns')
     expectTypeOf<RrgChartProps>().toHaveProperty('tickerLabelAlwaysVisible')
+    expectTypeOf<RrgChartProps>().toHaveProperty('showTailFade')
     expectTypeOf<RrgChartEmits>().toHaveProperty('pointHover')
     expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('dates')
     expectTypeOf<RrgPlaybackControlsEmits>().toHaveProperty('update:selectedDate')
@@ -58,6 +59,9 @@ describe('public type contract', () => {
     expect(RRG_CHART_DEFAULTS.labelMode).toBe('auto')
     expect(RRG_CHART_DEFAULTS.showPatterns).toBe(false)
     expect(RRG_CHART_DEFAULTS.tickerLabelAlwaysVisible).toBe(false)
+    expect(RRG_CHART_DEFAULTS.showTailFade).toBe(false)
+    expect(RRG_CHART_DEFAULTS.pointRadius).toBe(5.5)
+    expect(RRG_CHART_DEFAULTS.hitRadius).toBe(12)
   })
 })
 
@@ -75,6 +79,7 @@ describe('RrgChart props wiring', () => {
     expect(root.attributes('data-viewport-mode')).toBe('fit')
     expect(root.attributes('data-show-patterns')).toBe('false')
     expect(root.attributes('data-ticker-label-always-visible')).toBe('false')
+    expect(root.attributes('data-show-tail-fade')).toBe('false')
   })
 
   it('honors showPatterns and tickerLabelAlwaysVisible overrides', () => {

@@ -3,9 +3,9 @@
 **Phase:** Demo / Polish  
 **Estimate:** 2–3 days (implementation after this plan)  
 **Depends on:** C11 complete (scenarios exist); C9 (a11y summary available to preview)  
-**Related:** [C14 Public Release](./C14-public-release.md) follows implementation  
+**Related:** [C14 Public Release](./C14-public-release.md) follows; [C15 Tail Hover](./C15-tail-hover.md) after C14  
 **Priority:** Standard — makes the package demoable and adoptable without Sector Orbit  
-**Status:** Complete (implementation + unit tests)
+**Status:** Complete (implementation + unit tests; long-playback + Tier 4 follow-up)
 
 ---
 
@@ -76,13 +76,13 @@ Always references `series` as a variable. One shape for every data source:
 2. Viewport mode (`fit` \| `max` \| `center`)  
 3. Label mode (`auto` \| `always` \| `hover`)  
 4. Tail length  
-5. Theme (light / dark via `.rrg-chart.dark`)
+5. Theme (light / dark via `.rrg-chart.dark` / `.rrg-playback.dark` only — demo shell stays light)
 
 ### Tier 2 — polish / adoption / a11y
 
 6. Copy-as-code (primary props snippet — locked model above)  
 7. Accessible summary preview (live SVG `<title>` / `<desc>` text)  
-8. `showPatterns`  
+8. ~~`showPatterns`~~ (**deprecated** — removed from demo; prefer Always labels)  
 9. `tickerLabelAlwaysVisible`  
 10. Playback speed / loop / play (existing `RrgPlaybackControls`)  
 11. Selected date / frame (scrubber)  
@@ -98,12 +98,13 @@ Always references `series` as a variable. One shape for every data source:
 18. `highlightedTicker` (table-row sync simulation)  
 19. Hover readout chip (replace raw meta dump)
 
-### Tier 4 — defer
+### Tier 4 — power-user (shipped in C13 follow-up)
 
-20. CSS variable editors  
-21. Point / hit radius (not public props)  
+20. CSS variable editors (demo-local theme vars on chart host)  
+21. Point / hit radius (optional public props on `RrgChart`)  
 22. Playback `minSpeed` / `maxSpeed`  
-23. `selectedTicker` styling (prop exists; no distinct render yet)
+23. `selectedTicker` (minimal distinct ring styling + demo field)  
+24. Long-playback stress scenarios: 50 / 100 / 200 / 500 points per ticker
 
 ---
 
@@ -153,7 +154,7 @@ Each preset documents a one-line acceptance check in implementation notes / demo
 
 Persist Tier 1 + relevant Tier 2 / compare state:
 
-`scenario`, `viewportMode`, `labelMode`, `theme`, `tailLength`, `showPatterns`, `tickerLabelAlwaysVisible`, `size`, `compare`, `viewportLeft`, `viewportRight`, `source=preset|custom|generated`
+`scenario`, `viewportMode`, `labelMode`, `theme`, `tailLength`, `showPatterns` (compat only; deprecated), `tickerLabelAlwaysVisible`, `size`, `compare`, `viewportLeft`, `viewportRight`, `source=preset|custom|generated`
 
 - Custom / generated **data bodies are not** encoded in the URL  
 - When `source` is `custom` or `generated`, show: “Data not in link — re-paste or re-generate”  

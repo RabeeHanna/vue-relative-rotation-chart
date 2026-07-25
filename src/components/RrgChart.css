@@ -1,0 +1,29 @@
+.rrg-chart {
+  --rrg-bg: #ffffff;
+  --rrg-grid: rgba(0, 0, 0, 0.08);
+  --rrg-axis: rgba(0, 0, 0, 0.3);
+  --rrg-center-line: rgba(0, 0, 0, 0.25);
+  --rrg-axis-label: rgba(0, 0, 0, 0.5);
+  --rrg-quadrant-label: rgba(0, 0, 0, 0.15);
+  --rrg-label: #222;
+  --rrg-muted-label: #888;
+  --rrg-point-stroke: #fff;
+  --rrg-tooltip-bg: rgba(255, 255, 255, 0.95);
+  width: 100%;
+  color: var(--rrg-label);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.rrg-chart.dark,
+.dark .rrg-chart {
+  --rrg-bg: #1a1a2e;
+  --rrg-grid: rgba(255, 255, 255, 0.08);
+  --rrg-axis: rgba(255, 255, 255, 0.3);
+  --rrg-center-line: rgba(255, 255, 255, 0.25);
+  --rrg-axis-label: rgba(255, 255, 255, 0.5);
+  --rrg-quadrant-label: rgba(255, 255, 255, 0.12);
+  --rrg-label: #eee;
+  --rrg-muted-label: #aaa;
+  --rrg-point-stroke: #1a1a2e;
+  --rrg-tooltip-bg: rgba(20, 20, 30, 0.95);
+}

@@ -1,11 +1,8 @@
-:root {
-  --rrg-bg: #f7f7f5;
-  --rrg-grid: #d0d0cc;
-  --rrg-label: #222;
-  color-scheme: light;
-}
+/* Demo shell stays light — theme toggle only targets RrgChart / RrgPlaybackControls. */
 body {
   margin: 0;
+  color-scheme: light;
+  color: #222;
   font-family: Georgia, 'Times New Roman', serif;
   background:
     radial-gradient(circle at 20% 0%, #e8efe8 0%, transparent 40%),
@@ -16,10 +13,6 @@ body {
   max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1.25rem 3rem;
-}
-.demo.dark {
-  color: #eee;
-  color-scheme: dark;
 }
 header h1 {
   margin: 0 0 0.35rem;

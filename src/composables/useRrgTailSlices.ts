@@ -31,6 +31,7 @@ export function useRrgTailSlices(
   tailLength: MaybeComputed<number> = computed(() => 10),
   xScale?: MaybeComputed<RrgScale>,
   yScale?: MaybeComputed<RrgScale>,
+  showTailFade: MaybeComputed<boolean> = computed(() => false),
 ): {
   currentPoints: ComputedRef<RrgRenderPoint[]>
   tailData: ComputedRef<TailData[]>
@@ -58,6 +59,7 @@ export function useRrgTailSlices(
   const tailData = computed((): TailData[] => {
     if (!xScale || !yScale) return []
 
+    const fade = showTailFade.value
     const out: TailData[] = []
     for (const s of series.value) {
       if (s.visible === false) continue
@@ -75,8 +77,9 @@ export function useRrgTailSlices(
       const segments = tailPoints.slice(0, -1).map((point, i) => {
         const next = tailPoints[i + 1]
         const progress = i / denom
-        const opacity =
-          TAIL_OPACITY_MIN + progress * (TAIL_OPACITY_MAX - TAIL_OPACITY_MIN)
+        const opacity = fade
+          ? TAIL_OPACITY_MIN + progress * (TAIL_OPACITY_MAX - TAIL_OPACITY_MIN)
+          : TAIL_OPACITY_MAX
         return {
           x1: xScale.value(point.x),
           y1: yScale.value(point.y),

@@ -94,6 +94,6 @@ Tools: Chrome DevTools → Rendering → Emulate Vision Deficiencies; Firefox ac
 
 ## Notes
 
-- `showPatterns` is an enhancement — implement rendering in C9. Prop exists in the C2 type contract from day one.
+- **`showPatterns` deprecated (post-C13):** SVG `userSpaceOnUse` hatches “swim” as points move during playback and are illegible at small marker radii. Rendering removed; prop retained as a no-op for API compatibility. **Primary colorblind strategy:** `tickerLabelAlwaysVisible`, tooltip ticker text, and hover labels — identity must never rely on color alone.
 - Colorblind simulation testing does not require automated tooling in v1. Manual verification with browser DevTools is sufficient; unit tests still cover tooltip ticker presence and label-visibility override behavior.
-- Pattern system uses SVG `<pattern>` elements so exports stay correct.
+- If a future dual encoding is needed, prefer **shape markers** (circle / square / triangle / diamond) that move with the point — the approach used by Highcharts, Plotly, and Tableau — not fill patterns.

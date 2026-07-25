@@ -44,6 +44,7 @@
   height: 2rem;
   border: 1px solid rgba(0, 0, 0, 0.2);
   background: #fff;
+  color: inherit;
   cursor: pointer;
 }
 .rrg-playback__btn:disabled {
@@ -59,4 +60,29 @@
   text-align: center;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
+}
+
+.rrg-playback.dark,
+.dark .rrg-playback {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(26, 26, 46, 0.92);
+  color: #eee;
+}
+.rrg-playback.dark:focus-visible,
+.dark .rrg-playback:focus-visible {
+  box-shadow: 0 0 0 2px #eee;
+}
+.rrg-playback.dark .rrg-playback__scrubber,
+.dark .rrg-playback .rrg-playback__scrubber {
+  accent-color: #eee;
+}
+.rrg-playback.dark .rrg-playback__meta,
+.dark .rrg-playback .rrg-playback__meta {
+  color: #aaa;
+}
+.rrg-playback.dark .rrg-playback__btn,
+.dark .rrg-playback .rrg-playback__btn {
+  border-color: rgba(255, 255, 255, 0.28);
+  background: #22223a;
+  color: #eee;
 }

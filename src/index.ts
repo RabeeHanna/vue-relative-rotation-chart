@@ -10,6 +10,7 @@ export type {
   RrgChartEmits,
   RrgPlaybackControlsProps,
   RrgPlaybackControlsEmits,
+  RrgPlaybackSpeedMode,
   RrgQuadrant,
   RrgViewportMode,
   RrgLabelMode,

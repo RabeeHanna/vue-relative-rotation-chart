@@ -11,6 +11,8 @@ export function syncDemoUrl(controls: DemoControlsState): void {
     tailLength: controls.tailLength,
     showPatterns: controls.showPatterns,
     tickerLabelAlwaysVisible: controls.tickerLabelAlwaysVisible,
+    showTailFade: controls.showTailFade,
+    playbackLoop: controls.playbackLoop,
     size: controls.size,
     compare: controls.compare,
     viewportLeft: controls.viewportLeft,
@@ -21,6 +23,12 @@ export function syncDemoUrl(controls: DemoControlsState): void {
     showAxes: controls.showAxes,
     embedWidth: controls.embedWidth,
     highlightedTicker: controls.highlightedTicker,
+    selectedTicker: controls.selectedTicker,
+    minSpeed: controls.minSpeed,
+    maxSpeed: controls.maxSpeed,
+    pointRadius: controls.pointRadius,
+    hitRadius: controls.hitRadius,
+    speedMode: controls.speedMode,
   })
   history.replaceState(null, '', `${window.location.pathname}?${qs}`)
 }

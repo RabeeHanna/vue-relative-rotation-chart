@@ -104,16 +104,28 @@ export type RrgChartProps = {
   width?: number
   height?: number
 
+  /** Current-frame point radius in SVG px (default 5.5) */
+  pointRadius?: number
+  /** Invisible pointer hit radius in SVG px (default 12) */
+  hitRadius?: number
+
   /**
-   * When true, render hatch/stripe SVG patterns on points in addition to color.
-   * Default false. Rendering implemented in C9.
+   * @deprecated Hatch fill patterns swim under moving points (`userSpaceOnUse`) and are
+   * a poor fit for small RRG markers. Prefer `tickerLabelAlwaysVisible` / labels + tooltip.
+   * Prop retained for API compatibility; rendering is a no-op.
    */
   showPatterns?: boolean
   /**
    * When true, override labelMode / collision hide and always show all labels.
+   * Primary colorblind / monochrome identity strategy (see PRE-C1-C).
    * Default false.
    */
   tickerLabelAlwaysVisible?: boolean
+  /**
+   * When true, tail segments fade oldest → newest (opacity gradient).
+   * When false, all segments use a uniform strong opacity. Default false.
+   */
+  showTailFade?: boolean
 }
 
 export type RrgChartEmits = {
@@ -125,17 +137,25 @@ export type RrgChartEmits = {
 /**
  * Controlled timeline UI props (`RrgPlaybackControls`) — separate from chart rendering.
  */
+export type RrgPlaybackSpeedMode = 'interval' | 'skip'
+
 export type RrgPlaybackControlsProps = {
   /** Ordered ascending ISO date strings */
   dates: string[]
   /** Current frame; snapped to nearest when not in `dates` */
   selectedDate: string
   playing?: boolean
-  /** Frames per second */
+  /**
+   * Playback rate multiplier (shown as `Nx`).
+   * - `interval`: advance 1 frame every `1000/speed` ms (all dates visited).
+   * - `skip`: tick at 1 Hz and jump `round(speed)` frames (intermediate dates skipped).
+   */
   speed?: number
   minSpeed?: number
   maxSpeed?: number
   loop?: boolean
+  /** Default `interval`. */
+  speedMode?: RrgPlaybackSpeedMode
 }
 
 export type RrgPlaybackControlsEmits = {
@@ -164,6 +184,9 @@ export const RRG_CHART_DEFAULTS = {
   showAxes: true,
   showPatterns: false,
   tickerLabelAlwaysVisible: false,
+  showTailFade: false,
+  pointRadius: 5.5,
+  hitRadius: 12,
 } as const
 
 /** Defaults for `<RrgPlaybackControls />`. */
@@ -171,6 +194,7 @@ export const RRG_PLAYBACK_DEFAULTS = {
   playing: false,
   speed: 2,
   minSpeed: 0.5,
-  maxSpeed: 8,
+  maxSpeed: 5,
   loop: true,
+  speedMode: 'interval' as RrgPlaybackSpeedMode,
 } as const

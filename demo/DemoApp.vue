@@ -14,6 +14,7 @@ const {
   hovered,
   copyStatus,
   hostStyle,
+  themeStyle,
   dark,
   dataNotInLink,
   summaryTitle,
@@ -30,7 +31,7 @@ const {
 </script>
 
 <template>
-  <main class="demo" :class="{ dark }" data-testid="demo-app">
+  <main class="demo" data-testid="demo-app">
     <header>
       <h1>vue-relative-rotation-chart</h1>
       <p>Renderer only — data and calculations are supplied by the caller.</p>
@@ -54,6 +55,7 @@ const {
       :compare="controls.compare"
       :dark="dark"
       :host-style="hostStyle"
+      :theme-style="themeStyle"
       :single-props="singleProps"
       :left-props="leftProps"
       :right-props="rightProps"
@@ -62,10 +64,15 @@ const {
     />
 
     <RrgPlaybackControls
+      :class="{ dark }"
       :dates="dates"
       v-model:selected-date="selectedDate"
       v-model:playing="playing"
       v-model:speed="speed"
+      :loop="controls.playbackLoop"
+      :min-speed="controls.minSpeed"
+      :max-speed="controls.maxSpeed"
+      :speed-mode="controls.speedMode"
     />
 
     <p class="hover-chip" data-testid="demo-hover-chip">

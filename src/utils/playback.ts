@@ -1,10 +1,24 @@
-import { RRG_PLAYBACK_DEFAULTS } from '../types/rrg'
+import { RRG_PLAYBACK_DEFAULTS, type RrgPlaybackSpeedMode } from '../types/rrg'
 
 export { RRG_PLAYBACK_DEFAULTS }
 
 export function clampSpeed(speed: number, minSpeed: number, maxSpeed: number): number {
   if (!Number.isFinite(speed)) return minSpeed
   return Math.min(maxSpeed, Math.max(minSpeed, speed))
+}
+
+export function playbackTickRate(
+  speed: number,
+  speedMode: RrgPlaybackSpeedMode,
+): number {
+  return speedMode === 'skip' ? 1 : speed
+}
+
+export function playbackFrameStep(
+  speed: number,
+  speedMode: RrgPlaybackSpeedMode,
+): number {
+  return speedMode === 'skip' ? Math.max(1, Math.round(speed)) : 1
 }
 
 /** Exact index, or `-1` when missing. */
@@ -58,4 +72,20 @@ export function prevFrameIndex(
   if (length <= 0 || index < 0) return null
   if (index > 0) return index - 1
   return loop ? length - 1 : null
+}
+
+/** Next frame index after jumping `step` frames, or `null` when blocked. */
+export function skipFrameIndex(
+  index: number,
+  length: number,
+  loop: boolean,
+  step: number,
+): number | null {
+  if (length <= 0 || index < 0) return null
+  const s = Math.max(1, Math.floor(step))
+  if (!loop && index >= length - 1) return null
+  const next = index + s
+  if (next < length) return next
+  if (!loop) return index === length - 1 ? null : length - 1
+  return next % length
 }

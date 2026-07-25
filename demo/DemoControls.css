@@ -26,8 +26,9 @@ input[type='number'] {
   margin: 0;
   padding: 0.65rem 0.75rem;
   font-size: 0.75rem;
-  background: color-mix(in srgb, Canvas 88%, CanvasText 12%);
-  border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+  color: #222;
+  background: #f0efe9;
+  border: 1px solid rgba(0, 0, 0, 0.14);
   overflow: auto;
   white-space: pre-wrap;
 }
@@ -40,7 +41,7 @@ input[type='number'] {
   margin: 0.25rem 0;
 }
 .advanced {
-  border-top: 1px solid color-mix(in srgb, CanvasText 15%, transparent);
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
   padding-top: 0.5rem;
 }
 .adv-block {
