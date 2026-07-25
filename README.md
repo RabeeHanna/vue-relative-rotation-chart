@@ -16,15 +16,24 @@ Workspace / local link (Sector Orbit for now):
 }
 ```
 
-## Usage (placeholder — API finalized in C2)
+## Usage
 
 ```vue
 <script setup lang="ts">
 import { RrgChart } from 'vue-relative-rotation-chart'
+import type { RrgRenderSeries } from 'vue-relative-rotation-chart'
+
+const series: RrgRenderSeries[] = []
+const selectedDate = '2024-03-01'
 </script>
 
 <template>
-  <RrgChart />
+  <RrgChart
+    :series="series"
+    :selected-date="selectedDate"
+    :tail-length="10"
+    viewport-mode="fit"
+  />
 </template>
 ```
 

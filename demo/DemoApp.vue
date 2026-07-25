@@ -9,7 +9,7 @@ import { mockSelectedDate, mockSeries } from './mockSeries'
       <h1>vue-relative-rotation-chart</h1>
       <p>Renderer only — data and calculations are supplied by the caller.</p>
     </header>
-    <RrgChart />
+    <RrgChart :series="mockSeries" :selected-date="mockSelectedDate" />
     <pre class="meta">selectedDate={{ mockSelectedDate }} · series={{ mockSeries.length }}</pre>
   </main>
 </template>

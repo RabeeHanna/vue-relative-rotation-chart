@@ -217,11 +217,12 @@ Add JSDoc comments to the types file documenting:
 
 ## Acceptance Criteria
 
-- [ ] All types listed above are defined in `src/types/rrg.ts`
-- [ ] All public types are exported from `src/index.ts`
-- [ ] `RrgChartProps` includes `showPatterns` and `tickerLabelAlwaysVisible` (from PRE-C1-C)
-- [ ] No Sector Orbit-specific types appear anywhere in the package (`AppState`, `TickerData`, etc.)
-- [ ] No data-fetching, async, or calculation types included
-- [ ] `npm run typecheck` passes after types are added
-- [ ] Types are documented with JSDoc comments on key fields
-- [ ] Internal types are defined locally in composables/components — not exported from the package
+- [x] All types listed above are defined in `src/types/rrg.ts`
+- [x] All public types are exported from `src/index.ts`
+- [x] `RrgChartProps` includes `showPatterns` and `tickerLabelAlwaysVisible` (from PRE-C1-C)
+- [x] No Sector Orbit-specific types appear anywhere in the package (`AppState`, `TickerData`, etc.)
+- [x] No data-fetching, async, or calculation types included
+- [x] `npm run typecheck` passes after types are added
+- [x] Types are documented with JSDoc comments on key fields
+- [x] Internal types are defined locally in composables/components — not exported from the package
+- [x] Unit tests cover the public type contract and prop wiring (`tests/rrg.types.test.ts`)
