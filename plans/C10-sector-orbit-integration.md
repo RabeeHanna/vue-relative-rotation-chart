@@ -173,7 +173,8 @@ After wiring, verify the following manually:
 **SVG renderer:**
 - [ ] Navigate with `?renderer=svg` → SVG renderer renders
 - [ ] All tickers appear at correct positions
-- [ ] Replay slider works — selectedDate changes update the chart
+- [ ] Replay / playback works — `selectedDate` changes update the chart
+- [ ] Prefer wiring [`RrgPlaybackControls`](./C12-playback-controls.md) (C12) instead of the legacy ambiguous Sector Orbit slider when available
 - [ ] Hover shows tooltip with correct ticker/data values
 - [ ] Viewport mode toggle works (fit/max/center)
 - [ ] `data-testid` attributes are present (check in DevTools)

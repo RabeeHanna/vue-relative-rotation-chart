@@ -3,6 +3,7 @@
 **Phase:** Interaction  
 **Estimate:** 1–2 days  
 **Depends on:** C6 complete  
+**Related (independent):** [C12 Playback Controls](./C12-playback-controls.md) can proceed in parallel — does not block C7  
 **Priority:** Standard
 
 ---

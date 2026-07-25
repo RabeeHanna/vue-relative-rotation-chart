@@ -125,11 +125,12 @@ These types protect the component from Sector Orbit-specific state shape.
 | [C8](./C8-viewport.md) | Viewport Modes (**done**) | Rendering Core | 1–2 days |
 | [C6](./C6-label-collision.md) | Label Collision System (**done**) | Rendering Core | 3–5 days |
 | [C7](./C7-hover-events.md) | Hover, Tooltip, and Selection Events | Interaction | 1–2 days |
+| [C12](./C12-playback-controls.md) | Playback Controls | Interaction | 1–2 days |
 | [C9](./C9-accessibility.md) | Accessibility and Agent-Testability | Polish | 1 day |
 | [C11](./C11-adversarial-review.md) | Adversarial Review and Polish | Polish | 2–3 days |
 | [C10](./C10-sector-orbit-integration.md) | Sector Orbit Feature-Flag Integration | Integration | 1–2 days |
 
-**Total estimated: ~18–23 days** (or ~4–5 weeks at 1/3 time)
+**Total estimated: ~20–25 days** (or ~4–5 weeks at 1/3 time)
 
 ---
 
@@ -148,9 +149,10 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 9. C8 — Viewport Modes
 10. C6 — Label Collision System
 11. C7 — Hover, Tooltip, and Selection Events
-12. C9 — Accessibility and Agent-Testability
-13. C11 — Adversarial Review and Polish
-14. C10 — Sector Orbit Feature-Flag Integration
+12. C12 — Playback Controls (controlled timeline UI; independent of C6; can parallelize with C7)
+13. C9 — Accessibility and Agent-Testability
+14. C11 — Adversarial Review and Polish
+15. C10 — Sector Orbit Feature-Flag Integration
 
 ---
 
@@ -174,6 +176,7 @@ The component is ready to integrate into Sector Orbit when:
 - [ ] Tails are readable with clear directionality
 - [ ] Labels do not fuse in clustered cases
 - [ ] Hover makes individual tickers easy to inspect
+- [ ] Playback controls (when used) make play state, speed, and position unambiguous ([C12](./C12-playback-controls.md))
 - [ ] Viewport modes (fit/max/center) are predictable and stable
 - [ ] Component API accepts generic `RrgRenderSeries[]` — no Sector Orbit assumptions
 - [ ] No calculation logic inside the component
@@ -200,12 +203,14 @@ vue-relative-rotation-chart/
       RrgPoints.vue
       RrgLabels.vue
       RrgTooltip.vue
+      RrgPlaybackControls.vue   ← C12; composed beside chart by parent
     composables/
       useRrgScales.ts           ← D3 scale helpers (data → SVG pixels)
       useRrgViewport.ts         ← x/y domain for fit/max/center
       useRrgTailSlices.ts       ← derives tail data from series + selected date
       useRrgLabelLayout.ts      ← label placement & collision mitigation
       useRrgHoverState.ts       ← hover/selection state
+      useRrgPlayback.ts         ← optional C12 frame/rAF helpers
     types/
       rrg.ts                    ← all exported public types
     utils/
