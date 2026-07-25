@@ -50,3 +50,5 @@ npm run spike:labels # PRE-C1-A spike
 ```
 
 See [`plans/00-overview.md`](./plans/00-overview.md) for units of work.
+
+Agent orientation: [`AGENTS.md`](./AGENTS.md) (directory map) and `.cursor/rules/`.

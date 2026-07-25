@@ -1,0 +1,37 @@
+---
+description: Vue/TS modularity, file size limits, and renderer separation of concerns
+alwaysApply: true
+---
+
+# Vue / TypeScript Modularity
+
+## File size limits
+
+- Vue SFC components: **≤ 200 lines** per file
+- Composables / utils / types modules: **≤ 150 lines** per file
+- If a file grows past its limit, split by responsibility before adding more code
+
+## Layer ownership
+
+| Area | Owns |
+|------|------|
+| `src/types/` | Public TypeScript contract only |
+| `src/components/` | Declarative SVG/Vue rendering |
+| `src/composables/` | Reactive derivation (scales, viewport, tails, labels, hover) |
+| `src/utils/` | Pure helpers (no Vue reactivity, no DOM) |
+| `demo/` | Playground app + mocks — not shipped in `dist/` |
+| `spikes/` | Throwaway prototypes — not production API |
+
+## Responsibility rules
+
+- **Vue owns the DOM. D3 provides math only** (scales, ticks, paths) — never D3 DOM selection/mutation
+- **One primary responsibility per module.** If a composable both layouts labels *and* owns hover state, split it
+- **No Sector Orbit types** in the public API (`AppState`, app stores, etc.)
+- **Renderer only** — no price fetch, no RRG calculation, no caching
+
+## Review checklist
+
+- Does any file exceed the size limits?
+- Are new types in the wrong layer?
+- Is D3 used for DOM instead of math?
+- Did production code land without Vitest coverage?

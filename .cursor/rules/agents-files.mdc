@@ -1,0 +1,14 @@
+---
+description: Keep AGENTS.md files brief and up to date in each application directory
+alwaysApply: true
+---
+
+# AGENTS.md maintenance
+
+- When creating a new relevant directory under `src/`, `demo/`, `tests/`, `plans/`, or `spikes/`, add an `AGENTS.md` with: Purpose, Belongs here, Does not belong here, Depends on, Used by
+- When moving or renaming layers, update affected `AGENTS.md` files in the same change
+- Keep each `AGENTS.md` under 100 lines, point form only — no essays, no duplicate README content
+- Describe **directory boundaries and placement rules**, not inventories of every class or file — agents can read the code for that
+- Do not add `AGENTS.md` to `.gitignore`, `node_modules/`, `dist/`, or other non-application dirs
+- Prefer updating an existing `AGENTS.md` over letting it go stale
+- Root `AGENTS.md` is the package map; directory files own local boundaries only

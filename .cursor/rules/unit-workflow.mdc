@@ -1,0 +1,28 @@
+---
+description: Unit-of-work workflow — branch develop, commit per unit, tests green
+alwaysApply: true
+---
+
+# Unit-of-Work Workflow
+
+Implementation follows `plans/00-overview.md` order. Work happens on **`develop`**.
+
+## Cadence
+
+1. Read the unit plan; note Depends on / acceptance criteria
+2. If ambiguous, list 2–3 options, pick the recommended one, proceed (unless the user asked to pause)
+3. Implement + **unit tests** in the same change
+4. Run `npm test` (and `typecheck` / `lint` / `build` when the unit touches packaging)
+5. **One commit per unit** — do not batch unrelated units
+6. Update plan status / overview checkmarks when the unit completes
+
+## Pre-Start vs Foundation
+
+- Do not start **C1+** until PRE-C1-A/B/C decisions are recorded
+- Spikes stay under `spikes/`; production API stays under `src/`
+
+## Do not
+
+- Commit on `master` for feature units
+- Skip Vitest for “small” logic changes
+- Expand scope into the next unit inside the same commit
