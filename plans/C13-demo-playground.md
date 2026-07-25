@@ -5,7 +5,7 @@
 **Depends on:** C11 complete (scenarios exist); C9 (a11y summary available to preview)  
 **Related:** [C14 Public Release](./C14-public-release.md) follows implementation  
 **Priority:** Standard — makes the package demoable and adoptable without Sector Orbit  
-**Status:** Planned (docs complete; implementation not started)
+**Status:** Complete (implementation + unit tests)
 
 ---
 
@@ -215,14 +215,14 @@ Production `src/` unchanged except if C14 later adds `scenarios` export (not req
 
 ### Implementation (follow-on coding unit)
 
-- [ ] Tier 1 controls visible and wired (including viewport)  
-- [ ] Copy component snippet matches locked model  
-- [ ] Accessible summary preview updates with chart state  
-- [ ] Advanced: BYO, generator + Copy data JSON, pickable compare, embed width  
-- [ ] New scenarios: `quadrantTour`, `rotationCycle`, `emptyOrSparse`, `mixedVisibility`  
-- [ ] URL sync + “data not in link” for custom/generated  
-- [ ] Unit tests green; SFCs within size limits  
-- [ ] `npm run typecheck` passes  
+- [x] Tier 1 controls visible and wired (including viewport)  
+- [x] Copy component snippet matches locked model  
+- [x] Accessible summary preview updates with chart state  
+- [x] Advanced: BYO, generator + Copy data JSON, pickable compare, embed width  
+- [x] New scenarios: `quadrantTour`, `rotationCycle`, `emptyOrSparse`, `mixedVisibility`  
+- [x] URL sync + “data not in link” for custom/generated  
+- [x] Unit tests green; SFCs within size limits  
+- [x] `npm run typecheck` passes  
 
 ---
 

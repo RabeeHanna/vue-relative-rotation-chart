@@ -14,7 +14,7 @@ Adversarial review visual evidence for C11 (plain PNG captures from the demo).
 
 ## Depends on
 
-- Demo scenarios in `demo/adversarialMocks.ts`
+- Demo scenarios in `demo/scenarios.ts` (C11/C13 fixtures; `adversarialMocks.ts` re-exports)
 - Playwright review config
 
 ## Used by

@@ -1,0 +1,66 @@
+.demo-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.88rem;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 0.85rem;
+  align-items: center;
+}
+label {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+.check {
+  gap: 0.25rem;
+}
+input[type='number'] {
+  width: 4rem;
+}
+.snippet {
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  font-size: 0.75rem;
+  background: color-mix(in srgb, Canvas 88%, CanvasText 12%);
+  border: 1px solid color-mix(in srgb, CanvasText 18%, transparent);
+  overflow: auto;
+  white-space: pre-wrap;
+}
+.notice,
+.error {
+  margin: 0;
+  color: #a33;
+}
+.summary p {
+  margin: 0.25rem 0;
+}
+.advanced {
+  border-top: 1px solid color-mix(in srgb, CanvasText 15%, transparent);
+  padding-top: 0.5rem;
+}
+.adv-block {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+  margin: 0.65rem 0;
+}
+.adv-block h3 {
+  flex: 1 0 100%;
+  margin: 0;
+  font-size: 0.9rem;
+}
+textarea {
+  flex: 1 0 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+}
