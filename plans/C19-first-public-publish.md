@@ -88,7 +88,7 @@ Full rationale: [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.m
 - [ ] D1–D5 honored in README / changelog / process  
 - [ ] README: rotation pitch; precise quadrant wording; enumerated fragile surfaces  
 - [ ] `[0.1.0]` (or publish version) CHANGELOG accurately describes shipped API  
-- [ ] Real-data dogfood notes committed (worked / broke / fixed)  
+- [x] Real-data dogfood notes committed (worked / broke / fixed)  
 - [ ] [C19.5](./C19.5-demo-ux-simplify.md) done (or explicitly deferred with reason — prefer done before publish)  
 - [ ] Pack dry-run confirms `dist/` only (demo not in tarball)  
 - [x] Prefer [C20](./C20-bundle-size-perf-playbook.md) bundle-size tracking landed (or explicitly deferred with reason)  

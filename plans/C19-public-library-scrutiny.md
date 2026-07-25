@@ -91,7 +91,7 @@ This package started as a **host-first RRG SVG renderer**. That build-out is lar
 - [x] Public scrub hard-gate; review artifacts scripts  
 - [ ] README: rotation-specialist pitch; precise quadrant wording; **enumerated fragile surfaces**  
 - [ ] **`CHANGELOG.md` `[0.1.0]` accurately reflects shipped surface** (fold/sync from Unreleased as needed)  
-- [ ] **Real-data dogfood** on host feature branch — notes logged (what worked / what broke)  
+- [x] **Real-data dogfood** on host feature branch — notes logged (what worked / what broke)  
 - [ ] Getting-started path verified cold (`npm i` + minimal example)  
 - [ ] Demo UX polish ([C19.5](./C19.5-demo-ux-simplify.md)) — Simple/Customize, closed snippet, Tail/Full history  
 - [x] **Packaging:** `"files": ["dist"]` — demo/tests/plans/spikes **not** in npm tarball (confirmed; no change)  
