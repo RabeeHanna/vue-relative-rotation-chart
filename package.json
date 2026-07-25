@@ -2,6 +2,7 @@
   "name": "vue-relative-rotation-chart",
   "version": "0.1.0",
   "description": "Vue SVG component for RRG-style relative rotation charts (renderer only).",
+  "license": "MIT",
   "type": "module",
   "files": [
     "dist"
@@ -14,11 +15,16 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/vue-relative-rotation-chart.js",
       "require": "./dist/vue-relative-rotation-chart.umd.cjs"
+    },
+    "./scenarios": {
+      "types": "./dist/scenarios/index.d.ts",
+      "import": "./dist/scenarios.js"
     }
   },
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc -p tsconfig.build.json --noEmit && vite build",
+    "build": "vue-tsc -p tsconfig.build.json --noEmit && vite build && vite build --config vite.scenarios.config.ts",
+    "build:demo": "vite build --config vite.demo.config.ts",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -36,8 +42,7 @@
     "d3-array": "^3.2.4",
     "d3-axis": "^3.0.0",
     "d3-scale": "^4.0.2",
-    "d3-shape": "^3.2.0",
-    "vue": "^3.5.0"
+    "d3-shape": "^3.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
@@ -60,6 +65,7 @@
     "vite": "^6.3.5",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^3.2.4",
+    "vue": "^3.5.0",
     "vue-eslint-parser": "^10.2.0",
     "vue-tsc": "^2.2.10"
   }

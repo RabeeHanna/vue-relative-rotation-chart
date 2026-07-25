@@ -28,9 +28,10 @@ export function buildCopySnippet(input: CopySnippetInput): string {
   const lines: string[] = []
 
   if (input.source === 'preset' && input.scenarioId) {
-    lines.push(`// Fixture: ${input.scenarioId} (demo/scenarios.ts)`)
+    const binding =
+      input.scenarioId === 'default' ? 'defaultScenario' : input.scenarioId
     lines.push(
-      `// Prefer: import { ${input.scenarioId} } from 'vue-relative-rotation-chart/scenarios' // C14`,
+      `import { ${binding} as series } from 'vue-relative-rotation-chart/scenarios'`,
     )
   } else if (input.source === 'generated') {
     lines.push('// series from seeded generator — use Copy data JSON for the payload')

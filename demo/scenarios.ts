@@ -1,337 +1,89 @@
-import type { RrgLabelMode, RrgQuadrant, RrgRenderSeries, RrgViewportMode } from '../src/types/rrg'
-import { mockSeries as defaultSectorMock } from './mockSeries'
+import type { RrgLabelMode, RrgRenderSeries, RrgViewportMode } from '../src/types/rrg'
 import {
-  longPlayback50Mock,
-  longPlayback100Mock,
-  longPlayback200Mock,
-  longPlayback500Mock,
-} from './longPlayback'
+  denseCluster,
+  emptyOrSparse,
+  farLeftOutlier,
+  farRightOutlier,
+  longLabel,
+  longPlayback100,
+  longPlayback200,
+  longPlayback50,
+  longPlayback500,
+  manyOverlapping,
+  missingLabel,
+  mixedVisibility,
+  mockSeries as defaultSectorMock,
+  noisyTail,
+  quadrantTour,
+  rotationCycle,
+  singleTicker,
+  stress,
+} from '../src/scenarios'
 
-export { mockSeries as defaultSectorMock, mockDates, mockSelectedDate } from './mockSeries'
 export {
-  longPlayback50Mock,
-  longPlayback100Mock,
-  longPlayback200Mock,
-  longPlayback500Mock,
-  makeLongPlaybackSeries,
+  defaultScenario,
+  denseCluster,
+  emptyOrSparse,
+  farLeftOutlier,
+  farRightOutlier,
+  longLabel,
+  longPlayback100,
+  longPlayback200,
+  longPlayback50,
+  longPlayback500,
   LONG_PLAYBACK_LENGTHS,
-} from './longPlayback'
+  makeLongPlaybackSeries,
+  manyOverlapping,
+  missingLabel,
+  mixedVisibility,
+  mockDates,
+  mockSelectedDate,
+  mockSeries,
+  noisyTail,
+  quadrantTour,
+  rotationCycle,
+  scenarioFixtures,
+  singleTicker,
+  stress,
+  weeklyDates,
+} from '../src/scenarios'
 
-type Point = { date: string; x: number; y: number; quadrant: RrgQuadrant }
+export { mockSeries as defaultSectorMock } from '../src/scenarios'
 
-function quadrant(x: number, y: number): RrgQuadrant {
-  if (x >= 100 && y >= 100) return 'leading'
-  if (x >= 100 && y < 100) return 'weakening'
-  if (x < 100 && y < 100) return 'lagging'
-  return 'improving'
-}
-
-function dates(count: number): string[] {
-  return Array.from({ length: count }, (_, i) => {
-    const day = String((i % 28) + 1).padStart(2, '0')
-    const month = String(Math.floor(i / 28) + 1).padStart(2, '0')
-    return `2024-${month}-${day}`
-  })
-}
-
-function trail(
-  ticker: string,
-  label: string,
-  start: { x: number; y: number },
-  steps: Array<{ dx: number; dy: number }>,
-  name?: string,
-  visible?: boolean,
-): RrgRenderSeries {
-  const ds = dates(steps.length + 1)
-  const points: Point[] = []
-  let x = start.x
-  let y = start.y
-  points.push({ date: ds[0], x, y, quadrant: quadrant(x, y) })
-  steps.forEach((step, i) => {
-    x += step.dx
-    y += step.dy
-    points.push({ date: ds[i + 1], x, y, quadrant: quadrant(x, y) })
-  })
-  return { ticker, label, name, points, ...(visible === false ? { visible: false } : {}) }
-}
-
-/** 16 tickers packed near 100/100. */
-export const denseClusterMock: RrgRenderSeries[] = Array.from({ length: 16 }, (_, i) => {
-  const x = 100 + ((i % 4) - 1.5) * 2.2
-  const y = 100 + (Math.floor(i / 4) - 1.5) * 2.2
-  return trail(`C${String(i).padStart(2, '0')}`, `C${i}`, { x: x - 1, y: y - 0.5 }, [
-    { dx: 0.5, dy: 0.2 },
-    { dx: 0.5, dy: 0.3 },
-  ])
-})
-
-function clusterWithOutlier(
-  outlier: { ticker: string; x: number; y: number },
-): RrgRenderSeries[] {
-  const cluster = Array.from({ length: 10 }, (_, i) => {
-    const x = 99 + (i % 5) * 0.6
-    const y = 99 + Math.floor(i / 5) * 0.8
-    return trail(`N${i}`, `N${i}`, { x: x - 0.4, y }, [
-      { dx: 0.2, dy: 0.1 },
-      { dx: 0.2, dy: -0.05 },
-    ])
-  })
-  cluster.push(
-    trail(outlier.ticker, outlier.ticker, { x: outlier.x - 2, y: outlier.y }, [
-      { dx: 1, dy: 0.2 },
-      { dx: 1, dy: -0.1 },
-    ]),
-  )
-  return cluster
-}
-
-export const farRightOutlierMock = clusterWithOutlier({ ticker: 'OUT', x: 145, y: 105 })
-export const farLeftOutlierMock = clusterWithOutlier({ ticker: 'OUT', x: 65, y: 95 })
-
-/** Five coincident pairs. */
-export const manyOverlappingMock: RrgRenderSeries[] = Array.from({ length: 5 }, (_, i) => {
-  const x = 98 + i * 3
-  const y = 102 - i
-  return [
-    trail(`A${i}`, `A${i}`, { x: x - 0.5, y }, [
-      { dx: 0.25, dy: 0 },
-      { dx: 0.25, dy: 0 },
-    ]),
-    trail(`B${i}`, `B${i}`, { x: x - 0.5, y }, [
-      { dx: 0.25, dy: 0 },
-      { dx: 0.25, dy: 0 },
-    ]),
-  ]
-}).flat()
-
-export const noisyTailMock: RrgRenderSeries[] = [
-  trail('ZZY', 'ZZY', { x: 102, y: 104 }, [
-    { dx: 1.5, dy: -2 },
-    { dx: -2, dy: -1 },
-    { dx: -1.5, dy: 2.5 },
-    { dx: 2, dy: 1.2 },
-    { dx: 0.5, dy: -1.8 },
-  ], 'Zigzag'),
-  trail('CCW', 'CCW', { x: 98, y: 101 }, [
-    { dx: -1, dy: 1.5 },
-    { dx: -1.5, dy: -1 },
-    { dx: 1.2, dy: -1.8 },
-    { dx: 1.8, dy: 0.8 },
-    { dx: -0.4, dy: 1.2 },
-  ], 'Counterclockwise'),
-]
-
-export const singleTickerMock: RrgRenderSeries[] = [
-  trail('SOLO', 'SOLO', { x: 103, y: 101 }, [
-    { dx: 0.4, dy: 0.3 },
-    { dx: 0.3, dy: -0.2 },
-  ], 'Single'),
-]
-
-export const stressMock: RrgRenderSeries[] = Array.from({ length: 50 }, (_, t) => {
-  const steps = Array.from({ length: 29 }, (_, i) => ({
-    dx: ((t % 5) - 2) * 0.05,
-    dy: ((i % 7) - 3) * 0.04,
-  }))
-  return trail(`T${t}`, `T${t}`, { x: 95 + (t % 10), y: 95 + (t % 8) }, steps)
-})
-
-export const missingLabelMock: RrgRenderSeries[] = [
-  {
-    ticker: 'NLBL',
-    label: '',
-    points: [
-      { date: '2024-01-05', x: 101, y: 102, quadrant: 'leading' },
-      { date: '2024-01-12', x: 102, y: 101, quadrant: 'leading' },
-      { date: '2024-01-19', x: 103, y: 100.5, quadrant: 'weakening' },
-    ],
-  },
-  {
-    ticker: 'NONAME',
-    label: 'NONAME',
-    points: [
-      { date: '2024-01-05', x: 97, y: 98, quadrant: 'lagging' },
-      { date: '2024-01-12', x: 96.5, y: 97.5, quadrant: 'lagging' },
-      { date: '2024-01-19', x: 97.2, y: 97.8, quadrant: 'lagging' },
-    ],
-  },
-]
-
-export const longLabelMock: RrgRenderSeries[] = [
-  trail('XLRE', 'XLRE', { x: 101, y: 99 }, [
-    { dx: 0.3, dy: 0.2 },
-    { dx: 0.2, dy: -0.1 },
-  ]),
-  trail('SMCAP', 'SMCAP', { x: 99, y: 101 }, [
-    { dx: -0.2, dy: 0.3 },
-    { dx: 0.1, dy: 0.2 },
-  ]),
-  trail('NASDAQCOMP', 'NASDAQCOMP', { x: 104, y: 103 }, [
-    { dx: 0.4, dy: -0.3 },
-    { dx: -0.2, dy: -0.2 },
-  ]),
-]
-
-/** One ticker parked in each quadrant — longer trails for playback. */
-export const quadrantTourMock: RrgRenderSeries[] = [
-  trail(
-    'LEAD',
-    'LEAD',
-    { x: 106, y: 108 },
-    [
-      { dx: 0.4, dy: -0.3 },
-      { dx: 0.5, dy: -0.2 },
-      { dx: 0.3, dy: 0.1 },
-      { dx: 0.4, dy: -0.2 },
-      { dx: 0.2, dy: 0.2 },
-      { dx: 0.3, dy: -0.1 },
-      { dx: 0.2, dy: 0.1 },
-    ],
-    'Leading',
-  ),
-  trail(
-    'WEAK',
-    'WEAK',
-    { x: 108, y: 96 },
-    [
-      { dx: 0.3, dy: -0.4 },
-      { dx: 0.2, dy: -0.5 },
-      { dx: -0.1, dy: -0.3 },
-      { dx: 0.2, dy: -0.4 },
-      { dx: -0.2, dy: -0.2 },
-      { dx: 0.1, dy: -0.3 },
-      { dx: -0.1, dy: -0.2 },
-    ],
-    'Weakening',
-  ),
-  trail(
-    'LAGG',
-    'LAGG',
-    { x: 94, y: 94 },
-    [
-      { dx: -0.4, dy: -0.2 },
-      { dx: -0.3, dy: 0.1 },
-      { dx: -0.4, dy: -0.2 },
-      { dx: -0.2, dy: 0.3 },
-      { dx: -0.3, dy: -0.1 },
-      { dx: -0.2, dy: 0.2 },
-      { dx: -0.1, dy: 0.1 },
-    ],
-    'Lagging',
-  ),
-  trail(
-    'IMPR',
-    'IMPR',
-    { x: 94, y: 106 },
-    [
-      { dx: -0.3, dy: 0.4 },
-      { dx: 0.2, dy: 0.3 },
-      { dx: -0.2, dy: 0.4 },
-      { dx: 0.3, dy: 0.2 },
-      { dx: -0.1, dy: 0.3 },
-      { dx: 0.2, dy: 0.2 },
-      { dx: 0.1, dy: 0.1 },
-    ],
-    'Improving',
-  ),
-]
-
-/** Classic clockwise rotation through all four quadrants. */
-export const rotationCycleMock: RrgRenderSeries[] = [
-  trail(
-    'CYCLE',
-    'CYCLE',
-    { x: 105, y: 105 },
-    [
-      { dx: 1.5, dy: -2 },
-      { dx: 1.2, dy: -3 },
-      { dx: 0.5, dy: -3 },
-      { dx: -2, dy: -2 },
-      { dx: -3, dy: -1 },
-      { dx: -3, dy: 1.5 },
-      { dx: -2, dy: 3 },
-      { dx: -0.5, dy: 3 },
-      { dx: 2, dy: 2 },
-      { dx: 3, dy: 1 },
-      { dx: 2.5, dy: -1 },
-      { dx: 1.5, dy: -2 },
-      { dx: 0.8, dy: -1.5 },
-    ],
-    'Rotation cycle',
-  ),
-]
-
-/** Single date — sparse frame; paste `[]` in BYO for fully empty. */
-export const emptyOrSparseMock: RrgRenderSeries[] = [
-  {
-    ticker: 'SPARSE',
-    label: 'SPARSE',
-    name: 'Single date',
-    points: [{ date: '2024-06-15', x: 100, y: 100, quadrant: 'leading' }],
-  },
-]
-
-/** Two visible, two hidden via `visible: false`. */
-export const mixedVisibilityMock: RrgRenderSeries[] = [
-  trail(
-    'SHOW',
-    'SHOW',
-    { x: 103, y: 104 },
-    [
-      { dx: 0.3, dy: 0.2 },
-      { dx: 0.4, dy: -0.1 },
-      { dx: 0.3, dy: 0.2 },
-      { dx: 0.2, dy: -0.2 },
-      { dx: 0.3, dy: 0.1 },
-      { dx: 0.2, dy: -0.1 },
-    ],
-    'Visible A',
-  ),
-  trail(
-    'HIDE',
-    'HIDE',
-    { x: 97, y: 97 },
-    [
-      { dx: -0.3, dy: -0.2 },
-      { dx: -0.2, dy: 0.1 },
-      { dx: -0.3, dy: -0.1 },
-      { dx: -0.2, dy: 0.2 },
-      { dx: -0.1, dy: -0.1 },
-      { dx: -0.2, dy: 0.1 },
-    ],
-    'Hidden',
-    false,
-  ),
-  trail(
-    'SHOW2',
-    'SHOW2',
-    { x: 103, y: 97 },
-    [
-      { dx: 0.2, dy: -0.3 },
-      { dx: 0.1, dy: -0.2 },
-      { dx: 0.3, dy: -0.2 },
-      { dx: 0.2, dy: -0.1 },
-      { dx: 0.1, dy: -0.2 },
-      { dx: 0.2, dy: -0.1 },
-    ],
-    'Visible B',
-  ),
-  trail(
-    'HIDE2',
-    'HIDE2',
-    { x: 97, y: 103 },
-    [
-      { dx: -0.2, dy: 0.3 },
-      { dx: 0.1, dy: 0.2 },
-      { dx: -0.2, dy: 0.2 },
-      { dx: -0.1, dy: 0.3 },
-      { dx: 0.1, dy: 0.2 },
-      { dx: -0.1, dy: 0.1 },
-    ],
-    'Hidden B',
-    false,
-  ),
-]
+/** @deprecated Prefer `denseCluster` from `vue-relative-rotation-chart/scenarios`. */
+export const denseClusterMock = denseCluster
+/** @deprecated Prefer `farRightOutlier` from scenarios subpath. */
+export const farRightOutlierMock = farRightOutlier
+/** @deprecated Prefer `farLeftOutlier` from scenarios subpath. */
+export const farLeftOutlierMock = farLeftOutlier
+/** @deprecated Prefer `manyOverlapping` from scenarios subpath. */
+export const manyOverlappingMock = manyOverlapping
+/** @deprecated Prefer `noisyTail` from scenarios subpath. */
+export const noisyTailMock = noisyTail
+/** @deprecated Prefer `singleTicker` from scenarios subpath. */
+export const singleTickerMock = singleTicker
+/** @deprecated Prefer `stress` from scenarios subpath. */
+export const stressMock = stress
+/** @deprecated Prefer `missingLabel` from scenarios subpath. */
+export const missingLabelMock = missingLabel
+/** @deprecated Prefer `longLabel` from scenarios subpath. */
+export const longLabelMock = longLabel
+/** @deprecated Prefer `quadrantTour` from scenarios subpath. */
+export const quadrantTourMock = quadrantTour
+/** @deprecated Prefer `rotationCycle` from scenarios subpath. */
+export const rotationCycleMock = rotationCycle
+/** @deprecated Prefer `emptyOrSparse` from scenarios subpath. */
+export const emptyOrSparseMock = emptyOrSparse
+/** @deprecated Prefer `mixedVisibility` from scenarios subpath. */
+export const mixedVisibilityMock = mixedVisibility
+/** @deprecated Prefer `longPlayback50` from scenarios subpath. */
+export const longPlayback50Mock = longPlayback50
+/** @deprecated Prefer `longPlayback100` from scenarios subpath. */
+export const longPlayback100Mock = longPlayback100
+/** @deprecated Prefer `longPlayback200` from scenarios subpath. */
+export const longPlayback200Mock = longPlayback200
+/** @deprecated Prefer `longPlayback500` from scenarios subpath. */
+export const longPlayback500Mock = longPlayback500
 
 export type ScenarioId =
   | 'default'
@@ -348,10 +100,6 @@ export type ScenarioId =
   | 'rotationCycle'
   | 'emptyOrSparse'
   | 'mixedVisibility'
-  | 'longPlayback50'
-  | 'longPlayback100'
-  | 'longPlayback200'
-  | 'longPlayback500'
   | 'longPlayback50'
   | 'longPlayback100'
   | 'longPlayback200'
@@ -384,7 +132,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Labels stay non-fusing near 100/100',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: denseClusterMock,
+    series: denseCluster,
   },
   {
     id: 'farRightOutlier',
@@ -393,7 +141,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'OUT is in frame under fit; compare with center',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: farRightOutlierMock,
+    series: farRightOutlier,
   },
   {
     id: 'farLeftOutlier',
@@ -402,7 +150,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'OUT visible under fit on the left',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: farLeftOutlierMock,
+    series: farLeftOutlier,
   },
   {
     id: 'manyOverlapping',
@@ -411,7 +159,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Hover still resolves a ticker for each pair',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'always',
-    series: manyOverlappingMock,
+    series: manyOverlapping,
   },
   {
     id: 'noisyTail',
@@ -420,7 +168,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Zigzag and CCW tails remain visually distinct',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: noisyTailMock,
+    series: noisyTail,
   },
   {
     id: 'singleTicker',
@@ -429,7 +177,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'SOLO point and label render alone',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: singleTickerMock,
+    series: singleTicker,
   },
   {
     id: 'stress',
@@ -438,7 +186,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: '50 points render; prefer labelMode=hover',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'hover',
-    series: stressMock,
+    series: stress,
   },
   {
     id: 'missingLabel',
@@ -447,7 +195,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Hover NLBL tooltip contains NLBL',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: missingLabelMock,
+    series: missingLabel,
   },
   {
     id: 'longLabel',
@@ -456,7 +204,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'NASDAQCOMP does not fuse with neighbors',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: longLabelMock,
+    series: longLabel,
   },
   {
     id: 'quadrantTour',
@@ -465,7 +213,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'LEAD/WEAK/LAGG/IMPR sit in distinct quadrants',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'always',
-    series: quadrantTourMock,
+    series: quadrantTour,
   },
   {
     id: 'rotationCycle',
@@ -474,7 +222,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Scrubbing CYCLE walks through all quadrants',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: rotationCycleMock,
+    series: rotationCycle,
   },
   {
     id: 'emptyOrSparse',
@@ -483,7 +231,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'SPARSE single-date frame; BYO [] for empty',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: emptyOrSparseMock,
+    series: emptyOrSparse,
   },
   {
     id: 'mixedVisibility',
@@ -492,7 +240,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Only SHOW/SHOW2 points appear',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'auto',
-    series: mixedVisibilityMock,
+    series: mixedVisibility,
   },
   {
     id: 'longPlayback50',
@@ -501,7 +249,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Scrub/Play through 50 frames without throw',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'hover',
-    series: longPlayback50Mock,
+    series: longPlayback50,
   },
   {
     id: 'longPlayback100',
@@ -510,7 +258,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Playback remains usable; note any scrub lag',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'hover',
-    series: longPlayback100Mock,
+    series: longPlayback100,
   },
   {
     id: 'longPlayback200',
@@ -519,7 +267,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Mount + one scrub step; document ceiling if laggy',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'hover',
-    series: longPlayback200Mock,
+    series: longPlayback200,
   },
   {
     id: 'longPlayback500',
@@ -528,7 +276,7 @@ export const scenarioCatalog: ScenarioMeta[] = [
     check: 'Mount + tail compute; expect future optimization',
     suggestedViewport: 'fit',
     suggestedLabelMode: 'hover',
-    series: longPlayback500Mock,
+    series: longPlayback500,
   },
 ]
 

@@ -6,7 +6,7 @@ Library source shipped (via Vite lib build) as `vue-relative-rotation-chart`.
 
 ## Belongs here
 
-- `components/`, `composables/`, `types/`, `utils/`, package `index.ts`
+- `components/`, `composables/`, `types/`, `utils/`, `scenarios/`, package `index.ts`
 
 ## Does not belong here
 

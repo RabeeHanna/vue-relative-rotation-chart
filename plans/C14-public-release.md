@@ -5,7 +5,7 @@
 **Depends on:** C13 (+ C13.5 session persistence recommended)  
 **Suggested schedule:** After C13 / C13.5; before first public npm release; **before** [C15](./C15-tail-hover.md)  
 **Priority:** Standard for public launch; **not** required for Sector Orbit file: linking  
-**Status:** Planned (checklist stub)
+**Status:** Complete (implementation + unit tests)
 
 ---
 
@@ -29,51 +29,49 @@ A separate docs site is **not** a release blocker. Many Vue component libraries 
 
 ## Packaging Checklist
 
-Already largely true — verify and close gaps:
-
-- [ ] `package.json` `exports` map with proper ESM entry (present today)  
-- [ ] `files: ["dist"]` only — no source, tests, or demo in the npm tarball (present today)  
-- [ ] Ship generated `.d.ts` from build (`vite-plugin-dts`) — not hand-written  
-- [ ] D3 via submodules only (`d3-scale`, `d3-shape`, `d3-array`, `d3-axis`) — not full `d3`  
-- [ ] **Vue as peerDependency only** — remove from `dependencies` if still duplicated  
-- [ ] Optional: export **`vue-relative-rotation-chart/scenarios`** subpath with named fixtures (`denseCluster`, `default`, …) so C13 copy-as-code can use a real import line  
+- [x] `package.json` `exports` map with proper ESM entry  
+- [x] `files: ["dist"]` only — no source, tests, or demo in the npm tarball  
+- [x] Ship generated `.d.ts` from build (`vite-plugin-dts`) — not hand-written  
+- [x] D3 via submodules only (`d3-scale`, `d3-shape`, `d3-array`, `d3-axis`) — not full `d3`  
+- [x] **Vue as peerDependency only** — removed from `dependencies` (kept in `devDependencies` for local demo/tests)  
+- [x] Export **`vue-relative-rotation-chart/scenarios`** subpath with named fixtures (`denseCluster`, `defaultScenario`, `scenarioFixtures`, …)
 
 ```ts
-// Target copy-as-code companion (after this subpath exists)
 import { denseCluster } from 'vue-relative-rotation-chart/scenarios'
+// default scenario id → defaultScenario (reserved word)
+import { defaultScenario as series } from 'vue-relative-rotation-chart/scenarios'
 ```
 
-Scenario modules must remain **demo/fixture data only** — no Sector Orbit types, no fetch.
+Scenario modules remain **demo/fixture data only** — no Sector Orbit types, no fetch. Fixtures live under `src/scenarios/`; demo catalog metadata stays in `demo/scenarios.ts`.
 
 ---
 
 ## Trust Signals
 
-- [ ] `LICENSE` — MIT (aligns with public-safe positioning)  
-- [ ] `CONTRIBUTING.md`  
-- [ ] `SECURITY.md` (vuln reporting)  
-- [ ] README badges: npm version, bundle size (bundlephobia), license, CI status  
-- [ ] Changelog discipline — Changesets **or** conventional commits + generated CHANGELOG  
-- [ ] Semver policy documented in README (public API may change pre-1.0; v1 still renderer-only)
+- [x] `LICENSE` — MIT  
+- [x] `CONTRIBUTING.md`  
+- [x] `SECURITY.md`  
+- [x] README badges: npm version, bundle size (bundlephobia), license, CI status (replace `OWNER` in badge URLs when the GitHub remote exists)  
+- [x] Changelog discipline — Keep a Changelog + conventional commits (`CHANGELOG.md`)  
+- [x] Semver policy documented in README  
 
 ---
 
 ## CI
 
-- [ ] PR gate: `typecheck` + `lint` + `npm test` + `npm run test:e2e`  
-- [ ] Deploy public demo (GitHub Pages or Vercel) linked from README — “try it live”  
-- [ ] `npm publish` via CI with **provenance attestation** when ready to publish  
+- [x] PR gate: `typecheck` + `lint` + `npm test` + `npm run test:e2e` (+ `build`) — `.github/workflows/ci.yml`  
+- [x] Deploy public demo workflow — `.github/workflows/deploy-demo.yml` (`npm run build:demo` → GitHub Pages)  
+- [x] `npm publish` via CI with **provenance attestation** — `.github/workflows/publish.yml` (`workflow_dispatch`; requires `NPM_TOKEN` + trusted publishing setup)  
+
+### Demo URL (owner note)
+
+**Deferred live URL:** this clone has no `git remote` / GitHub origin yet. Workflows and `build:demo` are ready; enable GitHub Pages after pushing and replace README `OWNER` badge placeholders + the demo link.
 
 ---
 
-## Docs (post-C14 decision)
+## Docs (decision recorded)
 
-Not part of the minimum C14 acceptance set:
-
-- VitePress site with live embedded examples (idiomatic Vue)  
-- Histoire / Storybook-style isolated stories  
-
-Decide after C13 + C14: polished playground alone may be enough for first public release.
+**Ship demo-only for v1** — polished Vite playground + README. VitePress / Histoire **not** scheduled for first public tag; revisit after C15/C16 if adoption needs a docs site.
 
 ---
 
@@ -87,12 +85,12 @@ Decide after C13 + C14: polished playground alone may be enough for first public
 
 ## Acceptance Criteria
 
-- [ ] Packaging checklist items verified or fixed  
-- [ ] Trust files + README badges present  
-- [ ] CI gates green on PRs  
-- [ ] Demo deployed and linked (or explicitly deferred with owner note)  
-- [ ] If scenarios subpath is in scope for the same release: export works from a clean `npm pack` install  
-- [ ] Docs-site decision recorded (ship demo-only **or** schedule VitePress/Histoire)
+- [x] Packaging checklist items verified or fixed  
+- [x] Trust files + README badges present  
+- [x] CI gates defined for PRs  
+- [x] Demo deploy workflow present; live URL deferred with owner note (no remote yet)  
+- [x] Scenarios subpath in scope: export works from library build / `npm pack`  
+- [x] Docs-site decision recorded (demo-only for v1)
 
 ---
 

@@ -35,6 +35,7 @@ Standalone Vue 3 SVG package that renders RRG-style relative rotation charts fro
 | `src/composables/` | Reactive chart logic |
 | `src/types/` | Public contract |
 | `src/utils/` | Pure helpers |
+| `src/scenarios/` | Published fixture series (`/scenarios` subpath) |
 | `demo/` | Dev playground |
 | `tests/` | Vitest suites |
 | `plans/` | Unit-of-work specs |

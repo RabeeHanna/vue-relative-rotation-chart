@@ -7,11 +7,11 @@ Local Vite playground for visual development and adoption of `RrgChart` (C13).
 ## Belongs here
 
 - App shell (`main.ts`, `DemoApp.vue`, `DemoControls.vue`, `DemoAdvanced.vue`, `DemoChartHost.vue`)
-- Scenario registry + fixtures (`scenarios.ts`, `longPlayback.ts`; `adversarialMocks.ts` re-exports for C11 tests)
+- Scenario catalog / UI metadata (`scenarios.ts`; series fixtures imported from `src/scenarios`)
+- Thin re-exports (`mockSeries.ts`, `longPlayback.ts`; `adversarialMocks.ts` for C11 tests)
 - Playground helpers (`copySnippet.ts`, `generateSeries.ts`, `parseSeriesJson.ts`, `demoUrl.ts`, `demoSession.ts`, `useDemoAppState.ts`)
 - Power-user panel (`DemoPowerUser.vue` — radii, speeds, selectedTicker, CSS vars)
 - Tab session persistence (`sessionStorage` via `demoSession.ts` — C13.5)
-- Baseline mocks (`mockSeries.ts`)
 
 ## Does not belong here
 

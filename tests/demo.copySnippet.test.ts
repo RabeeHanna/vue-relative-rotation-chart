@@ -20,7 +20,7 @@ describe('buildCopySnippet', () => {
     expect(snippet).toContain(':tail-length="8"')
   })
 
-  it('includes fixture naming for preset mode', () => {
+  it('includes scenarios subpath import for preset mode', () => {
     const snippet = buildCopySnippet({
       selectedDate: '2024-01-19',
       viewportMode: 'center',
@@ -30,8 +30,24 @@ describe('buildCopySnippet', () => {
       scenarioId: 'farRightOutlier',
     })
 
-    expect(snippet).toContain('Fixture: farRightOutlier')
-    expect(snippet).toContain('vue-relative-rotation-chart/scenarios')
+    expect(snippet).toContain(
+      "import { farRightOutlier as series } from 'vue-relative-rotation-chart/scenarios'",
+    )
+  })
+
+  it('maps default scenario id to defaultScenario export', () => {
+    const snippet = buildCopySnippet({
+      selectedDate: '2024-01-19',
+      viewportMode: 'fit',
+      labelMode: 'auto',
+      tailLength: 8,
+      source: 'preset',
+      scenarioId: 'default',
+    })
+
+    expect(snippet).toContain(
+      "import { defaultScenario as series } from 'vue-relative-rotation-chart/scenarios'",
+    )
   })
 
   it('omits data import comments for custom source', () => {
