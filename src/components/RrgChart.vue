@@ -6,6 +6,7 @@ import { useRrgScales } from '../composables/useRrgScales'
 import { useRrgTailSlices } from '../composables/useRrgTailSlices'
 import { useRrgLabelLayout } from '../composables/useRrgLabelLayout'
 import { useRrgHoverState } from '../composables/useRrgHoverState'
+import { useRrgChartSummary } from '../composables/useRrgChartSummary'
 import { assignSeriesColors } from '../utils/colors'
 import { RRG_DEFAULT_MARGIN } from '../utils/chartLayout'
 import RrgSvgRoot from './RrgSvgRoot.vue'
@@ -66,6 +67,12 @@ const effectiveHoveredTicker = computed(
   () => hoveredTicker.value ?? props.highlightedTicker ?? null,
 )
 
+const { title: a11yTitle, description: a11yDescription } = useRrgChartSummary(
+  selectedDateRef,
+  viewportModeRef,
+  currentPoints,
+)
+
 watch(hoveredPoint, (point) => {
   if (point) emit('pointHover', point)
   else emit('pointLeave')
@@ -113,7 +120,12 @@ const resolvedLabels = useRrgLabelLayout(
     :data-hovered-ticker="effectiveHoveredTicker ?? undefined"
     @pointerleave="handleChartLeave"
   >
-    <RrgSvgRoot :width="width" :height="height">
+    <RrgSvgRoot
+      :width="width"
+      :height="height"
+      :title="a11yTitle"
+      :description="a11yDescription"
+    >
       <RrgAxes
         v-if="showAxes"
         :x-scale="xScale"
@@ -131,6 +143,7 @@ const resolvedLabels = useRrgLabelLayout(
         :x-scale="xScale"
         :y-scale="yScale"
         :hovered-ticker="effectiveHoveredTicker"
+        :show-patterns="showPatterns"
         @point-enter="handlePointEnter"
         @point-leave="handlePointLeave"
         @point-click="handlePointClick"

@@ -126,7 +126,7 @@ These types protect the component from Sector Orbit-specific state shape.
 | [C6](./C6-label-collision.md) | Label Collision System (**done**) | Rendering Core | 3–5 days |
 | [C7](./C7-hover-events.md) | Hover, Tooltip, and Selection Events (**done**) | Interaction | 1–2 days |
 | [C12](./C12-playback-controls.md) | Playback Controls (**done**) | Interaction | 1–2 days |
-| [C9](./C9-accessibility.md) | Accessibility and Agent-Testability | Polish | 1 day |
+| [C9](./C9-accessibility.md) | Accessibility and Agent-Testability (**done**) | Polish | 1 day |
 | [C11](./C11-adversarial-review.md) | Adversarial Review and Polish | Polish | 2–3 days |
 | [C10](./C10-sector-orbit-integration.md) | Sector Orbit Feature-Flag Integration | Integration | 1–2 days |
 
@@ -150,7 +150,7 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 10. C6 — Label Collision System
 11. C7 — Hover, Tooltip, and Selection Events (**complete**)
 12. C12 — Playback Controls (controlled timeline UI; independent of C6; can parallelize with C7) (**complete**)
-13. C9 — Accessibility and Agent-Testability
+13. C9 — Accessibility and Agent-Testability (**complete**)
 14. C11 — Adversarial Review and Polish
 15. C10 — Sector Orbit Feature-Flag Integration
 
@@ -180,10 +180,10 @@ The component is ready to integrate into Sector Orbit when:
 - [ ] Viewport modes (fit/max/center) are predictable and stable
 - [ ] Component API accepts generic `RrgRenderSeries[]` — no Sector Orbit assumptions
 - [ ] No calculation logic inside the component
-- [ ] Playwright can inspect chart elements via `data-testid`
+- [x] Playwright can inspect chart elements via `data-testid`
 - [ ] Adversarial review passes (see C11)
 - [ ] Sector Orbit can switch renderers via feature flag
-- [ ] Colorblind accessibility verified (Protanopia + Deuteranopia)
+- [x] Colorblind accessibility verified (Protanopia + Deuteranopia)
 - [ ] Performance: 50 tickers × 30 points at ≥ 55 fps
 
 ---

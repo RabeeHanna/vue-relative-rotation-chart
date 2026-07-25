@@ -1,16 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import {
   RrgChart,
   RrgPlaybackControls,
+  type RrgLabelMode,
   type RrgRenderPoint,
 } from '../src'
 import { mockDates, mockSelectedDate, mockSeries } from './mockSeries'
+
+const params = new URLSearchParams(window.location.search)
+const labelMode = ref<RrgLabelMode>(
+  (params.get('labelMode') as RrgLabelMode | null) ?? 'auto',
+)
+const showPatterns = ref(params.get('showPatterns') === 'true')
+const tickerLabelAlwaysVisible = ref(params.get('tickerLabelAlwaysVisible') === 'true')
 
 const selectedDate = ref(mockSelectedDate)
 const playing = ref(false)
 const speed = ref(2)
 const hovered = ref<RrgRenderPoint | null>(null)
+
+const queryNote = computed(() =>
+  [
+    `labelMode=${labelMode.value}`,
+    showPatterns.value ? 'showPatterns' : null,
+    tickerLabelAlwaysVisible.value ? 'tickerLabelAlwaysVisible' : null,
+  ]
+    .filter(Boolean)
+    .join(' · '),
+)
 </script>
 
 <template>
@@ -22,6 +40,9 @@ const hovered = ref<RrgRenderPoint | null>(null)
     <RrgChart
       :series="mockSeries"
       :selected-date="selectedDate"
+      :label-mode="labelMode"
+      :show-patterns="showPatterns"
+      :ticker-label-always-visible="tickerLabelAlwaysVisible"
       @point-hover="hovered = $event"
       @point-leave="hovered = null"
     />
@@ -32,6 +53,7 @@ const hovered = ref<RrgRenderPoint | null>(null)
       v-model:speed="speed"
     />
     <pre class="meta">
+{{ queryNote }}
 selectedDate={{ selectedDate }} · playing={{ playing }} · speed={{ speed }}x
 hovered={{ hovered ? `${hovered.ticker} @ ${hovered.date}` : 'none' }}
     </pre>

@@ -37,6 +37,7 @@ const position = computed(() => {
     v-if="hoveredPoint"
     class="rrg-tooltip"
     data-testid="rrg-tooltip"
+    :data-ticker="hoveredPoint.ticker"
     :transform="`translate(${position.x}, ${position.y})`"
     pointer-events="none"
   >

@@ -8,10 +8,10 @@ Vitest unit and contract tests for the library.
 
 - `*.test.ts` covering components, composables, utils, and public types
 - Happy-dom component mount tests
+- Playwright smoke under `e2e/` (`npm run test:e2e`)
 
 ## Does not belong here
 
-- Playwright e2e (lives under `tests/e2e/` only when C9 adds it)
 - Spike prototypes (`spikes/`)
 - Demo UI
 

@@ -10,3 +10,7 @@ Thumbs.db
 *.tsbuildinfo
 spikes/output/
 spikes/label-collision/artifacts/*.png
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/

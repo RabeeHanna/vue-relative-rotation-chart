@@ -177,21 +177,25 @@ tests/
 
 ## Acceptance Criteria
 
-- [ ] SVG has `<title>` and `<desc>` with meaningful accessible content
-- [ ] SVG has `role="img"`, `aria-labelledby`, `aria-describedby`
-- [ ] Chart root has `data-testid="rrg-chart"` with `data-viewport-mode` and `data-selected-date`
-- [ ] Every point has `data-testid="rrg-point-{ticker}"`, `data-x`, `data-y`, `data-quadrant`
-- [ ] Every label has `data-testid="rrg-label-{ticker}"` and `data-visible`
-- [ ] Every tail group has `data-testid="rrg-tail-{ticker}"`
-- [ ] Tooltip has `data-testid="rrg-tooltip"` and `data-ticker` when visible
-- [ ] All `data-testid` values are stable across rerenders and date changes
-- [ ] **COLORBLIND Test 1:** Protanopia — all tickers identifiable by label/tooltip
-- [ ] **COLORBLIND Test 2:** Deuteranopia — all tickers identifiable by label/tooltip
-- [ ] **COLORBLIND Test 3:** Achromatopsia — tickers distinguishable without color
-- [ ] **COLORBLIND Test 4:** Hover on hidden-label point reveals ticker in tooltip
-- [ ] Tooltip always includes ticker symbol in all interaction states
-- [ ] `tickerLabelAlwaysVisible` overrides collision hide when true
-- [ ] `showPatterns` renders deterministic SVG `<pattern>` fills when true
-- [ ] Points are focusable via Tab key and announce themselves to screen readers
-- [ ] Playwright smoke tests pass (`tests/e2e/chart.spec.ts`)
-- [ ] `npm run typecheck` passes
+- [x] SVG has `<title>` and `<desc>` with meaningful accessible content
+- [x] SVG has `role="img"`, `aria-labelledby`, `aria-describedby`
+- [x] Chart root has `data-testid="rrg-chart"` with `data-viewport-mode` and `data-selected-date`
+- [x] Every point has `data-testid="rrg-point-{ticker}"`, `data-x`, `data-y`, `data-quadrant`
+- [x] Every label has `data-testid="rrg-label-{ticker}"` and `data-visible`
+- [x] Every tail group has `data-testid="rrg-tail-{ticker}"`
+- [x] Tooltip has `data-testid="rrg-tooltip"` and `data-ticker` when visible
+- [x] All `data-testid` values are stable across rerenders and date changes
+- [x] **COLORBLIND Test 1:** Protanopia — all tickers identifiable by label/tooltip
+- [x] **COLORBLIND Test 2:** Deuteranopia — all tickers identifiable by label/tooltip
+- [x] **COLORBLIND Test 3:** Achromatopsia — tickers distinguishable without color
+- [x] **COLORBLIND Test 4:** Hover on hidden-label point reveals ticker in tooltip
+- [x] Tooltip always includes ticker symbol in all interaction states
+- [x] `tickerLabelAlwaysVisible` overrides collision hide when true
+- [x] `showPatterns` renders deterministic SVG `<pattern>` fills when true
+- [x] Points are focusable via Tab key and announce themselves to screen readers
+- [x] Playwright smoke tests pass (`tests/e2e/chart.spec.ts`)
+- [x] `npm run typecheck` passes
+
+### Colorblind verification notes (C9)
+
+Identity is never color-only: tooltip always includes ticker; hover reveals labels; `showPatterns` / `tickerLabelAlwaysVisible` opt-in for monochrome. Automated coverage: `tests/accessibility.test.ts`, `tests/e2e/chart.spec.ts`. Manual DevTools vision filters remain recommended for visual QA.

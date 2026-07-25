@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, provide, ref, onMounted, onBeforeUnmount } from 'vue'
+import { computed, provide, ref, onMounted, onBeforeUnmount, useId } from 'vue'
 import {
   RRG_CHART_INJECTION,
   RRG_DEFAULT_MARGIN,
@@ -11,17 +11,24 @@ const props = withDefaults(
     width?: number
     height?: number
     margin?: RrgMargin
+    title?: string
+    description?: string
   }>(),
   {
     width: undefined,
     height: undefined,
     margin: () => ({ ...RRG_DEFAULT_MARGIN }),
+    title: 'Relative Rotation Chart',
+    description: '',
   },
 )
 
 const host = ref<HTMLElement | null>(null)
 const measuredWidth = ref(640)
 const measuredHeight = ref(480)
+const uid = useId()
+const titleId = computed(() => `${uid}-title`)
+const descId = computed(() => `${uid}-desc`)
 
 let observer: ResizeObserver | null = null
 
@@ -56,7 +63,7 @@ provide(RRG_CHART_INJECTION.plotWidth, plotWidth)
 provide(RRG_CHART_INJECTION.plotHeight, plotHeight)
 provide(RRG_CHART_INJECTION.margin, computed(() => props.margin))
 
-defineExpose({ plotWidth, plotHeight, svgWidth, svgHeight })
+defineExpose({ plotWidth, plotHeight, svgWidth, svgHeight, titleId, descId })
 </script>
 
 <template>
@@ -68,7 +75,11 @@ defineExpose({ plotWidth, plotHeight, svgWidth, svgHeight })
       :height="svgHeight"
       :viewBox="`0 0 ${svgWidth} ${svgHeight}`"
       role="img"
+      :aria-labelledby="titleId"
+      :aria-describedby="descId"
     >
+      <title :id="titleId">{{ title }}</title>
+      <desc :id="descId">{{ description }}</desc>
       <rect
         class="rrg-bg"
         x="0"
