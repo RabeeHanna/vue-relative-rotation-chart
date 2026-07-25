@@ -33,7 +33,11 @@ defineEmits<{
 }>()
 
 const coloredSeries = computed(() => assignSeriesColors(props.series))
-const domain = useRrgViewport()
+const seriesRef = coloredSeries
+const selectedDateRef = toRef(props, 'selectedDate')
+const tailLengthRef = toRef(props, 'tailLength')
+const viewportModeRef = toRef(props, 'viewportMode')
+const domain = useRrgViewport(seriesRef, selectedDateRef, tailLengthRef, viewportModeRef)
 const plotWidth = computed(() => {
   const w = props.width ?? 640
   return Math.max(0, w - RRG_DEFAULT_MARGIN.left - RRG_DEFAULT_MARGIN.right)
@@ -44,9 +48,6 @@ const plotHeight = computed(() => {
 })
 const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
 
-const seriesRef = coloredSeries
-const selectedDateRef = toRef(props, 'selectedDate')
-const tailLengthRef = toRef(props, 'tailLength')
 const { currentPoints, tailData } = useRrgTailSlices(
   seriesRef,
   selectedDateRef,
