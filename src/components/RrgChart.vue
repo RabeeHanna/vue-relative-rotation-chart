@@ -47,7 +47,13 @@ const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
 const seriesRef = coloredSeries
 const selectedDateRef = toRef(props, 'selectedDate')
 const tailLengthRef = toRef(props, 'tailLength')
-const { currentPoints } = useRrgTailSlices(seriesRef, selectedDateRef, tailLengthRef)
+const { currentPoints, tailData } = useRrgTailSlices(
+  seriesRef,
+  selectedDateRef,
+  tailLengthRef,
+  xScale,
+  yScale,
+)
 </script>
 
 <template>
@@ -71,7 +77,7 @@ const { currentPoints } = useRrgTailSlices(seriesRef, selectedDateRef, tailLengt
         :x-scale="xScale"
         :y-scale="yScale"
       />
-      <RrgTails />
+      <RrgTails :tail-data="tailData" :hovered-ticker="highlightedTicker" />
       <RrgPoints
         :current-points="currentPoints"
         :x-scale="xScale"

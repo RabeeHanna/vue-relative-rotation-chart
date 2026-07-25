@@ -60,3 +60,38 @@ describe('useRrgTailSlices currentPoints', () => {
     expect(currentPoints.value).toEqual([])
   })
 })
+
+describe('useRrgTailSlices tailData', () => {
+  const identity = computed(() => {
+    const scale = (v: number) => v
+    ;(scale as { domain?: () => number[] }).domain = () => [0, 1]
+    ;(scale as { range?: () => number[] }).range = () => [0, 1]
+    return scale as import('../src/composables/useRrgScales').RrgScale
+  })
+
+  it('builds opacity-faded segments up to selectedDate', () => {
+    const { tailData } = useRrgTailSlices(
+      computed(() => series),
+      computed(() => '2024-03-01'),
+      computed(() => 10),
+      identity,
+      identity,
+    )
+    const xlk = tailData.value.find((t) => t.ticker === 'XLK')
+    expect(xlk?.segments).toHaveLength(2)
+    expect(xlk!.segments[0].opacity).toBeLessThan(xlk!.segments[1].opacity)
+    expect(xlk!.segments[0].date).toBe('2024-02-01')
+    expect(xlk!.segments[1].date).toBe('2024-03-01')
+  })
+
+  it('respects tailLength', () => {
+    const { tailData } = useRrgTailSlices(
+      computed(() => series),
+      computed(() => '2024-03-01'),
+      computed(() => 2),
+      identity,
+      identity,
+    )
+    expect(tailData.value.find((t) => t.ticker === 'XLK')?.segments).toHaveLength(1)
+  })
+})
