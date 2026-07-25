@@ -6,8 +6,7 @@ Local Vite playground for visual development of `RrgChart`.
 
 ## Belongs here
 
-- `main.ts`, `DemoApp.vue`, `mockSeries.ts` (and later scenario mocks)
-
+- `main.ts`, `DemoApp.vue`, `mockSeries.ts`, `adversarialMocks.ts` (C11 scenarios)
 ## Does not belong here
 
 - Production library entrypoints

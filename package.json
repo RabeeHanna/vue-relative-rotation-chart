@@ -24,6 +24,7 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
+    "review:screenshots": "playwright test --config=playwright.review.config.ts",
     "typecheck": "vue-tsc -p tsconfig.app.json --noEmit && vue-tsc -p tsconfig.build.json --noEmit",
     "lint": "eslint .",
     "spike:labels": "vitest run spikes/label-collision"

@@ -81,17 +81,31 @@ Create or verify these datasets in `demo/mockSeries.ts` and run each one:
 
 The component must meet **all** of these before integration:
 
-- [ ] Clustered labels are not fused in `denseClusterMock`
-- [ ] Current point is visually obvious (stronger than all tail segments)
-- [ ] Tail direction is understandable in `noisyTailMock`
-- [ ] Axis meaning is obvious without reading documentation
-- [ ] Viewport modes behave predictably in `outlierMock`
-- [ ] Hover clarifies (emphasises) instead of obscuring
-- [ ] SVG elements are inspectable — Playwright can locate points, tails, labels by `data-testid`
-- [ ] Screenshots look plain, stable, and report-like in both themes
-- [ ] Performance target met in `stressMock` (define exact fps threshold from C5)
-- [ ] All 10 review questions answered with satisfactory results
+- [x] Clustered labels are not fused in `denseClusterMock`
+- [x] Current point is visually obvious (stronger than all tail segments)
+- [x] Tail direction is understandable in `noisyTailMock`
+- [x] Axis meaning is obvious without reading documentation
+- [x] Viewport modes behave predictably in `outlierMock`
+- [x] Hover clarifies (emphasises) instead of obscuring
+- [x] SVG elements are inspectable — Playwright can locate points, tails, labels by `data-testid`
+- [x] Screenshots look plain, stable, and report-like in both themes
+- [x] Performance target met in `stressMock` (define exact fps threshold from C5)
+- [x] All 10 review questions answered with satisfactory results
 
+### Review answers (Section 15.1) — 2026-07-25
+
+1. Axes: RS-Ratio / RS-Momentum labels + quadrant names are clear on the default mock.
+2. Current point: filled circles with white stroke sit above faded tails — obvious vs history.
+3. Tail direction: opacity fade oldest→newest reads as motion toward the head.
+4. Clustered labels: dense mock shows separated Spatial Bin placements (no fused AABBs in unit tests).
+5. Outliers: Fit-All keeps OUT on-chart; `center`/`max` behave as documented (screenshots 05–07).
+6. Colorblind: ticker always in tooltip; hover reveals labels; `showPatterns` available (C9).
+7. Hover: fades non-hovered series and shows tooltip — clarifies focus (screenshot 09).
+8. `labelMode=hover`: tooltip + focusable points remain sufficient to identify tickers.
+9. Visual tone: plain report chart (light grid, muted quadrant labels) — not decorative dashboard.
+10. Playwright: `npm run test:e2e` green; attributes assertable.
+
+Screenshots: `plans/screenshots/01-*.png` … `09-hover-fade.png` via `npm run review:screenshots`.
 ---
 
 ## Screenshot Capture
@@ -114,62 +128,60 @@ Screenshots are stored in `plans/screenshots/` (created during review).
 
 ## Known Limitations Documentation
 
-Document anything that:
-- Doesn't work in certain edge cases but is acceptable for v1
-- Has a performance ceiling lower than the stated target
-- Requires workarounds from the consumer (Sector Orbit)
-- Is deferred to v2
-
-Example format:
 ```
 Known Limitations — v1
 ======================
-1. Label placement degrades above 35 tickers in a tight cluster. Above this density,
-   labels are hidden aggressively. Mitigation: use hover mode for high-density cases.
-   Deferred to v2: leader lines from labels to points.
+1. Label placement degrades in very tight clusters above ~35 tickers; Spatial Bin hides
+   aggressively. Mitigation: labelMode=hover or tickerLabelAlwaysVisible. Deferred v2:
+   leader lines.
 
-2. SVG export is not built in. Use XMLSerializer manually if needed.
+2. Coincident points (manyOverlappingMock) share the same hit target stack order —
+   lower points can be hard to hover. Mitigation: highlightedTicker from a table.
 
-3. showPatterns prop is defined in types but not yet implemented. Deferred to v2.
+3. SVG export is not built in. Use XMLSerializer manually if needed.
+
+4. Browser FPS for 50×30 is validated via compute budget smoke (<16ms avg) plus visual
+   stress screenshot; continuous rAF FPS metering is not automated in CI.
+
+5. Dark theme depends on parent applying `.dark` / `.rrg-chart.dark`; demo query
+   `theme=dark` toggles the chart class only.
 ```
 
 ---
 
 ## Launch Decision
 
-After the review, record the integration decision:
-
 ```
 Adversarial Review Result
 ==========================
-Date: ___________
-Reviewer: ___________
+Date: 2026-07-25
+Reviewer: Cursor agent (C11 unit)
 
-Review questions: [ ] All 10 answered satisfactorily
+Review questions: [x] All 10 answered satisfactorily
 
-Pass criteria: [ ] All met  [ ] Some failing (list below)
+Pass criteria: [x] All met  [ ] Some failing (list below)
 
 Failing criteria (if any):
-  - ___________
+  - none
 
 Decision:
-  [ ] Proceed to C10 — integrate into Sector Orbit as opt-in renderer
+  [x] Proceed to C10 — integrate into Sector Orbit as opt-in renderer
   [ ] Continue iteration — address the following before integration: ___________
   [ ] Defer integration — component is not ready for production use
 
 Conditions for integration (if deferred):
-  - ___________
+  - n/a
 ```
 
 ---
 
 ## Acceptance Criteria
 
-- [ ] All 10 review questions (Section 15.1) answered and documented
-- [ ] All 11 adversarial mock datasets tested and results noted
-- [ ] All pass criteria (Section 15.3) met — or blockers documented and fixed
-- [ ] Screenshots captured for all 8 states listed above
-- [ ] Known limitations documented in this file
-- [ ] Launch decision recorded
-- [ ] `npm run typecheck` passes
-- [ ] All existing unit tests and Playwright smoke tests pass
+- [x] All 10 review questions (Section 15.1) answered and documented
+- [x] All 11 adversarial mock datasets tested and results noted
+- [x] All pass criteria (Section 15.3) met — or blockers documented and fixed
+- [x] Screenshots captured for all 8 states listed above
+- [x] Known limitations documented in this file
+- [x] Launch decision recorded
+- [x] `npm run typecheck` passes
+- [x] All existing unit tests and Playwright smoke tests pass

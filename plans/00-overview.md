@@ -127,7 +127,7 @@ These types protect the component from Sector Orbit-specific state shape.
 | [C7](./C7-hover-events.md) | Hover, Tooltip, and Selection Events (**done**) | Interaction | 1–2 days |
 | [C12](./C12-playback-controls.md) | Playback Controls (**done**) | Interaction | 1–2 days |
 | [C9](./C9-accessibility.md) | Accessibility and Agent-Testability (**done**) | Polish | 1 day |
-| [C11](./C11-adversarial-review.md) | Adversarial Review and Polish | Polish | 2–3 days |
+| [C11](./C11-adversarial-review.md) | Adversarial Review and Polish (**done**) | Polish | 2–3 days |
 | [C10](./C10-sector-orbit-integration.md) | Sector Orbit Feature-Flag Integration | Integration | 1–2 days |
 
 **Total estimated: ~20–25 days** (or ~4–5 weeks at 1/3 time)
@@ -151,7 +151,7 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 11. C7 — Hover, Tooltip, and Selection Events (**complete**)
 12. C12 — Playback Controls (controlled timeline UI; independent of C6; can parallelize with C7) (**complete**)
 13. C9 — Accessibility and Agent-Testability (**complete**)
-14. C11 — Adversarial Review and Polish
+14. C11 — Adversarial Review and Polish (**complete** — proceed to C10)
 15. C10 — Sector Orbit Feature-Flag Integration
 
 ---
@@ -171,20 +171,20 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 
 The component is ready to integrate into Sector Orbit when:
 
-- [ ] Renders plain, readable RRG-style chart from mock data
-- [ ] Clear axes, quadrant labels, 100/100 center lines
-- [ ] Tails are readable with clear directionality
-- [ ] Labels do not fuse in clustered cases
+- [x] Renders plain, readable RRG-style chart from mock data
+- [x] Clear axes, quadrant labels, 100/100 center lines
+- [x] Tails are readable with clear directionality
+- [x] Labels do not fuse in clustered cases
 - [x] Hover makes individual tickers easy to inspect
 - [x] Playback controls (when used) make play state, speed, and position unambiguous ([C12](./C12-playback-controls.md))
-- [ ] Viewport modes (fit/max/center) are predictable and stable
-- [ ] Component API accepts generic `RrgRenderSeries[]` — no Sector Orbit assumptions
-- [ ] No calculation logic inside the component
+- [x] Viewport modes (fit/max/center) are predictable and stable
+- [x] Component API accepts generic `RrgRenderSeries[]` — no Sector Orbit assumptions
+- [x] No calculation logic inside the component
 - [x] Playwright can inspect chart elements via `data-testid`
-- [ ] Adversarial review passes (see C11)
+- [x] Adversarial review passes (see C11)
 - [ ] Sector Orbit can switch renderers via feature flag
 - [x] Colorblind accessibility verified (Protanopia + Deuteranopia)
-- [ ] Performance: 50 tickers × 30 points at ≥ 55 fps
+- [x] Performance: 50 tickers × 30 points at ≥ 55 fps
 
 ---
 

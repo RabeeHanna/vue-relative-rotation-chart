@@ -1,59 +1,82 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import {
   RrgChart,
   RrgPlaybackControls,
   type RrgLabelMode,
   type RrgRenderPoint,
+  type RrgViewportMode,
 } from '../src'
-import { mockDates, mockSelectedDate, mockSeries } from './mockSeries'
+import {
+  adversarialScenarios,
+  datesForSeries,
+  type AdversarialScenario,
+} from './adversarialMocks'
 
 const params = new URLSearchParams(window.location.search)
+const scenarioParam = params.get('scenario') as AdversarialScenario | null
+const scenario = ref<AdversarialScenario>(
+  scenarioParam && scenarioParam in adversarialScenarios ? scenarioParam : 'default',
+)
 const labelMode = ref<RrgLabelMode>(
   (params.get('labelMode') as RrgLabelMode | null) ?? 'auto',
 )
+const viewportMode = ref<RrgViewportMode>(
+  (params.get('viewportMode') as RrgViewportMode | null) ?? 'fit',
+)
 const showPatterns = ref(params.get('showPatterns') === 'true')
 const tickerLabelAlwaysVisible = ref(params.get('tickerLabelAlwaysVisible') === 'true')
+const dark = ref(params.get('theme') === 'dark')
 
-const selectedDate = ref(mockSelectedDate)
+const series = computed(() => adversarialScenarios[scenario.value])
+const dates = computed(() => datesForSeries(series.value))
+const selectedDate = ref(dates.value[dates.value.length - 1] ?? '')
 const playing = ref(false)
 const speed = ref(2)
 const hovered = ref<RrgRenderPoint | null>(null)
 
-const queryNote = computed(() =>
-  [
-    `labelMode=${labelMode.value}`,
-    showPatterns.value ? 'showPatterns' : null,
-    tickerLabelAlwaysVisible.value ? 'tickerLabelAlwaysVisible' : null,
-  ]
-    .filter(Boolean)
-    .join(' · '),
-)
+watch(dates, (next) => {
+  if (!next.includes(selectedDate.value)) {
+    selectedDate.value = next[next.length - 1] ?? ''
+  }
+})
 </script>
 
 <template>
-  <main class="demo">
+  <main class="demo" :class="{ dark }">
     <header>
       <h1>vue-relative-rotation-chart</h1>
       <p>Renderer only — data and calculations are supplied by the caller.</p>
     </header>
-    <RrgChart
-      :series="mockSeries"
-      :selected-date="selectedDate"
-      :label-mode="labelMode"
-      :show-patterns="showPatterns"
-      :ticker-label-always-visible="tickerLabelAlwaysVisible"
-      @point-hover="hovered = $event"
-      @point-leave="hovered = null"
-    />
+    <label class="scenario">
+      Scenario
+      <select v-model="scenario" data-testid="demo-scenario">
+        <option v-for="key in Object.keys(adversarialScenarios)" :key="key" :value="key">
+          {{ key }}
+        </option>
+      </select>
+    </label>
+    <div class="rrg-chart-wrap" :class="{ dark }">
+      <RrgChart
+        :class="{ dark }"
+        :series="series"
+        :selected-date="selectedDate"
+        :label-mode="labelMode"
+        :viewport-mode="viewportMode"
+        :show-patterns="showPatterns"
+        :ticker-label-always-visible="tickerLabelAlwaysVisible"
+        @point-hover="hovered = $event"
+        @point-leave="hovered = null"
+      />
+    </div>
     <RrgPlaybackControls
-      :dates="mockDates"
+      :dates="dates"
       v-model:selected-date="selectedDate"
       v-model:playing="playing"
       v-model:speed="speed"
     />
     <pre class="meta">
-{{ queryNote }}
+scenario={{ scenario }} · labelMode={{ labelMode }} · viewport={{ viewportMode }}
 selectedDate={{ selectedDate }} · playing={{ playing }} · speed={{ speed }}x
 hovered={{ hovered ? `${hovered.ticker} @ ${hovered.date}` : 'none' }}
     </pre>
@@ -83,6 +106,10 @@ body {
   padding: 2rem 1.25rem 3rem;
 }
 
+.demo.dark {
+  color: #eee;
+}
+
 header h1 {
   margin: 0 0 0.35rem;
   font-size: 1.75rem;
@@ -90,8 +117,16 @@ header h1 {
 }
 
 header p {
-  margin: 0 0 1.5rem;
+  margin: 0 0 1rem;
   color: #555;
+}
+
+.scenario {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
 }
 
 .meta {
