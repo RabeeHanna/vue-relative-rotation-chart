@@ -17,3 +17,9 @@ Install (Sector Orbit workspace link, for now):
 ```
 
 Scaffolding and public API land in later units (C1+). Pre-start spikes live under `spikes/` and `plans/`.
+
+```bash
+npm install
+npm run spike:labels   # PRE-C1-A label collision spike + SVG artifacts
+npm test
+```

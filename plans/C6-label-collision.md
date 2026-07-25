@@ -60,10 +60,12 @@ export function useRrgLabelLayout(
 
 ```ts
 export type LabelLayoutOptions = {
-  offsetDistance?: number     // starting distance from point center to label (default: 8px)
+  offsetDistance?: number     // preferred right-of-point offset (default: 10px; from PRE-C1-A)
   labelHeight?: number        // estimated label height in px (default: 12)
   charWidth?: number          // estimated average character width in px (default: 7)
   collisionPadding?: number   // extra padding around label bounding box (default: 2)
+  binWidth?: number           // spatial bin width (default: ceil(charWidth*3 + padding*2))
+  binHeight?: number          // spatial bin height (default: labelHeight + padding*2)
 }
 ```
 
@@ -71,62 +73,67 @@ export type LabelLayoutOptions = {
 
 ## Algorithm Implementation
 
-Implement the algorithm chosen in PRE-C1-A. The reference implementation here uses **Greedy Offset Candidate Search** — the recommended starting point. Adapt if a different algorithm was selected in the spike.
+**Selected in PRE-C1-A:** Spatial Binning (Hybrid).  
+Full decision, parameters, and spike artifacts: [`PRE-C1-A-label-collision-spike.md`](./PRE-C1-A-label-collision-spike.md#label-collision-algorithm-decision-completed)  
+Prototype reference: `spikes/label-collision/spatialBin.ts`
 
-### Greedy Offset Candidate Search
+Greedy Offset remains a documented fallback if replay stability on real data is unacceptable; do not ship Force-Directed for v1.
+
+### Spatial Binning (Hybrid) — C6 target
 
 ```ts
-const CANDIDATE_OFFSETS: [number, number][] = [
-  // [dx, dy] pairs, tried in priority order
-  // Priority: right > upper-right > upper > upper-left > left > lower-left > lower > lower-right
-  [1, 0],    // right
-  [1, -1],   // upper-right
-  [0, -1],   // upper
-  [-1, -1],  // upper-left
-  [-1, 0],   // left
-  [-1, 1],   // lower-left
-  [0, 1],    // lower
-  [1, 1],    // lower-right
+const ADJACENT_ORDER: [number, number][] = [
+  [0, 0], [1, 0], [1, -1], [0, -1], [-1, -1], [-1, 0], [-1, 1], [0, 1], [1, 1],
+  [2, 0], [0, -2], [-2, 0], [0, 2],
+  // plus outer-ring variants from PRE-C1-A spike
 ]
 
 function computeLabelLayout(
-  points: PixelPoint[],         // sorted by priority (e.g. ascending ticker alpha, or by label length)
+  points: PixelPoint[], // sorted: label length asc, then ticker localeCompare
   options: LabelLayoutOptions,
 ): ResolvedLabel[] {
+  const binW = options.binWidth ?? Math.ceil(options.charWidth * 3 + options.collisionPadding * 2)
+  const binH = options.binHeight ?? options.labelHeight + options.collisionPadding * 2
+  const occupied = new Set<string>()
   const placed: BoundingBox[] = []
   const results: ResolvedLabel[] = []
 
   for (const point of points) {
     const labelW = estimateLabelWidth(point.label, options.charWidth)
     const labelH = options.labelHeight
+    const preferredX = point.px + options.offsetDistance
+    const preferredY = point.py - labelH / 2
+    const baseCol = Math.floor(preferredX / binW)
+    const baseRow = Math.floor(preferredY / binH)
 
     let bestX: number | null = null
     let bestY: number | null = null
 
-    for (const [nx, ny] of CANDIDATE_OFFSETS) {
-      const scale = options.offsetDistance
-      const candidateX = point.px + nx * scale
-      const candidateY = point.py + ny * scale
-      // Anchor is top-left of label; adjust for centered text
+    for (const [dc, dr] of ADJACENT_ORDER) {
+      const labelX = (baseCol + dc) * binW
+      const labelY = (baseRow + dr) * binH
+      const keys = binsCoveredByRect(labelX, labelY, labelW, labelH, binW, binH)
+      if (keys.some((k) => occupied.has(k))) continue
+
       const box: BoundingBox = {
-        x: candidateX - (nx < 0 ? labelW : nx === 0 ? labelW / 2 : 0) - options.collisionPadding,
-        y: candidateY - (ny > 0 ? 0 : labelH) - options.collisionPadding,
+        x: labelX - options.collisionPadding,
+        y: labelY - options.collisionPadding,
         w: labelW + options.collisionPadding * 2,
         h: labelH + options.collisionPadding * 2,
       }
+      if (placed.some((existing) => intersects(box, existing))) continue
 
-      if (!placed.some(existing => intersects(box, existing))) {
-        bestX = candidateX
-        bestY = candidateY
-        placed.push(box)
-        break
-      }
+      for (const k of keys) occupied.add(k)
+      placed.push(box)
+      bestX = labelX
+      bestY = labelY
+      break
     }
 
     results.push({
       ticker: point.ticker,
-      x: bestX ?? point.px + options.offsetDistance,  // fallback position (will be hidden)
-      y: bestY ?? point.py - options.offsetDistance,
+      x: bestX ?? preferredX,
+      y: bestY ?? preferredY,
       visible: bestX !== null,
       pointX: point.px,
       pointY: point.py,
@@ -258,7 +265,7 @@ Add to `demo/mockSeries.ts`:
 - [ ] `tickerLabelAlwaysVisible = true` overrides `auto` mode — all labels shown
 - [ ] Hidden labels have `opacity: 0` but remain in DOM
 - [ ] Hovered ticker label is always revealed regardless of `labelMode`
-- [ ] Label placement algorithm matches the one selected in PRE-C1-A
+- [ ] Label placement algorithm matches the one selected in PRE-C1-A (**Spatial Binning**)
 - [ ] Placement is deterministic: identical input → identical layout
 - [ ] Label positions are stable during date replay (no jumping)
 - [ ] Each label has `data-testid="rrg-label-{ticker}"` and `data-visible` attributes
