@@ -1,16 +1,63 @@
 {
   "name": "vue-relative-rotation-chart",
   "version": "0.1.0",
-  "private": true,
-  "type": "module",
   "description": "Vue SVG component for RRG-style relative rotation charts (renderer only).",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/vue-relative-rotation-chart.umd.cjs",
+  "module": "./dist/vue-relative-rotation-chart.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/vue-relative-rotation-chart.js",
+      "require": "./dist/vue-relative-rotation-chart.umd.cjs"
+    }
+  },
   "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -p tsconfig.build.json --noEmit && vite build",
+    "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "typecheck": "vue-tsc -p tsconfig.app.json --noEmit && vue-tsc -p tsconfig.build.json --noEmit",
+    "lint": "eslint .",
     "spike:labels": "vitest run spikes/label-collision"
   },
+  "peerDependencies": {
+    "vue": "^3.5.0"
+  },
+  "dependencies": {
+    "d3-array": "^3.2.4",
+    "d3-axis": "^3.0.0",
+    "d3-scale": "^4.0.2",
+    "d3-shape": "^3.2.0",
+    "vue": "^3.5.17"
+  },
   "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "@types/d3-array": "^3.2.1",
+    "@types/d3-axis": "^3.0.6",
+    "@types/d3-scale": "^4.0.9",
+    "@types/d3-shape": "^3.1.7",
+    "@types/node": "^22.15.32",
+    "@typescript-eslint/eslint-plugin": "^8.35.1",
+    "@typescript-eslint/parser": "^8.35.1",
+    "@vitejs/plugin-vue": "^5.2.4",
+    "@vue/test-utils": "^2.4.6",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.30.1",
+    "eslint-plugin-vue": "^10.2.0",
+    "globals": "^16.3.0",
+    "happy-dom": "^18.0.1",
     "typescript": "^5.8.3",
-    "vitest": "^3.2.4"
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^3.2.4",
+    "vue-eslint-parser": "^10.2.0",
+    "vue-tsc": "^2.2.10"
   }
 }

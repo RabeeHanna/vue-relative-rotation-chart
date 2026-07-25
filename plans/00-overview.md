@@ -117,7 +117,7 @@ These types protect the component from Sector Orbit-specific state shape.
 | [PRE-C1-A](./PRE-C1-A-label-collision-spike.md) | Label Collision Algorithm Spike (**done — Spatial Bin**) | Pre-Start | 1 day |
 | [PRE-C1-B](./PRE-C1-B-outlier-strategy.md) | Fit Mode Outlier Strategy Decision (**done — Fit-All**) | Pre-Start | 0.5 day |
 | [PRE-C1-C](./PRE-C1-C-accessibility-requirements.md) | Colorblind Accessibility Requirement (**done**) | Pre-Start | 0.5 day |
-| [C1](./C1-skeleton.md) | Component Project Skeleton | Foundation | 1–2 days |
+| [C1](./C1-skeleton.md) | Component Project Skeleton (**done**) | Foundation | 1–2 days |
 | [C2](./C2-types.md) | Public Data Contract and Types | Foundation | 0.5–1 day |
 | [C3](./C3-axes-quadrants.md) | Static SVG Axes and Quadrants | Foundation | 1–2 days |
 | [C4](./C4-points.md) | Points and Current Frame Rendering | Foundation | 1 day |

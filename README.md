@@ -2,11 +2,11 @@
 
 A Vue SVG component for rendering RRG-style relative rotation charts from precomputed relative strength and momentum data.
 
-This package is a **renderer only** — it does not fetch data or perform RRG calculations. Callers must pass precomputed series props.
+**This component is a renderer only** — it does not fetch data or perform RRG calculations. All RS-Ratio / RS-Momentum values must be pre-calculated and passed as series props.
 
-See [`plans/00-overview.md`](./plans/00-overview.md) for units of work and implementation order.
+## Install
 
-Install (Sector Orbit workspace link, for now):
+Workspace / local link (Sector Orbit for now):
 
 ```json
 {
@@ -16,10 +16,28 @@ Install (Sector Orbit workspace link, for now):
 }
 ```
 
-Scaffolding and public API land in later units (C1+). Pre-start spikes live under `spikes/` and `plans/`.
+## Usage (placeholder — API finalized in C2)
+
+```vue
+<script setup lang="ts">
+import { RrgChart } from 'vue-relative-rotation-chart'
+</script>
+
+<template>
+  <RrgChart />
+</template>
+```
+
+## Scripts
 
 ```bash
 npm install
-npm run spike:labels   # PRE-C1-A label collision spike + SVG artifacts
+npm run dev          # demo at http://localhost:5173
+npm run build        # library build → dist/
+npm run typecheck
+npm run lint
 npm test
+npm run spike:labels # PRE-C1-A spike
 ```
+
+See [`plans/00-overview.md`](./plans/00-overview.md) for units of work.

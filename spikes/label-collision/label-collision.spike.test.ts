@@ -59,7 +59,7 @@ describe('PRE-C1-A label collision spike', () => {
       expect(result.placedCount + result.hiddenCount).toBe(worstCaseCluster.length)
     }
 
-    // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console -- spike summary for visual comparison runs
     console.table(
       Object.values(results).map((r) => ({
         algorithm: r.algorithm,
