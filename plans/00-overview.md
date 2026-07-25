@@ -135,7 +135,9 @@ These types protect the component from host-application-specific state shape.
 | [C16](./C16-optimization.md) | Render / Playback Optimization (**done**) | Performance | 2–4 days |
 | [C17](./C17-performance-profiling.md) | Performance Testing & Profiling (**done**) | Performance / Quality | 2–4 days |
 | [C18](./C18-pre-npm-polish.md) | Pre-npm Polish — Review Artifacts + Public API / Docs (**done**) | Polish / Trust | 2–3 days |
-| [C10](./C10-host-integration.md) | Host Application Feature-Flag Integration (**next**) | Integration | 1–2 days |
+| [C19](./C19-first-public-publish.md) | First Public Publish — Rotation Specialist npm Cut (**draft** — [scrutiny](./C19-public-library-scrutiny.md)) | Packaging / Trust | 1–2 days |
+| [C19.5](./C19.5-demo-ux-simplify.md) | Demo UX — Simple / Customize Split (**draft** — before/with C19 publish) | Demo / Polish | 0.5–1 day |
+| [C10](./C10-host-integration.md) | Host Application Feature-Flag Integration (dogfood; **not** publish-critical merge) | Integration | 1–2 days |
 
 **Total estimated: ~20–25 days** (or ~4–5 weeks at 1/3 time)
 
@@ -166,7 +168,9 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 18. C16 — Render / Playback Optimization (long histories, redraw avoidance) (**complete**)
 19. C17 — Performance Testing & Profiling (harness + use-case matrix) (**complete** — [scrutiny](./C17-research.md), [results](./C17-results.md))
 20. C18 — Pre-npm Polish (review artifacts, API cleanup, README) (**complete** — [plan](./C18-pre-npm-polish.md))
-21. C10 — Host Application Feature-Flag Integration (**next**; **revisit C17 P0–P3 profiles when C10 lands**)
+21. C19.5 — Demo UX Simple/Customize (**draft** — [plan](./C19.5-demo-ux-simplify.md); prefer before publish)
+22. C19 — First public publish (**draft** — [plan](./C19-first-public-publish.md), [scrutiny](./C19-public-library-scrutiny.md)): rotation pitch, changelog accuracy, real-data dogfood gate, npm
+23. C10 — Host feature-flag integration (**optional dogfood / recipe**; merge to host default branch not required for publish)
 
 ---
 
@@ -177,7 +181,7 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 | Pre-Start complete | After PRE-C1-A, B, C | **A/B/C done.** Spatial Bin; Fit-All; colorblind props + core requirement. Proceed to C1. |
 | Performance baseline | After C5 | If 50 tickers × 30 points fails ≥ 55 fps, scope v1 to 30 tickers and document ceiling. |
 | Label proof | After C6 | If algorithm doesn't hold on real data, iterate before proceeding to C7. |
-| Integration ready | After C11 | Standalone chart ready. C13/C14 for public demo/release; C10 deferred until host-app wiring is scheduled. |
+| Integration ready | After C11 | Standalone chart ready. C13/C14 for public demo; **C19** for first npm (includes real-data dogfood). Host `master` merge (C10) optional. |
 
 ---
 

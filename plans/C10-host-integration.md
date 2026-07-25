@@ -12,6 +12,8 @@
 
 Drop the custom SVG renderer into the **host application** behind a feature flag, without removing or breaking the existing chart implementation. Both renderers consume the same calculated data. No calculation code changes.
 
+**Publish relationship (C19):** Merging this into the host **default branch is not** a first-npm gate. Exercising the feature-branch wiring against **real (non-mock) host series once**, and logging findings, **is** a [C19](./C19-first-public-publish.md) P0 gate before publish.
+
 ---
 
 ## Prerequisite
