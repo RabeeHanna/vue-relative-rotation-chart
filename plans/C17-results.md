@@ -51,3 +51,17 @@ Notes: First harness run after C16 stable keys + scrub coalesce. Layer A Vitest 
 **C21 evidence gate:** **not met** — no soft miss / regression requiring attribution. Path A does not unlock [C21](./C21-deep-profiling.md) on this run.
 
 ---
+
+## 2026-07-25 — product + env stress ceiling (`PERF_STRESS=1`)
+
+Public write-up + tables: [`docs/perf-results.md#2026-07-25--product--stress-ceiling-local-windows`](../docs/perf-results.md).
+
+| Mode | Result |
+|------|--------|
+| P0/P2 scrub+play | ~60 fps (soft ≥55 pass) |
+| stress-ceiling scrub (T=100 P=500 full history, ~99.8k lines) | **avgFps 4.75** (document-only break) |
+| stress-ceiling play 120s | ~60 display fps between ticks (does not contradict scrub break) |
+
+SHA `17d24fd`. Harness: same `tests/perf/fps.p0-p2.spec.ts` via env (no new permanent CI profiles).
+
+---

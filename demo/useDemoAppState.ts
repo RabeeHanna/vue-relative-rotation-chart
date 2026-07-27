@@ -8,6 +8,7 @@ import type { DemoControlsState } from './demoControlsState'
 import {
   mergeDemoControls,
   mergeDemoPlayback,
+  presentUrlKeys,
   readDemoSession,
 } from './demoSession'
 import { chartThemeStyle, syncThemeCssPickers } from './demoThemeCss'
@@ -20,6 +21,15 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   Object.assign(controls.value, syncThemeCssPickers(controls.value.theme, controls.value))
 
   const overrideSeries = ref<RrgRenderSeries[] | null>(null)
+  const urlKeys = presentUrlKeys(search)
+  const bootGenerate =
+    controls.value.source === 'generated' ||
+    urlKeys.has('genTickers') ||
+    urlKeys.has('genPoints')
+  if (bootGenerate) {
+    generateDemoSeries(controls.value, overrideSeries)
+  }
+
   const series = computed(() =>
     controls.value.source === 'preset'
       ? scenarioById[controls.value.scenario].series
@@ -35,9 +45,11 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
     firstDate,
   )
   const selectedDate = ref(
-    dates.value.includes(playback.selectedDate)
-      ? playback.selectedDate
-      : firstDate,
+    bootGenerate
+      ? firstDate
+      : dates.value.includes(playback.selectedDate)
+        ? playback.selectedDate
+        : firstDate,
   )
   // First visit / no saved date → play from start; otherwise still autoplay the demo.
   const playing = ref(true)

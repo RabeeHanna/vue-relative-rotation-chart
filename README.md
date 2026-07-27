@@ -146,6 +146,20 @@ Pre-1.0 may change between minors. Treat these as the surfaces most likely to mo
 
 See also [Semver policy](#semver-policy).
 
+## Performance
+
+In its **supported configuration** (capped `tailLength` — the mode virtually every real use case needs), this package renders everyday and long-history boards at **55+ fps** continuously for both scrub and play on Chromium (Playwright harness).
+
+We also stress-tested **well past that** — up to **100 tickers × 500 points with full-history tails (~100k SVG lines)** — to document exactly where it degrades. Continuous scrub there falls to single-digit fps; that ceiling is intentional documentation, not a supported product mode.
+
+| Mode | Load | Scrub | Play | Role |
+|------|------|-------|------|------|
+| Product (P0) | default board, tail 10 | ~60 fps | ~60 fps | supported |
+| Product (P2) | 8×200, tail 10 | ~60 fps | ~60 fps | supported |
+| Ceiling | 100×500 full history | ~5 fps | display ~60 between ticks | document-only break |
+
+Raw run log (machine, SHA, commands, caveats): [`docs/perf-results.md#2026-07-25--product--stress-ceiling-local-windows`](./docs/perf-results.md#2026-07-25--product--stress-ceiling-local-windows). Re-run locally with `npm run test:perf` and `PERF_STRESS=1 npm run test:perf -- --grep stress-ceiling`.
+
 ## Host integration (sketch)
 
 Typical consumer pattern: keep calculation in the host; adapt host series → `RrgRenderSeries[]`; mount `RrgChart` (+ optional `RrgPlaybackControls`). A feature-flag swap next to an existing chart is enough for dogfood — see [`plans/C10-host-integration.md`](./plans/C10-host-integration.md).

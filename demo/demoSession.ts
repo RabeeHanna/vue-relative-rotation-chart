@@ -63,6 +63,9 @@ const URL_KEYS: Array<keyof DemoUrlState> = [
   'pointRadius',
   'hitRadius',
   'speedMode',
+  'genTickers',
+  'genPoints',
+  'genSeed',
 ]
 
 /** Param names present in the query string (URL wins over session for these). */

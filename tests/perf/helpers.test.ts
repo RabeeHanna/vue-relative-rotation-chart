@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { expectedTailLineCounts, PERF_TARGET_FPS, segmentsPerTicker } from './expectedTailNodes'
 import { computeFpsMetrics } from './fpsMetrics'
+import { profileUrl, stressEnv } from './perfHarness'
 
 describe('perf helpers', () => {
   it('segmentsPerTicker clamps window', () => {
@@ -10,7 +11,9 @@ describe('perf helpers', () => {
   })
 
   it('expectedTailLineCounts doubles for hit+visible', () => {
-    expect(expectedTailLineCounts({ tickerCount: 8, tailLength: 10, pointsThroughSelected: 200 })).toEqual({
+    expect(
+      expectedTailLineCounts({ tickerCount: 8, tailLength: 10, pointsThroughSelected: 200 }),
+    ).toEqual({
       segments: 72,
       hits: 72,
       totalLines: 144,
@@ -18,10 +21,40 @@ describe('perf helpers', () => {
   })
 
   it('computeFpsMetrics averages frame deltas', () => {
-    // 10 frames at 16.67ms ≈ 60fps
     const stamps = Array.from({ length: 10 }, (_, i) => i * (1000 / 60))
     const m = computeFpsMetrics(stamps)
     expect(m.avgFps).toBeGreaterThan(55)
     expect(PERF_TARGET_FPS).toBe(55)
+  })
+
+  it('stressEnv defaults and profileUrl encode generator ceiling', () => {
+    const keys = [
+      'PERF_TICKERS',
+      'PERF_POINTS',
+      'PERF_FULL_HISTORY',
+      'PERF_PLAY_MS',
+      'PERF_SCRUB_STEPS',
+      'PERF_SEED',
+      'PERF_TAIL',
+    ] as const
+    const saved = Object.fromEntries(keys.map((k) => [k, process.env[k]]))
+    for (const k of keys) delete process.env[k]
+    try {
+      const s = stressEnv()
+      expect(s.tickers).toBe(100)
+      expect(s.points).toBe(500)
+      expect(s.fullHistory).toBe(true)
+      expect(s.playMs).toBe(120_000)
+      const url = profileUrl('stress-ceiling')
+      expect(url).toContain('source=generated')
+      expect(url).toContain('genTickers=100')
+      expect(url).toContain('genPoints=500')
+      expect(url).toContain('fullHistoryTail=true')
+    } finally {
+      for (const k of keys) {
+        if (saved[k] === undefined) delete process.env[k]
+        else process.env[k] = saved[k]
+      }
+    }
   })
 })

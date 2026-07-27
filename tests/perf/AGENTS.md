@@ -9,6 +9,7 @@ C17 performance harness + C20 bundle-size checks: deterministic Vitest invariant
 - Vitest `*.test.ts` — hard node-count gates, soft JSDOM date-patch timings, package exclusion, **bundle size** (`bundleSize.ts`), helpers
 - Playwright `*.spec.ts` — Chromium FPS for P0/P2 (scrub + play); optional ceiling via `PERF_CEILING=1`
 - Shared helpers (`expectedTailNodes.ts`, `fpsMetrics.ts`, `perfHarness.ts`, `bundleSize.ts`)
+- Env probes (same specs, no new files): `PERF_CEILING=1` (D3), `PERF_STRESS=1` (+ `PERF_TICKERS` / `PERF_POINTS` / `PERF_PLAY_MS` / …)
 
 ## Does not belong here
 
@@ -29,4 +30,5 @@ C17 performance harness + C20 bundle-size checks: deterministic Vitest invariant
 - `npm test` (Layer A Vitest via `tests/**/*.test.ts`; bundle IO skipped if `dist/` absent)
 - `npm run check:bundle-size` (requires `dist/`)
 - `npm run test:perf` + `.github/workflows/perf-nightly.yml` (Layer B)
+- Optional: `PERF_STRESS=1 npm run test:perf` for generator ceiling (long play/scrub; document-only)
 - Playbook: [`docs/perf.md`](../../docs/perf.md)

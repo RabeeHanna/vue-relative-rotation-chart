@@ -3,9 +3,11 @@ import {
   buildRunResult,
   playForMs,
   profileUrl,
+  readUsedJsHeap,
   scrubTimeline,
   startFrameSampler,
   stopFrameSampler,
+  stressEnv,
   writePerfArtifact,
   PERF_TARGET_FPS,
   type PerfProfileId,
@@ -15,24 +17,39 @@ async function runProfile(
   page: import('@playwright/test').Page,
   profile: PerfProfileId,
   interaction: 'scrub' | 'play',
+  options?: { scrubSteps?: number; playMs?: number; note?: string },
 ) {
   const url = profileUrl(profile)
-  await page.goto(url)
-  await expect(page.getByTestId('rrg-chart')).toBeVisible()
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 180_000 })
+  await expect(page.getByTestId('rrg-chart')).toBeVisible({ timeout: 180_000 })
   await expect(page.getByTestId('rrg-playback')).toBeVisible()
 
+  const heapBefore = await readUsedJsHeap(page)
   await startFrameSampler(page)
   if (interaction === 'scrub') {
-    await scrubTimeline(page, profile === 'P2' ? 60 : 30)
+    const steps =
+      options?.scrubSteps ??
+      (profile === 'P2' ? 60 : profile === 'stress-ceiling' ? stressEnv().scrubSteps : 30)
+    await scrubTimeline(page, steps)
   } else {
-    // Speed up slightly so play covers more frames in a short window.
     for (let i = 0; i < 3; i++) {
       await page.getByTestId('rrg-playback-speed-up').click()
     }
-    await playForMs(page, profile === 'P2' ? 2500 : 1500)
+    const playMs =
+      options?.playMs ??
+      (profile === 'stress-ceiling'
+        ? stressEnv().playMs
+        : profile === 'P2'
+          ? 2500
+          : 1500)
+    await playForMs(page, playMs)
   }
   const stamps = await stopFrameSampler(page)
-  const result = buildRunResult(profile, interaction, url, stamps)
+  const heapAfter = await readUsedJsHeap(page)
+  const result = buildRunResult(profile, interaction, url, stamps, {
+    heap: { beforeBytes: heapBefore, afterBytes: heapAfter },
+    note: options?.note,
+  })
   const artifact = writePerfArtifact(result)
   console.log(`[perf] ${profile} ${interaction}`, result.metrics, '→', artifact)
 
@@ -40,7 +57,6 @@ async function runProfile(
   if (result.hardGate) {
     expect(result.metrics.avgFps).toBeGreaterThanOrEqual(PERF_TARGET_FPS)
   } else if (!result.meetsSoftTarget) {
-    // Soft: warn only — shared CI CPU is not a hard gate (C17 locked decision).
     console.warn(
       `[perf] soft miss: ${profile} ${interaction} avgFps=${result.metrics.avgFps} (target ${PERF_TARGET_FPS})`,
     )
@@ -63,5 +79,38 @@ test.describe('C17 FPS — document-only / ceiling', () => {
   test('D3-ceiling full-history scrub (nightly when PERF_CEILING=1)', async ({ page }) => {
     test.skip(process.env.PERF_CEILING !== '1', 'Set PERF_CEILING=1 for nightly/manual ceiling probe')
     await runProfile(page, 'D3-ceiling', 'scrub')
+  })
+})
+
+test.describe('C17 FPS — stress ceiling (PERF_STRESS=1)', () => {
+  test.beforeEach(() => {
+    test.skip(
+      process.env.PERF_STRESS !== '1',
+      'Set PERF_STRESS=1 for generator ceiling (env: PERF_TICKERS/POINTS/PLAY_MS/…)',
+    )
+  })
+
+  test('stress-ceiling scrub', async ({ page }) => {
+    test.setTimeout(600_000)
+    const s = stressEnv()
+    const lines = s.fullHistory
+      ? 2 * s.tickers * Math.max(0, s.points - 1)
+      : 2 * s.tickers * Math.max(0, s.tailLength - 1)
+    await runProfile(page, 'stress-ceiling', 'scrub', {
+      scrubSteps: s.scrubSteps,
+      note: `document-only ceiling · ~${lines} SVG tail lines · T=${s.tickers} P=${s.points} fullHistory=${s.fullHistory}`,
+    })
+  })
+
+  test('stress-ceiling play', async ({ page }) => {
+    test.setTimeout(600_000)
+    const s = stressEnv()
+    const lines = s.fullHistory
+      ? 2 * s.tickers * Math.max(0, s.points - 1)
+      : 2 * s.tickers * Math.max(0, s.tailLength - 1)
+    await runProfile(page, 'stress-ceiling', 'play', {
+      playMs: s.playMs,
+      note: `document-only ceiling · ~${lines} SVG tail lines · playMs=${s.playMs} · T=${s.tickers} P=${s.points} fullHistory=${s.fullHistory}`,
+    })
   })
 })

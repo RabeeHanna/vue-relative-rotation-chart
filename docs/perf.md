@@ -16,6 +16,19 @@ This package is a **renderer only** — measure the SVG chart paths below; do no
 
 Optional local convenience: demo **Run perf sample** button — not the source of truth (Playwright is).
 
+Published numbers + raw methodology: [`docs/perf-results.md`](./perf-results.md).
+
+### Stress ceiling (manual / env — not PR CI)
+
+Same Playwright file as Layer B; opt in with env vars (no new permanent profiles):
+
+```bash
+PERF_STRESS=1 PERF_PLAY_MS=120000 npm run test:perf -- --grep stress-ceiling
+# optional knobs: PERF_TICKERS PERF_POINTS PERF_FULL_HISTORY PERF_SCRUB_STEPS PERF_TAIL PERF_SEED
+```
+
+Lead README claims with **capped-tail product** results. Treat full-history generator ceilings as “where it breaks,” not supported SLAs. Heap growth over multi-minute soaks: one manual Chrome Memory glance — not automated snapshots.
+
 ## Bundle size (C20)
 
 Published `dist/` JS/CSS sizes are checked with a **hard ceiling** and a **soft warn** (~25% over recorded baseline):

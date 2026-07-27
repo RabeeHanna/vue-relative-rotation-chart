@@ -33,6 +33,10 @@ export type DemoUrlState = {
   pointRadius: number
   hitRadius: number
   speedMode: DemoSpeedMode
+  /** Advanced generator knobs (URL-roundtrippable for reproducible stress loads). */
+  genTickers: number
+  genPoints: number
+  genSeed: number
 }
 
 const VIEWPORTS = new Set<RrgViewportMode>(['fit', 'max', 'center'])
@@ -105,6 +109,9 @@ export function parseDemoUrl(search: string): DemoUrlState {
     hitRadius: asNum(params.get('hitRadius'), 12, 4, 32),
     speedMode:
       params.get('speedMode') === 'skip' ? 'skip' : 'interval',
+    genTickers: asNum(params.get('genTickers'), 20, 1, 100),
+    genPoints: asNum(params.get('genPoints'), 15, 1, 500),
+    genSeed: asNum(params.get('genSeed'), 42, 0, 2_147_483_647),
   }
 }
 
@@ -132,6 +139,9 @@ export function serializeDemoUrl(state: DemoUrlState): string {
   params.set('pointRadius', String(state.pointRadius))
   params.set('hitRadius', String(state.hitRadius))
   params.set('speedMode', state.speedMode)
+  params.set('genTickers', String(state.genTickers))
+  params.set('genPoints', String(state.genPoints))
+  params.set('genSeed', String(state.genSeed))
   if (state.embedWidth) params.set('embedWidth', String(state.embedWidth))
   if (state.highlightedTicker) params.set('highlightedTicker', state.highlightedTicker)
   if (state.selectedTicker) params.set('selectedTicker', state.selectedTicker)

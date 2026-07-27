@@ -4,7 +4,7 @@ import type { Page } from '@playwright/test'
 import { computeFpsMetrics, type FpsMetrics } from './fpsMetrics'
 import { PERF_TARGET_FPS } from './expectedTailNodes'
 
-export type PerfProfileId = 'P0' | 'P2' | 'D3-ceiling'
+export type PerfProfileId = 'P0' | 'P2' | 'D3-ceiling' | 'stress-ceiling'
 
 export type PerfRunResult = {
   profile: PerfProfileId
@@ -15,6 +15,36 @@ export type PerfRunResult = {
   meetsSoftTarget: boolean
   hardGate: boolean
   at: string
+  /** Optional JS heap bytes (Chromium `performance.memory`), not a full heap snapshot. */
+  heap?: { beforeBytes: number | null; afterBytes: number | null }
+  note?: string
+}
+
+function envInt(name: string, fallback: number, min: number, max: number): number {
+  const raw = process.env[name]
+  if (raw == null || raw === '') return fallback
+  const n = Number(raw)
+  if (!Number.isFinite(n)) return fallback
+  return Math.min(max, Math.max(min, Math.floor(n)))
+}
+
+function envFlag(name: string, fallback = false): boolean {
+  const raw = process.env[name]
+  if (raw == null || raw === '') return fallback
+  return raw === '1' || raw === 'true'
+}
+
+/** Env knobs for `PERF_STRESS=1` (document-only ceiling; not a PR gate). */
+export function stressEnv() {
+  return {
+    tickers: envInt('PERF_TICKERS', 100, 1, 100),
+    points: envInt('PERF_POINTS', 500, 1, 500),
+    seed: envInt('PERF_SEED', 42, 0, 2_147_483_647),
+    fullHistory: envFlag('PERF_FULL_HISTORY', true),
+    tailLength: envInt('PERF_TAIL', 10, 1, 60),
+    playMs: envInt('PERF_PLAY_MS', 120_000, 1_000, 600_000),
+    scrubSteps: envInt('PERF_SCRUB_STEPS', 80, 10, 500),
+  }
 }
 
 export function profileUrl(profile: PerfProfileId): string {
@@ -25,6 +55,22 @@ export function profileUrl(profile: PerfProfileId): string {
       return '/?scenario=longPlayback200&tailLength=10&labelMode=hover&viewportMode=fit&playbackLoop=true'
     case 'D3-ceiling':
       return '/?scenario=longPlayback100&fullHistoryTail=true&labelMode=hover&viewportMode=fit&playbackLoop=true'
+    case 'stress-ceiling': {
+      const s = stressEnv()
+      const params = new URLSearchParams({
+        source: 'generated',
+        genTickers: String(s.tickers),
+        genPoints: String(s.points),
+        genSeed: String(s.seed),
+        fullHistoryTail: String(s.fullHistory),
+        tailLength: String(s.tailLength),
+        labelMode: 'hover',
+        viewportMode: 'fit',
+        playbackLoop: 'true',
+        theme: 'dark',
+      })
+      return `/?${params.toString()}`
+    }
   }
 }
 
@@ -53,6 +99,15 @@ export async function stopFrameSampler(page: Page): Promise<number[]> {
     const stamps = w.__rrgPerf?.stamps ?? []
     w.__rrgPerf = undefined
     return stamps
+  })
+}
+
+export async function readUsedJsHeap(page: Page): Promise<number | null> {
+  return page.evaluate(() => {
+    const perf = performance as Performance & {
+      memory?: { usedJSHeapSize: number }
+    }
+    return perf.memory?.usedJSHeapSize ?? null
   })
 }
 
@@ -98,6 +153,7 @@ export function buildRunResult(
   interaction: 'scrub' | 'play',
   url: string,
   stamps: number[],
+  extra?: Pick<PerfRunResult, 'heap' | 'note'>,
 ): PerfRunResult {
   const metrics = computeFpsMetrics(stamps)
   const hardGate = process.env.PERF_HARD_GATE === '1'
@@ -110,6 +166,7 @@ export function buildRunResult(
     meetsSoftTarget: metrics.avgFps >= PERF_TARGET_FPS,
     hardGate,
     at: new Date().toISOString(),
+    ...extra,
   }
 }
 
