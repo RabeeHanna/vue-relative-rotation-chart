@@ -103,6 +103,19 @@ export const AGENT_MISSIONS: AgentMission[] = [
       { action: 'readState', expect: { scenario: 'stress' } },
     ],
   },
+  {
+    id: 'series-visibility',
+    name: 'Series solo and restore',
+    url: '/?scenario=default&source=preset&agent=1',
+    readyTestId: 'rrg-chart',
+    steps: [
+      { action: 'pausePlayback' },
+      { action: 'click', target: 'rrg-series-visibility-solo-XLK' },
+      { action: 'readState', expect: { visibleTickerCount: 1 } },
+      { action: 'click', target: 'rrg-series-visibility-restore' },
+      { action: 'readState', expect: { visibleTickerCount: 6 } },
+    ],
+  },
 ]
 
 export function agentMissionById(id: string): AgentMission | undefined {

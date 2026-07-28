@@ -1,6 +1,10 @@
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { RrgRenderPoint, RrgRenderSeries } from '../src/types/rrg'
 import { useRrgChartSummary } from '../src/composables/useRrgChartSummary'
+import {
+  applyVisibleTickers,
+  seriesTickers,
+} from '../src/composables/useRrgSeriesVisibility'
 import { applyDemoJson, copyDemoText, generateDemoSeries } from './demoActions'
 import { buildCopySnippet } from './copySnippet'
 import { demoChartPropsFromControls, demoCurrentPoints, effectiveDemoTailLength } from './demoChartProps'
@@ -38,7 +42,16 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
       ? scenarioById[controls.value.scenario].series
       : (overrideSeries.value ?? scenarioById[controls.value.scenario].series),
   )
-  const dates = computed(() => datesForSeries(series.value))
+  const visibleTickers = ref<string[]>([])
+  watch(
+    series,
+    (next) => {
+      visibleTickers.value = seriesTickers(next)
+    },
+    { immediate: true },
+  )
+  const chartSeries = computed(() => applyVisibleTickers(series.value, visibleTickers.value))
+  const dates = computed(() => datesForSeries(chartSeries.value))
   const firstDate = dates.value[0] ?? ''
   const hasSavedDate =
     typeof saved?.playback?.selectedDate === 'string' &&
@@ -71,7 +84,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const themeStyle = computed(() => chartThemeStyle(controls.value.theme, controls.value))
   const dark = computed(() => controls.value.theme === 'dark')
   const dataNotInLink = computed(() => controls.value.source !== 'preset')
-  const currentPoints = computed(() => demoCurrentPoints(series.value, selectedDate.value))
+  const currentPoints = computed(() => demoCurrentPoints(chartSeries.value, selectedDate.value))
   const summaryMode = computed(() =>
     controls.value.compare ? controls.value.viewportLeft : controls.value.viewportMode,
   )
@@ -91,7 +104,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
       tailLength: effectiveDemoTailLength(
         controls.value.tailLength,
         controls.value.fullHistoryTail,
-        series.value,
+        chartSeries.value,
       ),
       tickerLabelAlwaysVisible: controls.value.tickerLabelAlwaysVisible,
       showTailFade: controls.value.showTailFade,
@@ -109,7 +122,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const singleProps = computed(() =>
     demoChartPropsFromControls(
       controls.value,
-      series.value,
+      chartSeries.value,
       selectedDate.value,
       controls.value.viewportMode,
     ),
@@ -117,7 +130,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const leftProps = computed(() =>
     demoChartPropsFromControls(
       controls.value,
-      series.value,
+      chartSeries.value,
       selectedDate.value,
       controls.value.viewportLeft,
     ),
@@ -125,7 +138,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const rightProps = computed(() =>
     demoChartPropsFromControls(
       controls.value,
-      series.value,
+      chartSeries.value,
       selectedDate.value,
       controls.value.viewportRight,
     ),
@@ -136,7 +149,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const { agentMode, agentState, showPerfPanel } = useDemoAgentState({
     search,
     controls,
-    series,
+    series: chartSeries,
     selectedDate,
     playing,
     speed,
@@ -146,6 +159,8 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   return {
     controls,
     series,
+    chartSeries,
+    visibleTickers,
     dates,
     selectedDate,
     playing,

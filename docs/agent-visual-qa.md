@@ -72,6 +72,18 @@ Use this to **confirm clicks** without parsing SVG coordinates. Chart root still
 | Viewport root | `rrg-viewport` |
 | Mode button | `rrg-viewport-{fit\|max\|center}` |
 
+### Series visibility (`RrgSeriesVisibilityControls`)
+
+| Control | `data-testid` |
+|---------|---------------|
+| Visibility root | `rrg-series-visibility` |
+| Show all | `rrg-series-visibility-show-all` |
+| Hide all | `rrg-series-visibility-hide-all` |
+| Restore | `rrg-series-visibility-restore` |
+| Row | `rrg-series-visibility-item-{ticker}` |
+| Checkbox | `rrg-series-visibility-check-{ticker}` |
+| Solo | `rrg-series-visibility-solo-{ticker}` |
+
 ## Example missions (`demo/agentScenarios.ts`)
 
 | Mission | URL | Pass signal |
@@ -81,6 +93,7 @@ Use this to **confirm clicks** without parsing SVG coordinates. Chart root still
 | Playback | `/?scenario=longPlayback50&agent=1` | scrub while paused; `data-selected-date` set |
 | Label hover | `/?labelMode=hover&agent=1` | tooltip visible on hover |
 | Stress hover | `/?scenario=stress&agent=1` | hover T0–T2; JSON `scenario: stress` |
+| Series visibility | `/?scenario=default&agent=1` | solo XLK → `visibleTickerCount: 1`; restore → 6 |
 
 Run headlessly: `npm run test:agent-guide`
 

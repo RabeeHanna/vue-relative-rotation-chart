@@ -1,6 +1,7 @@
 export { default as RrgChart } from './components/RrgChart.vue'
 export { default as RrgPlaybackControls } from './components/RrgPlaybackControls.vue'
 export { default as RrgViewportControls } from './components/RrgViewportControls.vue'
+export { default as RrgSeriesVisibilityControls } from './components/RrgSeriesVisibilityControls.vue'
 
 export type {
   RrgRenderPoint,
@@ -38,3 +39,11 @@ export {
   rrgViewportModeDescription,
   rrgViewportModeLabel,
 } from './utils/viewportLabels'
+export {
+  applyVisibleTickers,
+  filterVisibleTickers,
+  hideAllTickers,
+  seriesTickers,
+  showAllTickers,
+  soloTicker,
+} from './composables/useRrgSeriesVisibility'

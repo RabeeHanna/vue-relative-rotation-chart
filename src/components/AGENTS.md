@@ -10,7 +10,8 @@ Declarative Vue SFCs that own SVG/DOM structure for the chart.
 - Chart parts: `RrgSvgRoot`, `RrgAxes`, `RrgQuadrants`, `RrgPoints`, `RrgTails`, `RrgLabels`, `RrgTooltip`
 - `RrgPlaybackControls.vue` (C12 — timeline UI composed beside the chart, not inside SVG)
 - `RrgViewportControls.vue` (fit / max / center — C23 slice)
-- Future C23: `RrgSeriesVisibilityControls`, `RrgDisplaySettingsControls`, optional `RrgChartControlsPanel` shell
+- `RrgSeriesVisibilityControls.vue` (show / hide / solo / restore — C23 D1)
+- Future C23: `RrgDisplaySettingsControls`, optional `RrgChartControlsPanel` shell
 - `data-testid` hooks for Playwright/agent inspectability
 
 ## Does not belong here

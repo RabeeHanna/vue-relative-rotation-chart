@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RrgPlaybackControls } from '../src'
+import { RrgPlaybackControls, RrgSeriesVisibilityControls } from '../src'
 import DemoAgentStatePanel from './DemoAgentStatePanel.vue'
 import DemoChartHost from './DemoChartHost.vue'
 import DemoControls from './DemoControls.vue'
@@ -33,6 +33,8 @@ const {
   agentMode,
   agentState,
   showPerfPanel,
+  series,
+  visibleTickers,
 } = useDemoAppState()
 </script>
 
@@ -54,6 +56,14 @@ const {
       @copy-data="onCopyData"
       @apply-json="onApplyJson"
       @generate="onGenerate"
+    />
+
+    <RrgSeriesVisibilityControls
+      v-if="!controls.compare"
+      v-model:visible-tickers="visibleTickers"
+      :class="{ dark }"
+      class="demo-series-visibility"
+      :series="series"
     />
 
     <DemoChartHost

@@ -27,6 +27,9 @@ header p {
 .demo-controls--simple {
   margin-bottom: 0.35rem;
 }
+.demo-series-visibility {
+  margin-bottom: 0.5rem;
+}
 .demo-controls--customize {
   margin-top: 0.75rem;
   margin-bottom: 0;

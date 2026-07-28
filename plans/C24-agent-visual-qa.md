@@ -4,7 +4,7 @@
 **Estimate:** 2–4 days (can ship incrementally)  
 **Depends on:** [C9](./C9-accessibility.md) ✅, [C13](./C13-demo-playground.md) ✅, [C18](./C18-pre-npm-polish.md) ✅ (`review:artifacts` harness)  
 **Priority:** High — repeatable agent browse/click/assess loop for demo + library controls; feeds C22/C23 polish  
-**Status:** **In progress** (C24.1–C24.3 shipped; C24.4 missions per C23 control pending)
+**Status:** **In progress** (C24.1–C24.3 shipped; C24.4 series visibility mission shipped with C23 D1)
 
 ---
 
@@ -222,7 +222,7 @@ Enforced by `package.json` `"files": ["dist"]` and `tests/perf/packageExclusion.
 - [x] Cycle gating documented: fail if task not in image; new cycle for collateral UI issues
 - [ ] No C24.5 pixel-diff CI until C24.5 slice (agent vision is primary until then)
 - [x] `npm pack` / `dist/` guards exclude C24 demo agent QA from published tarball
-- [ ] C23 new controls add missions + testids in same PR as each control slice (cross-ref)
+- [ ] C23 new controls add missions + testids in same PR as each control slice (cross-ref) — **series visibility ✅**; display settings / panel pending
 
 ---
 

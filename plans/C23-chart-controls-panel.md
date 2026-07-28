@@ -4,7 +4,7 @@
 **Estimate:** 3–5 days (can ship incrementally)  
 **Depends on:** C12 playback ✅, C8 viewport ✅, C10 host integration patterns  
 **Priority:** High — Sector Orbit and future hosts must not reimplement chart display toggles  
-**Status:** **In progress** (viewport + playback partially adopted; series visibility and composed panel pending)
+**Status:** **In progress** (viewport + playback partially adopted; **series visibility D1 ✅**; display settings and composed panel pending)
 
 ---
 
@@ -38,8 +38,8 @@ Hosts may wrap library controls in app chrome (`<aside>`, collapsible sections).
 |---|---|---|---|
 | Timeline play / scrub / speed | `RrgPlaybackControls` in `App.vue` | `RrgPlaybackControls` | ✅ Adopted |
 | Viewport Fit / Max / Center | `RrgViewportControls` in `ControlsPanel` | `RrgViewportControls` | ✅ Adopted |
-| Stocks/Sectors checkboxes | `ControlsPanel` + `sectorVisibility.ts` | `RrgSeriesVisibilityControls` | ⏳ Pending |
-| Show all / Hide all / Solo / Restore | `ControlsPanel` + host state | Same component + `useRrgSeriesVisibility` | ⏳ Pending |
+| Stocks/Sectors checkboxes | `ControlsPanel` + `sectorVisibility.ts` | `RrgSeriesVisibilityControls` | ✅ Shipped (C23 D1) |
+| Show all / Hide all / Solo / Restore | `ControlsPanel` + host state | Same component + `useRrgSeriesVisibility` | ✅ Shipped (C23 D1) |
 | Tail length | `ControlsPanel` select | `RrgTailLengthControl` or section in panel | ⏳ Pending |
 | Loop on/off | `ControlsPanel` (duplicate of playback meta) | `RrgPlaybackControls` loop emit | ⏳ Pending |
 | Label mode | Not exposed in host (adapter hardcodes `auto`) | `RrgLabelModeControls` | ⏳ Pending |
@@ -49,7 +49,7 @@ Hosts may wrap library controls in app chrome (`<aside>`, collapsible sections).
 
 ## Deliverables (incremental)
 
-### D1 — Series visibility (`RrgSeriesVisibilityControls`)
+### D1 — Series visibility (`RrgSeriesVisibilityControls`) ✅
 
 - Controlled `visibleTickers` or `hiddenTickers` + `series` metadata (ticker, label, color swatch)
 - Show all, Hide all, Solo, Restore (snapshot before solo — host logic moves to `composables/useRrgSeriesVisibility.ts`)
@@ -116,9 +116,9 @@ See `sector-orbit/plans/234-mobile-layout-polish.md` and `199-chart-evolution.md
 ## Acceptance criteria
 
 - [ ] No chart-display toggle remains solely in Sector Orbit production UI (except data-reload settings)
-- [ ] Each control component has Vitest coverage and stable `data-testid`s
-- [ ] Dark theme via CSS variables (matches playback/viewport)
-- [ ] `src/index.ts` exports all control components + visibility composable
+- [x] Each control component has Vitest coverage and stable `data-testid`s (viewport + series visibility)
+- [x] Dark theme via CSS variables (matches playback/viewport)
+- [x] `src/index.ts` exports series visibility control + helpers (viewport + playback already exported)
 - [ ] C10 / README host recipe updated: compose library panel, don't copy demo sidebar
 - [ ] Demo playground uses same exported components (not duplicate demo-only markup)
 
