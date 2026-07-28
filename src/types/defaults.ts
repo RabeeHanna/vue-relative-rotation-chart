@@ -1,6 +1,7 @@
 import type {
   RrgLabelMode,
   RrgPlaybackLabelStyle,
+  RrgPlaybackLayout,
   RrgPlaybackSpeedMode,
   RrgViewportMode,
 } from './rrg'
@@ -28,4 +29,5 @@ export const RRG_PLAYBACK_DEFAULTS = {
   loop: true,
   speedMode: 'interval' as RrgPlaybackSpeedMode,
   labelStyle: 'icon' as RrgPlaybackLabelStyle,
+  layout: 'auto' as RrgPlaybackLayout,
 } as const

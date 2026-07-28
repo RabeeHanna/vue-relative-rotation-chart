@@ -105,3 +105,72 @@ button {
   font: inherit;
   cursor: pointer;
 }
+
+.row.actions {
+  gap: 0.5rem;
+}
+.row.actions button {
+  flex: 1 1 auto;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 4px;
+  background: #fff;
+}
+
+@media (max-width: 600px) {
+  .row.simple {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .row.simple label {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+  .row.simple select {
+    width: 100%;
+    min-height: 2.25rem;
+  }
+  .customize .row:not(.actions) label {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+  .customize .row:not(.actions) select {
+    width: 100%;
+    min-height: 2.25rem;
+  }
+  .row.actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  .row.actions button {
+    width: 100%;
+    min-height: 2.5rem;
+  }
+  .row.actions .check {
+    grid-column: 1 / -1;
+    min-height: 2.25rem;
+  }
+  .notice {
+    margin-top: 0.35rem;
+  }
+  .tail-cluster .row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .adv-block {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .adv-block button {
+    width: 100%;
+    min-height: 2.25rem;
+  }
+  .adv-block textarea {
+    min-height: 6rem;
+  }
+}

@@ -17,6 +17,7 @@ const props = withDefaults(
     loop: RRG_PLAYBACK_DEFAULTS.loop,
     speedMode: RRG_PLAYBACK_DEFAULTS.speedMode,
     labelStyle: RRG_PLAYBACK_DEFAULTS.labelStyle,
+    layout: RRG_PLAYBACK_DEFAULTS.layout,
     showLoopToggle: true,
   },
 )
@@ -87,6 +88,10 @@ function onKeydown(event: KeyboardEvent) {
 <template>
   <div
     class="rrg-playback"
+    :class="{
+      'rrg-playback--stacked': layout === 'stacked',
+      'rrg-playback--inline': layout === 'inline',
+    }"
     data-testid="rrg-playback"
     tabindex="0"
     role="group"
@@ -96,50 +101,10 @@ function onKeydown(event: KeyboardEvent) {
     :data-speed-mode="speedMode"
     :data-loop="loop ? 'true' : 'false'"
     :data-label-style="labelStyle"
+    :data-layout="layout"
     :data-frame-index="frameIndex >= 0 ? String(frameIndex) : undefined"
     @keydown="onKeydown"
   >
-    <div class="rrg-playback__transport">
-      <button
-        type="button"
-        class="rrg-playback__btn"
-        data-testid="rrg-playback-step-back"
-        :disabled="stepBackDisabled"
-        :aria-label="resolvedCopy.stepBackward"
-        :title="resolvedCopy.stepBackward"
-        @click="stepBy(-1)"
-      >
-        <span aria-hidden="true">⏮</span>
-        <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.stepBackward }}</span>
-      </button>
-      <button
-        type="button"
-        class="rrg-playback__btn rrg-playback__btn--play"
-        data-testid="rrg-playback-toggle"
-        :disabled="!canInteract || (!loop && atEnd && !playing)"
-        :aria-label="playing ? resolvedCopy.pause : resolvedCopy.play"
-        :title="playing ? resolvedCopy.pause : resolvedCopy.play"
-        @click="togglePlaying"
-      >
-        <span aria-hidden="true">{{ playing ? '⏸' : '▶' }}</span>
-        <span v-if="showTextLabels" class="rrg-playback__btn-text">
-          {{ playing ? resolvedCopy.pause : resolvedCopy.play }}
-        </span>
-      </button>
-      <button
-        type="button"
-        class="rrg-playback__btn"
-        data-testid="rrg-playback-step-forward"
-        :disabled="stepForwardDisabled"
-        :aria-label="resolvedCopy.stepForward"
-        :title="resolvedCopy.stepForward"
-        @click="stepBy(1)"
-      >
-        <span aria-hidden="true">⏭</span>
-        <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.stepForward }}</span>
-      </button>
-    </div>
-
     <div class="rrg-playback__timeline">
       <input
         class="rrg-playback__scrubber"
@@ -169,46 +134,89 @@ function onKeydown(event: KeyboardEvent) {
       </div>
     </div>
 
-    <div class="rrg-playback__speed" data-testid="rrg-playback-speed">
-      <button
-        v-if="showLoopToggle"
-        type="button"
-        class="rrg-playback__btn"
-        :class="{ 'rrg-playback__btn--loop-on': loop }"
-        data-testid="rrg-playback-loop-toggle"
-        :aria-pressed="loop ? 'true' : 'false'"
-        :aria-label="resolvedCopy.loop"
-        :title="resolvedCopy.loop"
-        @click="toggleLoop"
-      >
-        <span aria-hidden="true">↻</span>
-        <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.loop }}</span>
-      </button>
-      <button
-        type="button"
-        class="rrg-playback__btn"
-        data-testid="rrg-playback-speed-down"
-        :aria-label="resolvedCopy.decreaseSpeed"
-        :title="resolvedCopy.decreaseSpeed"
-        :disabled="clampedSpeed <= minSpeed"
-        @click="nudgeSpeed(-0.5)"
-      >
-        −
-      </button>
-      <span class="rrg-playback__speed-label" data-testid="rrg-playback-speed-label">
-        {{ speedLabel }}
-      </span>
-      <button
-        type="button"
-        class="rrg-playback__btn"
-        data-testid="rrg-playback-speed-up"
-        :aria-label="resolvedCopy.increaseSpeed"
-        :title="resolvedCopy.increaseSpeed"
-        :disabled="clampedSpeed >= maxSpeed"
-        @click="nudgeSpeed(0.5)"
-      >
-        +
-      </button>
+    <div class="rrg-playback__toolbar">
+      <div class="rrg-playback__transport">
+        <button
+          type="button"
+          class="rrg-playback__btn"
+          data-testid="rrg-playback-step-back"
+          :disabled="stepBackDisabled"
+          :aria-label="resolvedCopy.stepBackward"
+          :title="resolvedCopy.stepBackward"
+          @click="stepBy(-1)"
+        >
+          <span aria-hidden="true">⏮</span>
+          <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.stepBackward }}</span>
+        </button>
+        <button
+          type="button"
+          class="rrg-playback__btn rrg-playback__btn--play"
+          data-testid="rrg-playback-toggle"
+          :disabled="!canInteract || (!loop && atEnd && !playing)"
+          :aria-label="playing ? resolvedCopy.pause : resolvedCopy.play"
+          :title="playing ? resolvedCopy.pause : resolvedCopy.play"
+          @click="togglePlaying"
+        >
+          <span aria-hidden="true">{{ playing ? '⏸' : '▶' }}</span>
+          <span v-if="showTextLabels" class="rrg-playback__btn-text">
+            {{ playing ? resolvedCopy.pause : resolvedCopy.play }}
+          </span>
+        </button>
+        <button
+          type="button"
+          class="rrg-playback__btn"
+          data-testid="rrg-playback-step-forward"
+          :disabled="stepForwardDisabled"
+          :aria-label="resolvedCopy.stepForward"
+          :title="resolvedCopy.stepForward"
+          @click="stepBy(1)"
+        >
+          <span aria-hidden="true">⏭</span>
+          <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.stepForward }}</span>
+        </button>
+      </div>
+
+      <div class="rrg-playback__speed" data-testid="rrg-playback-speed">
+        <button
+          v-if="showLoopToggle"
+          type="button"
+          class="rrg-playback__btn"
+          :class="{ 'rrg-playback__btn--loop-on': loop }"
+          data-testid="rrg-playback-loop-toggle"
+          :aria-pressed="loop ? 'true' : 'false'"
+          :aria-label="resolvedCopy.loop"
+          :title="resolvedCopy.loop"
+          @click="toggleLoop"
+        >
+          <span aria-hidden="true">↻</span>
+          <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.loop }}</span>
+        </button>
+        <button
+          type="button"
+          class="rrg-playback__btn"
+          data-testid="rrg-playback-speed-down"
+          :aria-label="resolvedCopy.decreaseSpeed"
+          :title="resolvedCopy.decreaseSpeed"
+          :disabled="clampedSpeed <= minSpeed"
+          @click="nudgeSpeed(-0.5)"
+        >
+          −
+        </button>
+        <span class="rrg-playback__speed-label" data-testid="rrg-playback-speed-label">
+          {{ speedLabel }}
+        </span>
+        <button
+          type="button"
+          class="rrg-playback__btn"
+          data-testid="rrg-playback-speed-up"
+          :aria-label="resolvedCopy.increaseSpeed"
+          :title="resolvedCopy.increaseSpeed"
+          :disabled="clampedSpeed >= maxSpeed"
+          @click="nudgeSpeed(0.5)"
+        >
+          +
+        </button>
+      </div>
     </div>
 
     <div v-if="$slots.context" class="rrg-playback__context" data-testid="rrg-playback-context">

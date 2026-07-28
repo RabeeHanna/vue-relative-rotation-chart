@@ -1,7 +1,10 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import RrgPlaybackControls from '../src/components/RrgPlaybackControls.vue'
+import '../src/components/RrgPlaybackControls.css'
 import {
   clampSpeed,
   nextFrameIndex,
@@ -282,5 +285,78 @@ describe('RrgPlaybackControls', () => {
     const before = wrapper.emitted('update:selectedDate')?.length ?? 0
     await vi.advanceTimersByTimeAsync(1000)
     expect(wrapper.emitted('update:selectedDate')?.length ?? 0).toBe(before)
+  })
+})
+
+function mountPlaybackAtWidth(
+  widthPx: number,
+  extraProps: Record<string, unknown> = {},
+  extraOptions: { attrs?: Record<string, unknown> } = {},
+) {
+  const host = document.createElement('div')
+  host.style.width = `${widthPx}px`
+  document.body.appendChild(host)
+
+  const wrapper = mount(RrgPlaybackControls, {
+    props: {
+      dates,
+      selectedDate: '2024-01-12',
+      layout: 'stacked',
+      ...extraProps,
+    },
+    attrs: extraOptions.attrs,
+    attachTo: host,
+  })
+
+  return { wrapper, host }
+}
+
+describe('RrgPlaybackControls mobile layout', () => {
+  afterEach(() => {
+    document.body.innerHTML = ''
+  })
+
+  it('avoids horizontal overflow at 390px with stacked layout', () => {
+    const { wrapper, host } = mountPlaybackAtWidth(390)
+    const root = wrapper.get('[data-testid="rrg-playback"]').element as HTMLElement
+
+    expect(root.scrollWidth).toBeLessThanOrEqual(root.clientWidth + 1)
+    expect(root.offsetWidth).toBeLessThanOrEqual(host.clientWidth)
+    expect(root.getAttribute('data-layout')).toBe('stacked')
+    expect(root.classList.contains('rrg-playback--stacked')).toBe(true)
+
+    wrapper.unmount()
+  })
+
+  it('ships stacked touch-target and scrubber rules in CSS', () => {
+    const css = readFileSync(
+      resolve(process.cwd(), 'src/components/RrgPlaybackControls.css'),
+      'utf8',
+    )
+    expect(css).toContain('.rrg-playback--stacked .rrg-playback__toolbar')
+    expect(css).toContain('.rrg-playback--stacked .rrg-playback__btn')
+    expect(css).toContain('min-height: 2.75rem')
+    expect(css).toContain('.rrg-playback--stacked .rrg-playback__scrubber')
+    expect(css).toContain('height: 2.75rem')
+    expect(css).toContain('.rrg-playback--stacked .rrg-playback__timeline')
+    expect(css).toContain('width: 100%')
+  })
+
+  it('defaults layout to auto and marks inline mode', () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: { dates, selectedDate: '2024-01-12', layout: 'inline' },
+    })
+    const root = wrapper.get('[data-testid="rrg-playback"]')
+    expect(root.attributes('data-layout')).toBe('inline')
+    expect(root.classes()).toContain('rrg-playback--inline')
+  })
+
+  it('accepts dark stacked layout for theme styling', () => {
+    const { wrapper } = mountPlaybackAtWidth(390, {}, { attrs: { class: 'dark' } })
+    const root = wrapper.get('[data-testid="rrg-playback"]')
+    expect(root.classes()).toContain('dark')
+    expect(root.classes()).toContain('rrg-playback--stacked')
+
+    wrapper.unmount()
   })
 })

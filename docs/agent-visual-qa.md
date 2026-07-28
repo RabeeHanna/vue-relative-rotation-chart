@@ -117,6 +117,14 @@ Use this to **confirm clicks** without parsing SVG coordinates. Chart root still
 
 Run headlessly: `npm run test:agent-guide`
 
+## Mobile playback QA (C22)
+
+For phone-width checks, set emulation to **390×844** and scroll playback into view:
+
+1. `Emulation.setDeviceMetricsOverride` → `width: 390`, `height: 844`, `mobile: true`
+2. Confirm `[data-testid="rrg-playback"]` has no horizontal overflow; scrubber spans the row; transport buttons ≥44px tall
+3. `RrgPlaybackControls` uses `layout="auto"` (container query stacks ≤600px). Force `layout="stacked"` when the host column is narrow but the viewport is wide
+
 ## Loop protocol
 
 Each cycle has **one explicit task**.

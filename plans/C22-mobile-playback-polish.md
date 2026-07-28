@@ -4,7 +4,7 @@
 **Estimate:** 1–2 days  
 **Depends on:** C12 complete (`RrgPlaybackControls` shipped)  
 **Priority:** Standard — unblocks Sector Orbit mobile UX without duplicating scrubber work in the host  
-**Status:** Pending
+**Status:** Complete (C22 — mobile stacked layout, touch targets, `layout` prop, tests)
 
 ---
 
@@ -49,10 +49,10 @@ After C22 ships:
 
 ## Acceptance criteria
 
-- [ ] `RrgPlaybackControls` usable at 390px width without horizontal scroll
-- [ ] Scrubber thumb/track meet minimum touch target guidance (~44px where practical)
-- [ ] Transport + scrubber covered by package tests at mobile viewport
-- [ ] Demo documents mobile-friendly wiring pattern
+- [x] `RrgPlaybackControls` usable at 390px width without horizontal scroll
+- [x] Scrubber thumb/track meet minimum touch target guidance (~44px where practical)
+- [x] Transport + scrubber covered by package tests at mobile viewport
+- [x] Demo documents mobile-friendly wiring pattern (`layout="auto"` in copy snippet)
 - [ ] Sector Orbit can delete custom scrubber once host migration is done (separate host PR)
 
 ---

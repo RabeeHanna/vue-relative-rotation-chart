@@ -19,6 +19,7 @@ export type {
   RrgPlaybackControlsEmits,
   RrgPlaybackSpeedMode,
   RrgPlaybackLabelStyle,
+  RrgPlaybackLayout,
   RrgQuadrant,
   RrgViewportMode,
   RrgLabelMode,

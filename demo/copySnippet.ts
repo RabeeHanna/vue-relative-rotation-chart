@@ -74,6 +74,7 @@ export function buildCopySnippet(input: CopySnippetInput): string {
     lines.push('  v-model:playing="playing"')
     lines.push('  v-model:speed="speed"')
     if (input.playbackLoop) lines.push('  :loop="true"')
+    lines.push('  layout="auto"')
     lines.push('/>')
   }
 

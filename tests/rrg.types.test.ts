@@ -9,6 +9,7 @@ import type {
   RrgPlaybackControlsEmits,
   RrgPlaybackControlsProps,
   RrgPlaybackLabelStyle,
+  RrgPlaybackLayout,
   RrgQuadrant,
   RrgRenderPoint,
   RrgRenderSeries,
@@ -36,6 +37,7 @@ describe('public type contract', () => {
     expectTypeOf<RrgViewportMode>().toEqualTypeOf<'fit' | 'max' | 'center'>()
     expectTypeOf<RrgLabelMode>().toEqualTypeOf<'auto' | 'always' | 'hover'>()
     expectTypeOf<RrgPlaybackLabelStyle>().toEqualTypeOf<'icon' | 'icon-text'>()
+    expectTypeOf<RrgPlaybackLayout>().toEqualTypeOf<'auto' | 'stacked' | 'inline'>()
     expectTypeOf<RrgSeriesPoint>().toHaveProperty('date')
     expectTypeOf<RrgRenderPoint>().toHaveProperty('ticker')
     expectTypeOf<RrgRenderSeries>().toHaveProperty('points')
@@ -46,6 +48,7 @@ describe('public type contract', () => {
     expectTypeOf<RrgChartEmits>().toHaveProperty('pointHover')
     expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('dates')
     expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('labelStyle')
+    expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('layout')
     expectTypeOf<RrgPlaybackControlsEmits>().toHaveProperty('update:selectedDate')
   })
 

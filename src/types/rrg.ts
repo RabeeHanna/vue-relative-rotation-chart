@@ -150,6 +150,13 @@ export type RrgPlaybackSpeedMode = 'interval' | 'skip'
 /** Visual labels on playback transport buttons. */
 export type RrgPlaybackLabelStyle = 'icon' | 'icon-text'
 
+/**
+ * `auto`: stack when the component is ≤600px wide (container query).
+ * `stacked`: force phone-style layout regardless of width.
+ * `inline`: keep horizontal row even when narrow.
+ */
+export type RrgPlaybackLayout = 'auto' | 'stacked' | 'inline'
+
 export type RrgPlaybackControlsProps = {
   /** Ordered ascending ISO date strings */
   dates: string[]
@@ -172,6 +179,8 @@ export type RrgPlaybackControlsProps = {
    * `icon-text`: glyphs plus visible `copy` strings.
    */
   labelStyle?: RrgPlaybackLabelStyle
+  /** Responsive row vs stacked layout. Default `auto`. */
+  layout?: RrgPlaybackLayout
   /** Optional UI copy overrides (buttons, frame label, aria). */
   copy?: RrgPlaybackCopy
 }
