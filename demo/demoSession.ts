@@ -1,6 +1,7 @@
 import type { DemoControlsState } from './demoControlsState'
 import { EMPTY_CHART_COPY, EMPTY_PLAYBACK_COPY } from './demoCopyFields'
 import { parseDemoUrl, type DemoUrlState } from './demoUrl'
+import { scenarioCatalog } from './scenarios'
 
 export const DEMO_SESSION_KEY = 'vrrc-demo-session'
 export const DEMO_SESSION_VERSION = 1 as const
@@ -93,6 +94,10 @@ export function mergeDemoControls(
     if (present.has(key)) {
       ;(merged as Record<string, unknown>)[key] = url[key]
     }
+  }
+  if (present.has('scenario') && !present.has('labelMode')) {
+    const meta = scenarioCatalog.find((s) => s.id === merged.scenario)
+    if (meta) merged.labelMode = meta.suggestedLabelMode
   }
   return merged
 }

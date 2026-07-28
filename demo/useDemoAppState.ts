@@ -12,6 +12,7 @@ import {
   readDemoSession,
 } from './demoSession'
 import { chartThemeStyle, syncThemeCssPickers } from './demoThemeCss'
+import { applyAgentDemoShellFlags } from './demoAgentShell'
 import { datesForSeries, scenarioById } from './scenarios'
 import { useDemoAgentState } from './useDemoAgentState'
 import { watchDemoSideEffects } from './watchDemoSideEffects'
@@ -20,6 +21,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const saved = readDemoSession()
   const controls = ref<DemoControlsState>(mergeDemoControls(saved?.controls, search))
   Object.assign(controls.value, syncThemeCssPickers(controls.value.theme, controls.value))
+  applyAgentDemoShellFlags(search, controls.value)
 
   const overrideSeries = ref<RrgRenderSeries[] | null>(null)
   const urlKeys = presentUrlKeys(search)
@@ -131,7 +133,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
 
   watchDemoSideEffects({ controls, dates, selectedDate, speed, overrideSeries })
 
-  const { agentMode, agentState } = useDemoAgentState({
+  const { agentMode, agentState, showPerfPanel } = useDemoAgentState({
     search,
     controls,
     series,
@@ -166,5 +168,6 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
     onGenerate: () => generateDemoSeries(controls.value, overrideSeries),
     agentMode,
     agentState,
+    showPerfPanel,
   }
 }

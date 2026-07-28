@@ -32,6 +32,7 @@ const {
   onGenerate,
   agentMode,
   agentState,
+  showPerfPanel,
 } = useDemoAppState()
 </script>
 
@@ -43,6 +44,7 @@ const {
     </header>
 
     <DemoControls
+      section="simple"
       v-model="controls"
       :snippet="snippet"
       :summary-title="summaryTitle"
@@ -53,10 +55,6 @@ const {
       @apply-json="onApplyJson"
       @generate="onGenerate"
     />
-
-    <DemoPerfPanel />
-
-    <p v-if="copyStatus" class="copy-status" data-testid="demo-copy-status">{{ copyStatus }}</p>
 
     <DemoChartHost
       :compare="controls.compare"
@@ -83,7 +81,24 @@ const {
       :copy="partialCopyFromFields(controls.playbackCopy)"
     />
 
-    <p class="hover-chip" data-testid="demo-hover-chip">
+    <DemoControls
+      section="customize"
+      v-model="controls"
+      :snippet="snippet"
+      :summary-title="summaryTitle"
+      :summary-desc="summaryDesc"
+      :data-not-in-link="dataNotInLink"
+      @copy-snippet="onCopySnippet"
+      @copy-data="onCopyData"
+      @apply-json="onApplyJson"
+      @generate="onGenerate"
+    />
+
+    <DemoPerfPanel v-if="showPerfPanel" />
+
+    <p v-if="copyStatus" class="copy-status" data-testid="demo-copy-status">{{ copyStatus }}</p>
+
+    <p v-if="!agentMode" class="hover-chip" data-testid="demo-hover-chip">
       Hover: {{ hovered ? `${hovered.ticker} @ ${hovered.date}` : 'none' }}
     </p>
 

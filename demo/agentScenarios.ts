@@ -52,7 +52,6 @@ export const AGENT_MISSIONS: AgentMission[] = [
     url: '/?scenario=denseCluster&agent=1',
     readyTestId: 'rrg-chart',
     steps: [
-      { action: 'click', target: 'demo-customize-summary' },
       { action: 'select', target: 'demo-viewport', value: 'max' },
       {
         action: 'expectChart',

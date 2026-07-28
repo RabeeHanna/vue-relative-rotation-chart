@@ -64,6 +64,15 @@ describe('demo session', () => {
     expect(merged.tailLength).toBe(15)
   })
 
+  it('applies scenario suggested label mode when scenario is in URL', () => {
+    const session = {
+      ...DEMO_CONTROL_DEFAULTS,
+      labelMode: 'always' as const,
+    }
+    const merged = mergeDemoControls(session, '?scenario=stress')
+    expect(merged.labelMode).toBe('hover')
+  })
+
   it('keeps sibling knobs when applying a scenario preset', () => {
     const controls = {
       ...DEMO_CONTROL_DEFAULTS,

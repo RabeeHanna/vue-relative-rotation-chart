@@ -25,10 +25,10 @@ describe('demo C19.5 UX simplify', () => {
     const w = mountControls()
     expect(w.get('[data-testid="demo-simple"]').text()).toMatch(/Scenario/)
     expect(w.get('[data-testid="demo-simple"]').text()).toMatch(/Theme/)
+    expect(w.get('[data-testid="demo-simple"]').text()).toMatch(/Viewport/)
     expect(w.get('[data-testid="demo-customize"]').attributes('open')).toBeUndefined()
     expect(w.get('[data-testid="demo-snippet-details"]').attributes('open')).toBeUndefined()
-    // Closed <details> still keep children in the DOM; openness is the gate.
-    expect(w.get('[data-testid="demo-viewport"]').isVisible()).toBe(false)
+    expect(w.get('[data-testid="demo-viewport"]').isVisible()).toBe(true)
     expect(w.get('[data-testid="demo-copy-snippet"]').isVisible()).toBe(false)
   })
 

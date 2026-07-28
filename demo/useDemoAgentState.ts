@@ -2,6 +2,7 @@ import { computed, type ComputedRef, type Ref } from 'vue'
 import type { RrgRenderPoint, RrgRenderSeries } from '../src/types/rrg'
 import { buildAgentDemoState, isAgentModeEnabled, type AgentDemoState } from './agentState'
 import type { DemoControlsState } from './demoControlsState'
+import { isPerfPanelEnabled } from './demoAgentShell'
 
 export function useDemoAgentState(input: {
   search: string
@@ -38,5 +39,9 @@ export function useDemoAgentState(input: {
     }),
   )
 
-  return { agentMode, agentState }
+  const showPerfPanel = computed(() =>
+    isPerfPanelEnabled(typeof window !== 'undefined' ? window.location.search : input.search),
+  )
+
+  return { agentMode, agentState, showPerfPanel }
 }

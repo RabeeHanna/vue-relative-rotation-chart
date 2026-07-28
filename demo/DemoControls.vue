@@ -9,12 +9,17 @@ import './DemoControls.css'
 
 const state = defineModel<DemoControlsState>({ required: true })
 
-defineProps<{
-  snippet: string
-  summaryTitle: string
-  summaryDesc: string
-  dataNotInLink: boolean
-}>()
+withDefaults(
+  defineProps<{
+    snippet: string
+    summaryTitle: string
+    summaryDesc: string
+    dataNotInLink: boolean
+    /** `simple` = scenario/theme only; `customize` = disclosure block; `full` = both */
+    section?: 'full' | 'simple' | 'customize'
+  }>(),
+  { section: 'full' },
+)
 
 const emit = defineEmits<{
   copySnippet: []
@@ -29,8 +34,12 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
 </script>
 
 <template>
-  <section class="demo-controls" data-testid="demo-controls">
-    <div class="row simple" data-testid="demo-simple">
+  <section
+    class="demo-controls"
+    data-testid="demo-controls"
+    :class="{ 'demo-controls--simple': section === 'simple', 'demo-controls--customize': section === 'customize' }"
+  >
+    <div v-if="section !== 'customize'" class="row simple" data-testid="demo-simple">
       <label>
         Scenario
         <select v-model="state.scenario" data-testid="demo-scenario">
@@ -46,9 +55,16 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
           <option value="dark">dark</option>
         </select>
       </label>
+      <label>
+        Viewport
+        <select v-model="state.viewportMode" data-testid="demo-viewport" :disabled="state.compare">
+          <option v-for="v in viewports" :key="v" :value="v">{{ v }}</option>
+        </select>
+      </label>
     </div>
 
     <details
+      v-if="section !== 'simple'"
       class="customize"
       :open="state.customizeOpen"
       data-testid="demo-customize"
@@ -61,12 +77,6 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
       </summary>
 
       <div class="row">
-        <label>
-          Viewport
-          <select v-model="state.viewportMode" data-testid="demo-viewport" :disabled="state.compare">
-            <option v-for="v in viewports" :key="v" :value="v">{{ v }}</option>
-          </select>
-        </label>
         <label>
           Labels
           <select v-model="state.labelMode" data-testid="demo-label-mode">
