@@ -34,6 +34,15 @@ npm run test:perf          # Layer B — Chromium FPS (soft ≥55)
 npm run build && npm run check:bundle-size
 ```
 
+## Agent visual QA (demo UX)
+
+Before demo layout or control polish PRs, run the agent loop or read the playbook:
+
+- [`docs/agent-visual-qa.md`](./docs/agent-visual-qa.md)
+- [`.cursor/skills/agent-visual-qa/SKILL.md`](./.cursor/skills/agent-visual-qa/SKILL.md)
+
+Open `http://localhost:5173/?agent=1` for machine-readable state (`agent-state-panel`). **Always read full-page screenshots** before claiming a UX cycle passes; JSON confirms clicks only. Optional static pixel-diff baselines: [C24.5](plans/C24-agent-visual-qa.md#c245--static-pixel-diff-baselines-deferred).
+
 ## Pull requests
 
 - Prefer focused PRs that match a single plan unit.

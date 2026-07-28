@@ -207,7 +207,7 @@ npm run check:bundle-size
 npm run review:artifacts # screenshots + debug JSON (plans/screenshots/)
 ```
 
-Performance playbook: [`docs/perf.md`](./docs/perf.md).
+Performance playbook: [`docs/perf.md`](./docs/perf.md). Agent browse/click QA: [`docs/agent-visual-qa.md`](./docs/agent-visual-qa.md) (`?agent=1` on the demo).
 
 ## Docs
 

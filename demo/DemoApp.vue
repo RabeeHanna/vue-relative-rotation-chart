@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RrgPlaybackControls } from '../src'
+import DemoAgentStatePanel from './DemoAgentStatePanel.vue'
 import DemoChartHost from './DemoChartHost.vue'
 import DemoControls from './DemoControls.vue'
 import DemoPerfPanel from './DemoPerfPanel.vue'
@@ -29,6 +30,8 @@ const {
   onCopyData,
   onApplyJson,
   onGenerate,
+  agentMode,
+  agentState,
 } = useDemoAppState()
 </script>
 
@@ -83,5 +86,7 @@ const {
     <p class="hover-chip" data-testid="demo-hover-chip">
       Hover: {{ hovered ? `${hovered.ticker} @ ${hovered.date}` : 'none' }}
     </p>
+
+    <DemoAgentStatePanel v-if="agentMode" :state="agentState" />
   </main>
 </template>

@@ -128,5 +128,6 @@ See `sector-orbit/plans/234-mobile-layout-polish.md` and `199-chart-evolution.md
 
 - Viewport UI: shipped as `RrgViewportControls` (first C23 slice)
 - Playback: [C12](./C12-playback-controls.md), mobile [C22](./C22-mobile-playback-polish.md)
+- Agent QA missions + testids per control slice: [C24](./C24-agent-visual-qa.md)
 - Host wiring: [C10](./C10-host-integration.md)
 - Sector Orbit shell: `sector-orbit/plans/234-mobile-layout-polish.md`

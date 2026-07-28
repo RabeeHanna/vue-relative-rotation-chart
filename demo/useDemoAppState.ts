@@ -13,6 +13,7 @@ import {
 } from './demoSession'
 import { chartThemeStyle, syncThemeCssPickers } from './demoThemeCss'
 import { datesForSeries, scenarioById } from './scenarios'
+import { useDemoAgentState } from './useDemoAgentState'
 import { watchDemoSideEffects } from './watchDemoSideEffects'
 
 export function useDemoAppState(search = typeof window !== 'undefined' ? window.location.search : '') {
@@ -130,6 +131,16 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
 
   watchDemoSideEffects({ controls, dates, selectedDate, speed, overrideSeries })
 
+  const { agentMode, agentState } = useDemoAgentState({
+    search,
+    controls,
+    series,
+    selectedDate,
+    playing,
+    speed,
+    hovered,
+  })
+
   return {
     controls,
     series,
@@ -153,5 +164,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
     onCopyData: () => void copyDemoText(JSON.stringify(series.value), 'Data JSON copied', copyStatus),
     onApplyJson: () => applyDemoJson(controls.value, overrideSeries),
     onGenerate: () => generateDemoSeries(controls.value, overrideSeries),
+    agentMode,
+    agentState,
   }
 }

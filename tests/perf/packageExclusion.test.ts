@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 import { join } from 'node:path'
+import { NPM_EXCLUDED_PATH_FRAGMENTS } from './publishBoundary'
 
 const root = process.cwd()
 const npmBin = process.platform === 'win32' ? 'npm.cmd' : 'npm'
@@ -21,7 +22,7 @@ describe('perf harness package exclusion', () => {
   })
 
   it(
-    'npm pack dry-run does not include tests/perf or demo sources',
+    'npm pack dry-run does not include tests, demo, or agent QA tooling',
     () => {
       const result = spawnSync(npmBin, ['pack', '--dry-run'], {
         cwd: root,
@@ -36,10 +37,9 @@ describe('perf harness package exclusion', () => {
       expect(result.status, `npm pack stderr:\n${result.stderr ?? ''}`).toBe(0)
 
       const blob = `${result.stdout ?? ''}\n${result.stderr ?? ''}`.toLowerCase()
-      expect(blob).not.toMatch(/tests\/perf/)
-      expect(blob).not.toMatch(/demo\/demoperf/)
-      expect(blob).not.toMatch(/demo\/demoapp/)
-      // Pack notice lists included paths on stderr for modern npm.
+      for (const fragment of NPM_EXCLUDED_PATH_FRAGMENTS) {
+        expect(blob).not.toContain(fragment)
+      }
       expect(blob.length).toBeGreaterThan(0)
     },
     PACK_TIMEOUT_MS,

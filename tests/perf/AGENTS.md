@@ -6,9 +6,9 @@ C17 performance harness + C20 bundle-size checks: deterministic Vitest invariant
 
 ## Belongs here
 
-- Vitest `*.test.ts` — hard node-count gates, soft JSDOM date-patch timings, package exclusion, **bundle size** (`bundleSize.ts`), helpers
+- Vitest `*.test.ts` — hard node-count gates, soft JSDOM date-patch timings, package exclusion, **publish boundary** (C24 agent QA not on npm), **bundle size** (`bundleSize.ts`), helpers
 - Playwright `*.spec.ts` — Chromium FPS for P0/P2 (scrub + play); optional ceiling via `PERF_CEILING=1`
-- Shared helpers (`expectedTailNodes.ts`, `fpsMetrics.ts`, `perfHarness.ts`, `bundleSize.ts`)
+- Shared helpers (`expectedTailNodes.ts`, `fpsMetrics.ts`, `perfHarness.ts`, `bundleSize.ts`, `publishBoundary.ts`)
 - Env probes (same specs, no new files): `PERF_CEILING=1` (D3), `PERF_STRESS=1` (+ `PERF_TICKERS` / `PERF_POINTS` / `PERF_PLAY_MS` / …)
 
 ## Does not belong here

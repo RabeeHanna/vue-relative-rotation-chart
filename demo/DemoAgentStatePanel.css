@@ -1,0 +1,28 @@
+.agent-state {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px dashed var(--demo-border, #c8c8c8);
+  border-radius: 8px;
+  background: var(--demo-agent-bg, #f8f8f8);
+}
+
+.agent-state__title {
+  margin: 0 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.agent-state__hint {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  color: var(--demo-muted, #666);
+}
+
+.agent-state__json {
+  margin: 0;
+  padding: 0.75rem;
+  overflow: auto;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  border-radius: 4px;
+  background: var(--demo-agent-code-bg, #fff);
+}
