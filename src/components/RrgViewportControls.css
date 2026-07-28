@@ -1,0 +1,42 @@
+.rrg-viewport {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.rrg-viewport__option {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid var(--rrg-viewport-option-border, #3a4252);
+  border-radius: 8px;
+  background: var(--rrg-viewport-option-bg, #1c2330);
+  color: var(--rrg-viewport-option-text, #e8eaed);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.rrg-viewport__option:has(input:checked) {
+  border-color: var(--rrg-viewport-option-active-border, #5b8def);
+  background: var(--rrg-viewport-option-active-bg, #243049);
+  color: var(--rrg-viewport-option-active-text, #c8d8f8);
+}
+
+.rrg-viewport__option:has(input:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.rrg-viewport__option input {
+  accent-color: var(--rrg-viewport-accent, #5b8def);
+}
+
+.rrg-viewport.dark {
+  --rrg-viewport-option-border: #3d4654;
+  --rrg-viewport-option-bg: #1e2430;
+  --rrg-viewport-option-text: #d8dee8;
+  --rrg-viewport-option-active-border: #5b8def;
+  --rrg-viewport-option-active-bg: #243049;
+  --rrg-viewport-option-active-text: #c8d8f8;
+}

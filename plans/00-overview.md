@@ -139,6 +139,8 @@ These types protect the component from host-application-specific state shape.
 | [C19.5](./C19.5-demo-ux-simplify.md) | Demo UX — Simple / Customize Split (**done**) | Demo / Polish | 0.5–1 day |
 | [C20](./C20-bundle-size-perf-playbook.md) | Bundle Size Tracking + Perf Playbook (**done**) | Packaging / Trust | 0.5–1 day |
 | [C21](./C21-deep-profiling.md) | Deep Profiling (**deferred** — [scrutiny](./C21-profiling-scrutiny.md); evidence-gated) | Performance / Quality | 2–4 days if unlocked |
+| [C22](./C22-mobile-playback-polish.md) | Mobile Playback Polish (**pending**) | Interaction / Polish | 1–2 days |
+| [C23](./C23-chart-controls-panel.md) | Chart Controls Panel — library-owned display UI (**in progress**) | Interaction / Integration | 3–5 days |
 | [C10](./C10-host-integration.md) | Host Application Feature-Flag Integration (dogfood; **not** publish-critical merge) | Integration | 1–2 days |
 
 **Total estimated: ~20–25 days** (or ~4–5 weeks at 1/3 time)
@@ -174,7 +176,9 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 22. C19 — First public publish (**draft** — [plan](./C19-first-public-publish.md), [scrutiny](./C19-public-library-scrutiny.md)): rotation pitch, changelog accuracy, real-data dogfood gate, npm
 23. C20 — Bundle size + perf playbook (**complete** — [plan](./C20-bundle-size-perf-playbook.md))
 24. C21 — Deep profiling (**deferred** — [plan](./C21-deep-profiling.md), [scrutiny](./C21-profiling-scrutiny.md); only after evidence gate / host dogfood need)
-25. C10 — Host feature-flag integration (**optional dogfood / recipe**; merge to host default branch not required for publish)
+25. C22 — Mobile playback polish (`RrgPlaybackControls` touch/layout; Sector Orbit should adopt library scrubber) (**pending** — [plan](./C22-mobile-playback-polish.md))
+26. C23 — Chart controls panel: **all display toggles** (visibility, tail, viewport, labels, loop, export) owned by library; hosts wire data only (**in progress** — [plan](./C23-chart-controls-panel.md); viewport + playback partial)
+27. C10 — Host feature-flag integration (**optional dogfood / recipe**; merge to host default branch not required for publish)
 
 ---
 

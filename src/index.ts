@@ -1,5 +1,6 @@
 export { default as RrgChart } from './components/RrgChart.vue'
 export { default as RrgPlaybackControls } from './components/RrgPlaybackControls.vue'
+export { default as RrgViewportControls } from './components/RrgViewportControls.vue'
 
 export type {
   RrgRenderPoint,
@@ -30,3 +31,10 @@ export {
   mergePlaybackCopy,
   formatCopy,
 } from './types/copy'
+export {
+  RRG_VIEWPORT_MODES,
+  isRrgViewportMode,
+  normalizeRrgViewportMode,
+  rrgViewportModeDescription,
+  rrgViewportModeLabel,
+} from './utils/viewportLabels'
