@@ -1,6 +1,6 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const PORT = 5174
+const PORT = Number(process.env.PLAYWRIGHT_PORT) || 5175
 const BASE_URL = `http://127.0.0.1:${PORT}`
 
 export default defineConfig({
@@ -17,7 +17,7 @@ export default defineConfig({
   webServer: {
     command: `npm run dev -- --host 127.0.0.1 --port ${PORT}`,
     url: BASE_URL,
-    reuseExistingServer: false,
+    reuseExistingServer: !process.env.CI,
     timeout: 120_000,
   },
   projects: [

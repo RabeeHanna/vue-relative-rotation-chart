@@ -16,6 +16,7 @@ Autonomous loop for the **VRRC Vite demo** only. No human input mid-cycle.
 - Dev server: `npm run dev` in repo root
 - Rubric: `docs/agent-visual-qa-rubric.md`
 - Selectors: `docs/agent-visual-qa.md`
+- Missions: `demo/agentScenarios.ts` (headless: `npm run test:agent-guide`)
 
 ## Constraints
 

@@ -41,7 +41,7 @@ Before demo layout or control polish PRs, run the agent loop or read the playboo
 - [`docs/agent-visual-qa.md`](./docs/agent-visual-qa.md)
 - [`.cursor/skills/agent-visual-qa/SKILL.md`](./.cursor/skills/agent-visual-qa/SKILL.md)
 
-Open `http://localhost:5173/?agent=1` for machine-readable state (`agent-state-panel`). **Always read full-page screenshots** before claiming a UX cycle passes; JSON confirms clicks only. Optional static pixel-diff baselines: [C24.5](plans/C24-agent-visual-qa.md#c245--static-pixel-diff-baselines-deferred).
+Open `http://localhost:5173/?agent=1` for machine-readable state (`agent-state-panel`). **Always read full-page screenshots** before claiming a UX cycle passes; JSON confirms clicks only. Repeatable missions: `demo/agentScenarios.ts`; headless check: `npm run test:agent-guide`.
 
 ## Pull requests
 

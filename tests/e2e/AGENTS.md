@@ -25,4 +25,4 @@ Playwright smoke tests against the Vite demo for agent/Playwright inspectability
 - `npm run review:artifacts` (adversarial screenshots + JSON via `playwright.review.config.ts`)
 - C9 accessibility / agent-testability acceptance
 - C18 pre-npm review artifacts
-- [C24 agent visual QA](../plans/C24-agent-visual-qa.md) — interactive missions + optional `agent-guide.spec.ts`
+- [C24 agent visual QA](../plans/C24-agent-visual-qa.md) — `agent-guide.spec.ts` walks `demo/agentScenarios.ts`

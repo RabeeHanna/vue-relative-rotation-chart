@@ -72,15 +72,17 @@ Use this to **confirm clicks** without parsing SVG coordinates. Chart root still
 | Viewport root | `rrg-viewport` |
 | Mode button | `rrg-viewport-{fit\|max\|center}` |
 
-## Example missions (manual until C24.2 manifest)
+## Example missions (`demo/agentScenarios.ts`)
 
 | Mission | URL | Pass signal |
 |---------|-----|-------------|
-| Default load | `/` | `rrg-chart` visible |
-| Agent snapshot | `/?agent=1` | JSON `scenario` matches select |
-| Viewport | `/?agent=1` + change viewport | JSON + `data-viewport-mode` update |
-| Playback | `/?scenario=longPlayback&agent=1` | scrub changes `selectedDate` in JSON |
-| Stress hover | `/?scenario=stress&agent=1` | hover updates `hoveredTicker` |
+| Default load | `/?agent=1` | `rrg-chart` + JSON `scenario: default` |
+| Viewport tour | `/?scenario=denseCluster&agent=1` | `data-viewport-mode` + JSON after select |
+| Playback | `/?scenario=longPlayback50&agent=1` | scrub while paused; `data-selected-date` set |
+| Label hover | `/?labelMode=hover&agent=1` | tooltip visible on hover |
+| Stress hover | `/?scenario=stress&agent=1` | hover T0–T2; JSON `scenario: stress` |
+
+Run headlessly: `npm run test:agent-guide`
 
 ## Loop protocol
 
@@ -98,8 +100,8 @@ Future: optional Playwright pixel-diff baselines — [C24.5](../plans/C24-agent-
 
 ```bash
 npm run test:e2e              # chart smoke (C9)
+npm run test:agent-guide      # C24.3 — walks demo/agentScenarios.ts
 npm run review:artifacts      # batch screenshots (C18)
-# npm run test:agent-guide    # C24.3 — scenario manifest guard
 ```
 
 ## Anti-goals

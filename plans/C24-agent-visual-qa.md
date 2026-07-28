@@ -4,7 +4,7 @@
 **Estimate:** 2–4 days (can ship incrementally)  
 **Depends on:** [C9](./C9-accessibility.md) ✅, [C13](./C13-demo-playground.md) ✅, [C18](./C18-pre-npm-polish.md) ✅ (`review:artifacts` harness)  
 **Priority:** High — repeatable agent browse/click/assess loop for demo + library controls; feeds C22/C23 polish  
-**Status:** **In progress** (C24.1 shipped — rubric, docs, skill, `?agent=1` panel)
+**Status:** **In progress** (C24.1–C24.3 shipped; C24.4 missions per C23 control pending)
 
 ---
 
@@ -90,7 +90,7 @@ Extend C9 audit to **all demo chrome** and **exported control components**:
 
 | Area | Required hooks |
 |---|---|
-| Demo scenario select | `demo-scenario-select` |
+| Demo scenario select | `demo-scenario` |
 | Playback transport | existing `rrg-playback-*` |
 | Viewport | existing `rrg-viewport-*` |
 | C23 controls (as they land) | `rrg-controls-*` prefix |
@@ -159,8 +159,8 @@ Task Progress:
 | Slice | Ships | Unblocks |
 |---|---|---|
 | **C24.1** | Rubric + docs + skill stub + `?agent=1` panel | Manual agent cycles on demo ✅ |
-| **C24.2** | Scenario manifest + demo testid audit | Repeatable click recipes |
-| **C24.3** | `agent-guide.spec.ts` + npm script | CI guard for recipes |
+| **C24.2** | Scenario manifest + demo testid audit | Repeatable click recipes ✅ |
+| **C24.3** | `agent-guide.spec.ts` + npm script | CI guard for recipes ✅ |
 | **C24.4** | Missions for each C23 control as it lands | Library feature QA |
 | **C24.5** | Static pixel-diff baselines (deferred) | CI regression net under agent vision |
 
@@ -213,11 +213,11 @@ Enforced by `package.json` `"files": ["dist"]` and `tests/perf/packageExclusion.
 - [x] `docs/agent-visual-qa-rubric.md` and `docs/agent-visual-qa.md` exist and are linked from README
 - [x] `.cursor/skills/agent-visual-qa/SKILL.md` documents the full loop (screenshot protocol included)
 - [x] Demo supports `?agent=1` with `data-testid="agent-state-panel"` and stable JSON shape
-- [ ] Scenario manifest covers ≥5 missions (default, viewport, playback, labels, stress)
-- [ ] All demo + exported control interactions in manifest have `data-testid` or semantic selectors
-- [ ] Agent can complete viewport + playback missions using only documented selectors
-- [ ] `tests/e2e/agent-guide.spec.ts` passes locally (≥3 missions)
-- [ ] `npm run test:agent-guide` documented
+- [x] Scenario manifest covers ≥5 missions (default, viewport, playback, labels, stress)
+- [x] All demo + exported control interactions in manifest have `data-testid` or semantic selectors
+- [x] Agent can complete viewport + playback missions using only documented selectors
+- [x] `tests/e2e/agent-guide.spec.ts` passes locally (≥3 missions)
+- [x] `npm run test:agent-guide` documented
 - [x] Rubric + skill require **Read screenshot image** before cycle pass (vision-first gate)
 - [x] Cycle gating documented: fail if task not in image; new cycle for collateral UI issues
 - [ ] No C24.5 pixel-diff CI until C24.5 slice (agent vision is primary until then)

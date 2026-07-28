@@ -48,6 +48,7 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:e2e": "playwright test",
+    "test:agent-guide": "playwright test tests/e2e/agent-guide.spec.ts",
     "test:perf": "playwright test --config=playwright.perf.config.ts",
     "check:bundle-size": "vitest run tests/perf/bundleSize.test.ts",
     "review:artifacts": "playwright test --config=playwright.review.config.ts",
