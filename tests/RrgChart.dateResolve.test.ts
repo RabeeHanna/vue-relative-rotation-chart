@@ -91,7 +91,28 @@ describe('RrgChart date resolve + empty state', () => {
     })
     const root = wrapper.get('[data-testid="rrg-chart"]')
     expect(root.attributes('data-date-status')).toBe('empty')
-    expect(wrapper.get('[data-testid="rrg-chart-empty"]').text()).toMatch(/No series dates/i)
+    const empty = wrapper.get('[data-testid="rrg-chart-empty"]')
+    expect(empty.text()).toMatch(/No series dates/i)
+    expect(empty.attributes('data-empty-reason')).toBe('no-dates')
     expect(wrapper.find('[data-testid="rrg-svg-root"]').exists()).toBe(false)
+  })
+
+  it('shows empty state when all series are hidden', () => {
+    const hidden = series.map((item) => ({ ...item, visible: false }))
+    const wrapper = mount(RrgChart, {
+      props: { series: hidden, selectedDate: '2024-01-15', width: 640, height: 480 },
+    })
+    const empty = wrapper.get('[data-testid="rrg-chart-empty"]')
+    expect(empty.text()).toMatch(/All series are hidden/i)
+    expect(empty.attributes('data-empty-reason')).toBe('all-hidden')
+    expect(wrapper.find('[data-testid="rrg-point-XLK"]').exists()).toBe(false)
+  })
+
+  it('exposes svg element for export when chart is rendered', () => {
+    const wrapper = mount(RrgChart, {
+      props: { series, selectedDate: '2024-01-15', width: 640, height: 480 },
+    })
+    const exposed = wrapper.vm as { getSvgElement?: () => SVGSVGElement | null }
+    expect(exposed.getSvgElement?.()).toBeTruthy()
   })
 })

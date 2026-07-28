@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { RrgViewportMode } from '../src/types/rrg'
 import { scenarioCatalog } from './scenarios'
 import type { ChartSizePreset } from './demoUrl'
 import type { DemoControlsState } from './demoControlsState'
@@ -28,7 +27,6 @@ const emit = defineEmits<{
   generate: []
 }>()
 
-const viewports: RrgViewportMode[] = ['fit', 'max', 'center']
 const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
 </script>
 
@@ -52,12 +50,6 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
         <select v-model="state.theme" data-testid="demo-theme">
           <option value="light">light</option>
           <option value="dark">dark</option>
-        </select>
-      </label>
-      <label>
-        Viewport
-        <select v-model="state.viewportMode" data-testid="demo-viewport" :disabled="state.compare">
-          <option v-for="v in viewports" :key="v" :value="v">{{ v }}</option>
         </select>
       </label>
     </div>
@@ -123,10 +115,6 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
             data-testid="demo-labels-always"
           />
           Always labels
-        </label>
-        <label class="check">
-          <input v-model="state.playbackLoop" type="checkbox" data-testid="demo-playback-loop" />
-          Loop playback
         </label>
       </div>
 

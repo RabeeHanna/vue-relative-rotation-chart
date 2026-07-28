@@ -1,0 +1,54 @@
+/**
+ * Shared typography + theme tokens for library control components.
+ * Import in each control SFC; add class `rrg-controls-surface` on the root.
+ *
+ * Nested surfaces inside `RrgChartControlsPanel` use `rrg-controls-surface--inset`
+ * so they inherit tokens from the panel host instead of re-applying light defaults.
+ */
+.rrg-controls-surface {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.35;
+  color: var(--rrg-ctl-text);
+  --rrg-ctl-text: #222;
+  --rrg-ctl-muted: #555;
+  --rrg-ctl-border: rgba(0, 0, 0, 0.12);
+  --rrg-ctl-panel-bg: rgba(255, 255, 255, 0.72);
+  --rrg-ctl-surface: #fff;
+  --rrg-ctl-surface-border: rgba(0, 0, 0, 0.2);
+  --rrg-ctl-field-bg: #fff;
+  --rrg-ctl-field-text: #222;
+  --rrg-ctl-accent: #5b8def;
+  --rrg-ctl-active-bg: #eef3fc;
+  --rrg-ctl-active-border: #5b8def;
+  --rrg-ctl-active-text: #1a3d7a;
+}
+
+.rrg-controls-surface--inset {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+.rrg-controls-surface.dark,
+.dark .rrg-controls-surface {
+  color-scheme: dark;
+  --rrg-ctl-text: #f5f5f5;
+  --rrg-ctl-muted: #c8c8c8;
+  --rrg-ctl-border: rgba(255, 255, 255, 0.2);
+  --rrg-ctl-panel-bg: rgba(36, 36, 36, 0.95);
+  --rrg-ctl-surface: #333;
+  --rrg-ctl-surface-border: rgba(255, 255, 255, 0.28);
+  --rrg-ctl-field-bg: #333;
+  --rrg-ctl-field-text: #f5f5f5;
+  --rrg-ctl-accent: #5b8def;
+  --rrg-ctl-active-bg: #243049;
+  --rrg-ctl-active-border: #5b8def;
+  --rrg-ctl-active-text: #c8d8f8;
+}
+
+.rrg-controls-surface--inset.dark,
+.dark .rrg-controls-surface--inset {
+  color-scheme: dark;
+}

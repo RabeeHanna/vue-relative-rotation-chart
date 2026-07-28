@@ -9,18 +9,19 @@
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  font-size: 0.82rem;
-  color: var(--rrg-display-label, #c8d0dc);
+  font-size: inherit;
+  color: var(--rrg-ctl-muted);
 }
 
 .rrg-display-settings__field select {
   min-width: 5.5rem;
-  padding: 0.3rem 0.45rem;
-  border: 1px solid var(--rrg-display-input-border, #3a4252);
+  padding: 0.35rem 0.45rem;
+  border: 1px solid var(--rrg-ctl-surface-border);
   border-radius: 8px;
-  background: var(--rrg-display-input-bg, #1c2330);
-  color: var(--rrg-display-input-text, #e8eaed);
-  font-size: 0.82rem;
+  background: var(--rrg-ctl-field-bg);
+  color: var(--rrg-ctl-field-text);
+  font-family: inherit;
+  font-size: inherit;
 }
 
 .rrg-display-settings__check {
@@ -28,17 +29,11 @@
   align-items: center;
   gap: 0.35rem;
   padding-bottom: 0.35rem;
-  font-size: 0.82rem;
-  color: var(--rrg-display-label, #c8d0dc);
+  font-size: inherit;
+  color: var(--rrg-ctl-muted);
   cursor: pointer;
 }
 
 .rrg-display-settings__check input {
-  accent-color: var(--rrg-display-accent, #5b8def);
-}
-
-.rrg-display-settings.dark {
-  --rrg-display-label: #d8dee8;
-  --rrg-display-input-border: #3d4654;
-  --rrg-display-input-bg: #1e2430;
+  accent-color: var(--rrg-ctl-accent);
 }

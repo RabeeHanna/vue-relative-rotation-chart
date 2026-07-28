@@ -60,6 +60,10 @@
   min-width: 2.5rem;
   font-weight: 600;
 }
+.rrg-playback__btn--loop-on {
+  border-color: rgba(0, 0, 0, 0.45);
+  background: rgba(0, 0, 0, 0.06);
+}
 .rrg-playback__btn-text {
   font-size: 0.75rem;
   font-weight: 500;
@@ -100,4 +104,18 @@
   border-color: rgba(255, 255, 255, 0.28);
   background: #333;
   color: #f5f5f5;
+}
+.rrg-playback.dark .rrg-playback__btn--loop-on,
+.dark .rrg-playback .rrg-playback__btn--loop-on {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.12);
+}
+.rrg-playback__context {
+  flex: 1 1 100%;
+  font-size: 0.8rem;
+  color: #666;
+}
+.rrg-playback.dark .rrg-playback__context,
+.dark .rrg-playback .rrg-playback__context {
+  color: #c8c8c8;
 }

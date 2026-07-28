@@ -180,6 +180,7 @@ export type RrgPlaybackControlsEmits = {
   'update:selectedDate': [date: string]
   'update:playing': [playing: boolean]
   'update:speed': [speed: number]
+  'update:loop': [loop: boolean]
 }
 
 /**

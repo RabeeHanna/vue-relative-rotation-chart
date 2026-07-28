@@ -242,6 +242,26 @@ describe('RrgPlaybackControls', () => {
     wrapper.unmount()
   })
 
+  it('toggles loop via transport control', async () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-12',
+        loop: true,
+        'onUpdate:loop': (value: boolean) => wrapper.setProps({ loop: value }),
+      },
+    })
+
+    expect(wrapper.get('[data-testid="rrg-playback-loop-toggle"]').attributes('aria-pressed')).toBe(
+      'true',
+    )
+    await wrapper.get('[data-testid="rrg-playback-loop-toggle"]').trigger('click')
+    expect(wrapper.emitted('update:loop')).toEqual([[false]])
+    expect(wrapper.get('[data-testid="rrg-playback-loop-toggle"]').attributes('aria-pressed')).toBe(
+      'false',
+    )
+  })
+
   it('advances frames while playing and cleans up on unmount', async () => {
     const wrapper = mount(RrgPlaybackControls, {
       props: {

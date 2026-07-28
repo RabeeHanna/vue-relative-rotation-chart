@@ -3,6 +3,8 @@ export { default as RrgPlaybackControls } from './components/RrgPlaybackControls
 export { default as RrgViewportControls } from './components/RrgViewportControls.vue'
 export { default as RrgSeriesVisibilityControls } from './components/RrgSeriesVisibilityControls.vue'
 export { default as RrgDisplaySettingsControls } from './components/RrgDisplaySettingsControls.vue'
+export { default as RrgChartControlsPanel } from './components/RrgChartControlsPanel.vue'
+export type { RrgChartControlsSection } from './components/RrgChartControlsPanel.vue'
 
 export type {
   RrgRenderPoint,
@@ -54,3 +56,9 @@ export {
   showAllTickers,
   soloTicker,
 } from './composables/useRrgSeriesVisibility'
+export {
+  exportSvgElementAsPng,
+  serializeSvgElement,
+  svgMarkupToDataUrl,
+} from './utils/exportChartSvg'
+export type { ExportChartPngOptions } from './utils/exportChartSvg'

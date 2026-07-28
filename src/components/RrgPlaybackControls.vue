@@ -7,20 +7,25 @@ import {
 import { useRrgPlaybackControls } from '../composables/useRrgPlaybackControls'
 import './RrgPlaybackControls.css'
 
-const props = withDefaults(defineProps<RrgPlaybackControlsProps>(), {
-  playing: RRG_PLAYBACK_DEFAULTS.playing,
-  speed: RRG_PLAYBACK_DEFAULTS.speed,
-  minSpeed: RRG_PLAYBACK_DEFAULTS.minSpeed,
-  maxSpeed: RRG_PLAYBACK_DEFAULTS.maxSpeed,
-  loop: RRG_PLAYBACK_DEFAULTS.loop,
-  speedMode: RRG_PLAYBACK_DEFAULTS.speedMode,
-  labelStyle: RRG_PLAYBACK_DEFAULTS.labelStyle,
-})
+const props = withDefaults(
+  defineProps<RrgPlaybackControlsProps & { showLoopToggle?: boolean }>(),
+  {
+    playing: RRG_PLAYBACK_DEFAULTS.playing,
+    speed: RRG_PLAYBACK_DEFAULTS.speed,
+    minSpeed: RRG_PLAYBACK_DEFAULTS.minSpeed,
+    maxSpeed: RRG_PLAYBACK_DEFAULTS.maxSpeed,
+    loop: RRG_PLAYBACK_DEFAULTS.loop,
+    speedMode: RRG_PLAYBACK_DEFAULTS.speedMode,
+    labelStyle: RRG_PLAYBACK_DEFAULTS.labelStyle,
+    showLoopToggle: true,
+  },
+)
 
 const emit = defineEmits<{
   'update:selectedDate': [date: string]
   'update:playing': [playing: boolean]
   'update:speed': [speed: number]
+  'update:loop': [loop: boolean]
 }>()
 
 const {
@@ -44,6 +49,10 @@ const {
 } = useRrgPlaybackControls(props, emit)
 
 const showTextLabels = computed(() => props.labelStyle === 'icon-text')
+
+function toggleLoop() {
+  emit('update:loop', !props.loop)
+}
 
 function onKeydown(event: KeyboardEvent) {
   switch (event.key) {
@@ -162,6 +171,20 @@ function onKeydown(event: KeyboardEvent) {
 
     <div class="rrg-playback__speed" data-testid="rrg-playback-speed">
       <button
+        v-if="showLoopToggle"
+        type="button"
+        class="rrg-playback__btn"
+        :class="{ 'rrg-playback__btn--loop-on': loop }"
+        data-testid="rrg-playback-loop-toggle"
+        :aria-pressed="loop ? 'true' : 'false'"
+        :aria-label="resolvedCopy.loop"
+        :title="resolvedCopy.loop"
+        @click="toggleLoop"
+      >
+        <span aria-hidden="true">↻</span>
+        <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.loop }}</span>
+      </button>
+      <button
         type="button"
         class="rrg-playback__btn"
         data-testid="rrg-playback-speed-down"
@@ -186,6 +209,10 @@ function onKeydown(event: KeyboardEvent) {
       >
         +
       </button>
+    </div>
+
+    <div v-if="$slots.context" class="rrg-playback__context" data-testid="rrg-playback-context">
+      <slot name="context" />
     </div>
   </div>
 </template>

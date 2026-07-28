@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, toRef, watch } from 'vue'
+import { computed, ref, toRef, watch } from 'vue'
 import { RRG_CHART_DEFAULTS, type RrgChartProps, type RrgRenderPoint } from '../types/rrg'
+import { useRrgChartEmptyState, useRrgChartExport } from '../composables/useRrgChartChrome'
 import { useRrgViewport } from '../composables/useRrgViewport'
 import { useRrgScales } from '../composables/useRrgScales'
 import { useRrgTailSlices } from '../composables/useRrgTailSlices'
@@ -47,7 +48,10 @@ const dateResolution = computed(() =>
 )
 const resolvedDate = computed(() => dateResolution.value.date)
 const dateStatus = computed(() => dateResolution.value.status)
-const isEmpty = computed(() => dateStatus.value === 'empty')
+const chartRoot = ref<HTMLElement | null>(null)
+const { isEmpty, emptyReason, emptyMessage } = useRrgChartEmptyState(coloredSeries, dateStatus)
+const { getSvgElement, exportPng } = useRrgChartExport(chartRoot)
+defineExpose({ getSvgElement, exportPng })
 
 const resolvedDateRef = resolvedDate
 const tailLengthRef = toRef(props, 'tailLength')
@@ -113,6 +117,7 @@ const resolvedLabels = useRrgLabelLayout(
 
 <template>
   <div
+    ref="chartRoot"
     class="rrg-chart"
     data-testid="rrg-chart"
     :data-viewport-mode="viewportMode"
@@ -127,9 +132,10 @@ const resolvedLabels = useRrgLabelLayout(
       v-if="isEmpty"
       class="rrg-chart__empty"
       data-testid="rrg-chart-empty"
+      :data-empty-reason="emptyReason"
       role="status"
     >
-      No series dates to display
+      {{ emptyMessage }}
     </div>
     <RrgSvgRoot
       v-else

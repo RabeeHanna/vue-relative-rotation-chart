@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RrgDisplaySettingsControls, RrgPlaybackControls, RrgSeriesVisibilityControls } from '../src'
+import { RrgChartControlsPanel, RrgPlaybackControls } from '../src'
 import DemoAgentStatePanel from './DemoAgentStatePanel.vue'
 import DemoChartHost from './DemoChartHost.vue'
 import DemoControls from './DemoControls.vue'
@@ -58,22 +58,17 @@ const {
       @generate="onGenerate"
     />
 
-    <RrgSeriesVisibilityControls
+    <RrgChartControlsPanel
       v-if="!controls.compare"
-      v-model:visible-tickers="visibleTickers"
-      :class="{ dark }"
-      class="demo-series-visibility"
-      :series="series"
-    />
-
-    <RrgDisplaySettingsControls
-      v-if="!controls.compare"
+      v-model:viewport-mode="controls.viewportMode"
       v-model:tail-length="controls.tailLength"
       v-model:label-mode="controls.labelMode"
       v-model:show-tail-fade="controls.showTailFade"
-      :class="{ dark }"
-      class="demo-display-settings"
-      :disabled="controls.fullHistoryTail"
+      v-model:visible-tickers="visibleTickers"
+      class="demo-chart-controls"
+      :dark="dark"
+      :series="series"
+      :display-disabled="controls.fullHistoryTail"
     />
 
     <DemoChartHost
@@ -94,7 +89,7 @@ const {
       v-model:selected-date="selectedDate"
       v-model:playing="playing"
       v-model:speed="speed"
-      :loop="controls.playbackLoop"
+      v-model:loop="controls.playbackLoop"
       :min-speed="controls.minSpeed"
       :max-speed="controls.maxSpeed"
       :speed-mode="controls.speedMode"

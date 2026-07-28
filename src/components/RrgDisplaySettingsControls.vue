@@ -5,16 +5,21 @@ import {
   rrgLabelModeDescription,
   rrgLabelModeLabel,
 } from '../utils/labelModeLabels'
+import './rrgControlsShared.css'
 import './RrgDisplaySettingsControls.css'
 
 withDefaults(
   defineProps<{
     disabled?: boolean
+    dark?: boolean
+    inset?: boolean
     /** Tail-length select options (numeric presets). */
     tailLengthPresets?: number[]
   }>(),
   {
     disabled: false,
+    dark: false,
+    inset: false,
     tailLengthPresets: () => [4, 8, 12, 16, 24],
   },
 )
@@ -27,6 +32,10 @@ const showTailFade = defineModel<boolean>('showTailFade', { required: true })
 <template>
   <div
     class="rrg-display-settings"
+    :class="[
+      inset ? 'rrg-controls-surface--inset' : 'rrg-controls-surface',
+      { dark },
+    ]"
     data-testid="rrg-display-settings"
     role="group"
     aria-label="Chart display settings"

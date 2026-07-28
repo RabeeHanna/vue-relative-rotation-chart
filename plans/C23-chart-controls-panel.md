@@ -4,7 +4,7 @@
 **Estimate:** 3–5 days (can ship incrementally)  
 **Depends on:** C12 playback ✅, C8 viewport ✅, C10 host integration patterns  
 **Priority:** High — Sector Orbit and future hosts must not reimplement chart display toggles  
-**Status:** **In progress** (viewport + playback partially adopted; **series visibility D1 ✅**; display settings and composed panel pending)
+**Status:** **Complete** (D1–D5 shipped; host follow-up in Sector Orbit pending)
 
 ---
 
@@ -40,10 +40,10 @@ Hosts may wrap library controls in app chrome (`<aside>`, collapsible sections).
 | Viewport Fit / Max / Center | `RrgViewportControls` in `ControlsPanel` | `RrgViewportControls` | ✅ Adopted |
 | Stocks/Sectors checkboxes | `ControlsPanel` + `sectorVisibility.ts` | `RrgSeriesVisibilityControls` | ✅ Shipped (C23 D1) |
 | Show all / Hide all / Solo / Restore | `ControlsPanel` + host state | Same component + `useRrgSeriesVisibility` | ✅ Shipped (C23 D1) |
-| Tail length | `ControlsPanel` select | `RrgTailLengthControl` or section in panel | ⏳ Pending |
-| Loop on/off | `ControlsPanel` (duplicate of playback meta) | `RrgPlaybackControls` loop emit | ⏳ Pending |
-| Label mode | Not exposed in host (adapter hardcodes `auto`) | `RrgLabelModeControls` | ⏳ Pending |
-| Export PNG | echarts-only host helper | `RrgChart` export API | ⏳ Pending |
+| Tail length | `ControlsPanel` select | `RrgDisplaySettingsControls` | ✅ Shipped (C23 D2) |
+| Loop on/off | `ControlsPanel` (duplicate of playback meta) | `RrgPlaybackControls` loop emit | ✅ Shipped (C23 D3) |
+| Label mode | Not exposed in host (adapter hardcodes `auto`) | `RrgDisplaySettingsControls` | ✅ Shipped (C23 D2) |
+| Export PNG | echarts-only host helper | `RrgChart` export API | ✅ Shipped (C23 D5) |
 
 ---
 
@@ -56,25 +56,25 @@ Hosts may wrap library controls in app chrome (`<aside>`, collapsible sections).
 - Emits `update:visibleTickers`; chart already respects `series[].visible`
 - Vitest + `data-testid` hooks; dark theme CSS vars like playback/viewport
 
-### D2 — Display settings cluster
+### D2 — Display settings cluster ✅
 
 - **Tail length** — select bound to `tailLength` (presets configurable via prop)
 - **Label mode** — radios/select for `labelMode` (extract from demo `DemoControls`)
 - **Tail fade** — optional toggle for `showTailFade`
-- Ship as `RrgDisplaySettingsControls` or fold into composed panel
+- Shipped as `RrgDisplaySettingsControls` (also composed in `RrgChartControlsPanel`)
 
-### D3 — Playback gaps
+### D3 — Playback gaps ✅
 
 - `RrgPlaybackControls`: `update:loop` + loop toggle button (remove host-only loop in sidebar)
 - Optional slot below meta for host context (benchmark line) — document in C10
 
-### D4 — Composed panel (optional convenience)
+### D4 — Composed panel (optional convenience) ✅
 
 - `RrgChartControlsPanel` — collapsible sections composing D1 + D2 + `RrgViewportControls`
 - Props: pass-through v-models; `sections` prop to hide blocks hosts don't need
 - Hosts with custom layout can still import pieces à la carte
 
-### D5 — Export + empty states
+### D5 — Export + empty states ✅
 
 - SVG PNG/dataURL export on `RrgChart` ref or util
 - Empty state when all series hidden (Hide all)
@@ -116,11 +116,11 @@ See `sector-orbit/plans/234-mobile-layout-polish.md` and `199-chart-evolution.md
 ## Acceptance criteria
 
 - [ ] No chart-display toggle remains solely in Sector Orbit production UI (except data-reload settings)
-- [x] Each control component has Vitest coverage and stable `data-testid`s (viewport + series visibility)
+- [x] Each control component has Vitest coverage and stable `data-testid`s
 - [x] Dark theme via CSS variables (matches playback/viewport)
-- [x] `src/index.ts` exports series visibility control + helpers (viewport + playback already exported)
+- [x] `src/index.ts` exports control components + helpers
 - [ ] C10 / README host recipe updated: compose library panel, don't copy demo sidebar
-- [ ] Demo playground uses same exported components (not duplicate demo-only markup)
+- [x] Demo playground uses same exported components (not duplicate demo-only markup)
 
 ---
 

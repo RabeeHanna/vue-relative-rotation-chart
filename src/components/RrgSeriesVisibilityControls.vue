@@ -1,24 +1,32 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import type { RrgRenderSeries } from '../types/rrg'
+import { assignSeriesColors } from '../utils/colors'
 import {
   hideAllTickers,
   showAllTickers,
   soloTicker,
 } from '../composables/useRrgSeriesVisibility'
+import './rrgControlsShared.css'
 import './RrgSeriesVisibilityControls.css'
 
 const props = withDefaults(
   defineProps<{
     series: RrgRenderSeries[]
     disabled?: boolean
+    dark?: boolean
+    inset?: boolean
   }>(),
   {
     disabled: false,
+    dark: false,
+    inset: false,
   },
 )
 
 const visibleTickers = defineModel<string[]>('visibleTickers', { required: true })
+
+const coloredSeries = computed(() => assignSeriesColors(props.series))
 
 const preSoloTickers = ref<string[] | null>(null)
 
@@ -63,6 +71,10 @@ function onRestore() {
 <template>
   <div
     class="rrg-series-visibility"
+    :class="[
+      inset ? 'rrg-controls-surface--inset' : 'rrg-controls-surface',
+      { dark },
+    ]"
     data-testid="rrg-series-visibility"
     role="group"
     aria-label="Series visibility"
@@ -96,7 +108,7 @@ function onRestore() {
 
     <ul class="rrg-series-visibility__list">
       <li
-        v-for="item in series"
+        v-for="item in coloredSeries"
         :key="item.ticker"
         class="rrg-series-visibility__item"
         :class="{ 'rrg-series-visibility__item--hidden': !visibleSet.has(item.ticker) }"
@@ -104,7 +116,8 @@ function onRestore() {
       >
         <span
           class="rrg-series-visibility__swatch"
-          :style="{ background: item.color ?? '#888' }"
+          :style="{ background: item.color }"
+          :data-testid="`rrg-series-visibility-swatch-${item.ticker}`"
           aria-hidden="true"
         />
         <label>

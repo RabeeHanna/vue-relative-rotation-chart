@@ -1,0 +1,40 @@
+.rrg-chart-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.rrg-chart-controls__section {
+  border: 1px solid var(--rrg-ctl-border);
+  border-radius: 8px;
+  background: var(--rrg-ctl-panel-bg);
+  padding: 0.45rem 0.55rem 0.55rem;
+}
+
+.rrg-chart-controls__section > summary {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  color: var(--rrg-ctl-text);
+  list-style: none;
+  user-select: none;
+}
+
+.rrg-chart-controls__section > summary::-webkit-details-marker {
+  display: none;
+}
+
+.rrg-chart-controls__section > summary::before {
+  content: '▸ ';
+  display: inline-block;
+  transition: transform 0.15s ease;
+}
+
+.rrg-chart-controls__section[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.rrg-chart-controls__section > :not(summary) {
+  margin-top: 0.45rem;
+}

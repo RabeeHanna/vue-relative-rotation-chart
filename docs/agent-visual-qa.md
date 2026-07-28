@@ -47,10 +47,10 @@ Use this to **confirm clicks** without parsing SVG coordinates. Chart root still
 | Controls section | `demo-controls` |
 | Scenario select | `demo-scenario` |
 | Theme | `demo-theme` |
-| Viewport | `demo-viewport` |
+| Viewport | `rrg-viewport-{fit\|max\|center}` (in chart controls panel) |
 | Label mode | `demo-label-mode` |
 | Tail length | `demo-tail-length` |
-| Playback loop (demo) | `demo-playback-loop` |
+| Playback loop (demo) | removed — use `rrg-playback-loop-toggle` |
 | Chart host | `demo-chart-host` |
 | Hover chip | `demo-hover-chip` |
 | Agent state panel | `agent-state-panel` |
@@ -63,7 +63,8 @@ Use this to **confirm clicks** without parsing SVG coordinates. Chart root still
 | Playback root | `rrg-playback` |
 | Scrubber | `rrg-playback-scrubber` |
 | Play / pause | `rrg-playback-toggle` |
-| Loop (when on control) | `rrg-playback-loop` |
+| Loop toggle | `rrg-playback-loop-toggle` |
+| Loop label (when on) | `rrg-playback-loop` |
 
 ### Viewport (`RrgViewportControls`)
 
@@ -71,6 +72,23 @@ Use this to **confirm clicks** without parsing SVG coordinates. Chart root still
 |---------|---------------|
 | Viewport root | `rrg-viewport` |
 | Mode button | `rrg-viewport-{fit\|max\|center}` |
+
+### Chart controls panel (`RrgChartControlsPanel`)
+
+| Control | `data-testid` |
+|---------|---------------|
+| Panel root | `rrg-chart-controls-panel` |
+| Viewport section | `rrg-chart-controls-viewport-section` |
+| Display section | `rrg-chart-controls-display-section` |
+| Visibility section | `rrg-chart-controls-visibility-section` |
+
+### Display settings (`RrgDisplaySettingsControls`)
+
+| Control | `data-testid` |
+|---------|---------------|
+| Tail length | `rrg-display-tail-length` |
+| Label mode | `rrg-display-label-mode` |
+| Tail fade | `rrg-display-tail-fade` |
 
 ### Series visibility (`RrgSeriesVisibilityControls`)
 
@@ -93,6 +111,8 @@ Use this to **confirm clicks** without parsing SVG coordinates. Chart root still
 | Playback | `/?scenario=longPlayback50&agent=1` | scrub while paused; `data-selected-date` set |
 | Label hover | `/?labelMode=hover&agent=1` | tooltip visible on hover |
 | Stress hover | `/?scenario=stress&agent=1` | hover T0–T2; JSON `scenario: stress` |
+| Chart controls panel | `/?scenario=default&agent=1` | panel viewport + display v-models |
+| All hidden | `/?scenario=default&agent=1` | hide all → `rrg-chart-empty` |
 | Series visibility | `/?scenario=default&agent=1` | solo XLK → `visibleTickerCount: 1`; restore → 6 |
 
 Run headlessly: `npm run test:agent-guide`

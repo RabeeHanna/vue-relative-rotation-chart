@@ -9,18 +9,18 @@
   align-items: center;
   gap: 0.35rem;
   padding: 0.35rem 0.55rem;
-  border: 1px solid var(--rrg-viewport-option-border, #3a4252);
+  border: 1px solid var(--rrg-ctl-surface-border);
   border-radius: 8px;
-  background: var(--rrg-viewport-option-bg, #1c2330);
-  color: var(--rrg-viewport-option-text, #e8eaed);
-  font-size: 0.82rem;
+  background: var(--rrg-ctl-surface);
+  color: var(--rrg-ctl-text);
+  font-size: inherit;
   cursor: pointer;
 }
 
 .rrg-viewport__option:has(input:checked) {
-  border-color: var(--rrg-viewport-option-active-border, #5b8def);
-  background: var(--rrg-viewport-option-active-bg, #243049);
-  color: var(--rrg-viewport-option-active-text, #c8d8f8);
+  border-color: var(--rrg-ctl-active-border);
+  background: var(--rrg-ctl-active-bg);
+  color: var(--rrg-ctl-active-text);
 }
 
 .rrg-viewport__option:has(input:disabled) {
@@ -29,14 +29,5 @@
 }
 
 .rrg-viewport__option input {
-  accent-color: var(--rrg-viewport-accent, #5b8def);
-}
-
-.rrg-viewport.dark {
-  --rrg-viewport-option-border: #3d4654;
-  --rrg-viewport-option-bg: #1e2430;
-  --rrg-viewport-option-text: #d8dee8;
-  --rrg-viewport-option-active-border: #5b8def;
-  --rrg-viewport-option-active-bg: #243049;
-  --rrg-viewport-option-active-text: #c8d8f8;
+  accent-color: var(--rrg-ctl-accent);
 }

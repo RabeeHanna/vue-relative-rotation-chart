@@ -11,6 +11,7 @@ Reactive derivation between props and renderable chart state.
 - `useRrgHoverState`
 - `useRrgPlayback` / `useRrgPlaybackControls` (C12 timeline)
 - `useRrgChartSummary` (accessible SVG title/desc)
+- `useRrgChartChrome` (empty state + PNG export helpers for `RrgChart`)
 - `useRrgSeriesVisibility` helpers (C23 — apply/filter visible tickers)
 
 ## Does not belong here

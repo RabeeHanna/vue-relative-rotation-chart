@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { assignSeriesColors, DEFAULT_PALETTE } from '../src/utils/colors'
+import { assignSeriesColors, DEFAULT_PALETTE, seriesColorAt } from '../src/utils/colors'
 import type { RrgRenderSeries } from '../src/types/rrg'
 
 const base: RrgRenderSeries[] = [
@@ -21,5 +21,10 @@ describe('assignSeriesColors', () => {
 
   it('is deterministic', () => {
     expect(assignSeriesColors(base)).toEqual(assignSeriesColors(base))
+  })
+
+  it('seriesColorAt matches assignSeriesColors entries', () => {
+    expect(seriesColorAt(base[0], 0)).toBe(DEFAULT_PALETTE[0])
+    expect(seriesColorAt(base[1], 1)).toBe('#111111')
   })
 })

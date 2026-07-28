@@ -5,14 +5,20 @@ import {
   rrgViewportModeDescription,
   rrgViewportModeLabel,
 } from '../utils/viewportLabels'
+import './rrgControlsShared.css'
 import './RrgViewportControls.css'
 
 withDefaults(
   defineProps<{
     disabled?: boolean
+    dark?: boolean
+    /** Inherit panel tokens when composed inside `RrgChartControlsPanel`. */
+    inset?: boolean
   }>(),
   {
     disabled: false,
+    dark: false,
+    inset: false,
   },
 )
 
@@ -22,6 +28,10 @@ const viewportMode = defineModel<RrgViewportMode>('viewportMode', { required: tr
 <template>
   <div
     class="rrg-viewport"
+    :class="[
+      inset ? 'rrg-controls-surface--inset' : 'rrg-controls-surface',
+      { dark },
+    ]"
     data-testid="rrg-viewport"
     role="radiogroup"
     aria-label="Chart viewport mode"

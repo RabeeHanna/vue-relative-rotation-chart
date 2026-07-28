@@ -14,10 +14,14 @@ const DEFAULT_PALETTE = [
 ]
 
 /** Deterministic palette fill for series missing an explicit color. */
+export function seriesColorAt(series: RrgRenderSeries, index: number): string {
+  return series.color ?? DEFAULT_PALETTE[index % DEFAULT_PALETTE.length]
+}
+
 export function assignSeriesColors(series: RrgRenderSeries[]): RrgRenderSeries[] {
   return series.map((s, i) => ({
     ...s,
-    color: s.color ?? DEFAULT_PALETTE[i % DEFAULT_PALETTE.length],
+    color: seriesColorAt(s, i),
   }))
 }
 

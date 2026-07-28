@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import RrgSeriesVisibilityControls from '../src/components/RrgSeriesVisibilityControls.vue'
+import { DEFAULT_PALETTE } from '../src/utils/colors'
 import { mockSeries } from '../src/scenarios'
 
 describe('RrgSeriesVisibilityControls', () => {
@@ -25,6 +26,22 @@ describe('RrgSeriesVisibilityControls', () => {
 
     await wrapper.get('[data-testid="rrg-series-visibility-restore"]').trigger('click')
     expect(wrapper.props('visibleTickers')).toEqual(mockSeries.map((s) => s.ticker))
+  })
+
+  it('uses assignSeriesColors palette for swatches when color is omitted', () => {
+    const wrapper = mount(RrgSeriesVisibilityControls, {
+      props: {
+        series: mockSeries,
+        visibleTickers: mockSeries.map((s) => s.ticker),
+      },
+    })
+
+    expect(
+      wrapper.get('[data-testid="rrg-series-visibility-swatch-XLK"]').attributes('style'),
+    ).toContain(DEFAULT_PALETTE[0])
+    expect(
+      wrapper.get('[data-testid="rrg-series-visibility-swatch-XLF"]').attributes('style'),
+    ).toContain(DEFAULT_PALETTE[1])
   })
 
   it('disables restore until solo snapshot exists', async () => {

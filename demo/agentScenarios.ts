@@ -52,19 +52,32 @@ export const AGENT_MISSIONS: AgentMission[] = [
     url: '/?scenario=denseCluster&agent=1',
     readyTestId: 'rrg-chart',
     steps: [
-      { action: 'select', target: 'demo-viewport', value: 'max' },
+      { action: 'click', target: 'rrg-viewport-max' },
       {
         action: 'expectChart',
         attribute: 'data-viewport-mode',
         value: 'max',
       },
       { action: 'readState', expect: { viewportMode: 'max' } },
-      { action: 'select', target: 'demo-viewport', value: 'center' },
+      { action: 'click', target: 'rrg-viewport-center' },
       {
         action: 'expectChart',
         attribute: 'data-viewport-mode',
         value: 'center',
       },
+    ],
+  },
+  {
+    id: 'playback-loop',
+    name: 'Playback loop toggle',
+    url: '/?scenario=longPlayback50&source=preset&agent=1',
+    readyTestId: 'rrg-chart',
+    steps: [
+      { action: 'pausePlayback' },
+      { action: 'click', target: 'rrg-playback-loop-toggle' },
+      { action: 'readState', expect: { loop: false } },
+      { action: 'click', target: 'rrg-playback-loop-toggle' },
+      { action: 'readState', expect: { loop: true } },
     ],
   },
   {
@@ -113,6 +126,31 @@ export const AGENT_MISSIONS: AgentMission[] = [
       { action: 'hover', target: 'rrg-point-T1', force: true },
       { action: 'hover', target: 'rrg-point-T2', force: true },
       { action: 'readState', expect: { scenario: 'stress' } },
+    ],
+  },
+  {
+    id: 'chart-controls-panel',
+    name: 'Chart controls panel sections',
+    url: '/?scenario=default&source=preset&agent=1',
+    readyTestId: 'rrg-chart-controls-panel',
+    steps: [
+      { action: 'pausePlayback' },
+      { action: 'click', target: 'rrg-viewport-fit' },
+      { action: 'readState', expect: { viewportMode: 'fit' } },
+      { action: 'select', target: 'rrg-display-label-mode', value: 'hover' },
+      { action: 'readState', expect: { labelMode: 'hover' } },
+    ],
+  },
+  {
+    id: 'all-series-hidden',
+    name: 'Hide all series empty state',
+    url: '/?scenario=default&source=preset&agent=1',
+    readyTestId: 'rrg-chart',
+    steps: [
+      { action: 'pausePlayback' },
+      { action: 'click', target: 'rrg-series-visibility-hide-all' },
+      { action: 'expectVisible', target: 'rrg-chart-empty' },
+      { action: 'readState', expect: { visibleTickerCount: 0 } },
     ],
   },
   {
