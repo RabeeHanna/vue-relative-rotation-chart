@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RrgLabelMode, RrgViewportMode } from '../src/types/rrg'
+import type { RrgViewportMode } from '../src/types/rrg'
 import { scenarioCatalog } from './scenarios'
 import type { ChartSizePreset } from './demoUrl'
 import type { DemoControlsState } from './demoControlsState'
@@ -29,7 +29,6 @@ const emit = defineEmits<{
 }>()
 
 const viewports: RrgViewportMode[] = ['fit', 'max', 'center']
-const labels: RrgLabelMode[] = ['auto', 'always', 'hover']
 const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
 </script>
 
@@ -78,12 +77,6 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
 
       <div class="row">
         <label>
-          Labels
-          <select v-model="state.labelMode" data-testid="demo-label-mode">
-            <option v-for="l in labels" :key="l" :value="l">{{ l }}</option>
-          </select>
-        </label>
-        <label>
           Size
           <select v-model="state.size" data-testid="demo-size">
             <option v-for="s in sizes" :key="s" :value="s">{{ s }}</option>
@@ -94,25 +87,6 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
       <div class="tail-cluster" data-testid="demo-tail-cluster">
         <p class="tail-help">Full history overrides Tail length.</p>
         <div class="row">
-          <label>
-            Tail
-            <input
-              v-model.number="state.tailLength"
-              type="number"
-              min="1"
-              max="60"
-              :disabled="state.fullHistoryTail"
-              :class="{ overridden: state.fullHistoryTail }"
-              data-testid="demo-tail-length"
-            />
-            <span
-              v-if="state.fullHistoryTail"
-              class="overridden-hint"
-              data-testid="demo-tail-overridden"
-            >
-              overridden
-            </span>
-          </label>
           <label class="check">
             <input
               v-model="state.fullHistoryTail"
@@ -121,6 +95,13 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
             />
             Full history
           </label>
+          <span
+            v-if="state.fullHistoryTail"
+            class="overridden-hint"
+            data-testid="demo-tail-overridden"
+          >
+            Tail length overridden
+          </span>
         </div>
       </div>
 
@@ -142,10 +123,6 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
             data-testid="demo-labels-always"
           />
           Always labels
-        </label>
-        <label class="check">
-          <input v-model="state.showTailFade" type="checkbox" data-testid="demo-tail-fade" />
-          Tail fade
         </label>
         <label class="check">
           <input v-model="state.playbackLoop" type="checkbox" data-testid="demo-playback-loop" />

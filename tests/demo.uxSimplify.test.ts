@@ -51,11 +51,10 @@ describe('demo C19.5 UX simplify', () => {
     expect(w.get('[data-testid="demo-copy-snippet"]').isVisible()).toBe(true)
   })
 
-  it('explains Full history override and marks Tail when full history is on', async () => {
+  it('explains Full history override when full history is on', async () => {
     const w = mountControls({ customizeOpen: true, fullHistoryTail: true })
     await nextTick()
     expect(w.get('[data-testid="demo-tail-cluster"]').text()).toMatch(/overrides Tail length/i)
-    expect(w.get('[data-testid="demo-tail-length"]').attributes('disabled')).toBeDefined()
     expect(w.get('[data-testid="demo-tail-overridden"]').text()).toMatch(/overridden/i)
   })
 })

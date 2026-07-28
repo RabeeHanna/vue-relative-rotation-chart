@@ -90,6 +90,18 @@ export const AGENT_MISSIONS: AgentMission[] = [
     ],
   },
   {
+    id: 'display-settings',
+    name: 'Display settings tail and labels',
+    url: '/?scenario=default&source=preset&agent=1',
+    readyTestId: 'rrg-chart',
+    steps: [
+      { action: 'pausePlayback' },
+      { action: 'select', target: 'rrg-display-tail-length', value: '12' },
+      { action: 'select', target: 'rrg-display-label-mode', value: 'always' },
+      { action: 'readState', expect: { labelMode: 'always', tailLength: 12 } },
+    ],
+  },
+  {
     id: 'stress-hover',
     name: 'Stress scenario hover',
     url: '/?scenario=stress&agent=1',

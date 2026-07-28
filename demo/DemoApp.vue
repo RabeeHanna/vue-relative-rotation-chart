@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RrgPlaybackControls, RrgSeriesVisibilityControls } from '../src'
+import { RrgDisplaySettingsControls, RrgPlaybackControls, RrgSeriesVisibilityControls } from '../src'
 import DemoAgentStatePanel from './DemoAgentStatePanel.vue'
 import DemoChartHost from './DemoChartHost.vue'
 import DemoControls from './DemoControls.vue'
@@ -64,6 +64,16 @@ const {
       :class="{ dark }"
       class="demo-series-visibility"
       :series="series"
+    />
+
+    <RrgDisplaySettingsControls
+      v-if="!controls.compare"
+      v-model:tail-length="controls.tailLength"
+      v-model:label-mode="controls.labelMode"
+      v-model:show-tail-fade="controls.showTailFade"
+      :class="{ dark }"
+      class="demo-display-settings"
+      :disabled="controls.fullHistoryTail"
     />
 
     <DemoChartHost

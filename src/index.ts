@@ -2,6 +2,7 @@ export { default as RrgChart } from './components/RrgChart.vue'
 export { default as RrgPlaybackControls } from './components/RrgPlaybackControls.vue'
 export { default as RrgViewportControls } from './components/RrgViewportControls.vue'
 export { default as RrgSeriesVisibilityControls } from './components/RrgSeriesVisibilityControls.vue'
+export { default as RrgDisplaySettingsControls } from './components/RrgDisplaySettingsControls.vue'
 
 export type {
   RrgRenderPoint,
@@ -39,6 +40,12 @@ export {
   rrgViewportModeDescription,
   rrgViewportModeLabel,
 } from './utils/viewportLabels'
+export {
+  RRG_LABEL_MODES,
+  isRrgLabelMode,
+  rrgLabelModeDescription,
+  rrgLabelModeLabel,
+} from './utils/labelModeLabels'
 export {
   applyVisibleTickers,
   filterVisibleTickers,
