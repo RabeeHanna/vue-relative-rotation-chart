@@ -152,7 +152,7 @@ No. This is a **presentation-only** Vue chart library. Your app computes scores 
 This package is Vue 3 only. The SVG output is standard DOM — you could port the rendering approach, but no sibling package exists yet.
 
 **Can I use this for sector rotation dashboards?**  
-Yes — pass one series per sector or ticker. Optional playback scrubbing helps animate rotation over time. Used in production by [Sector Orbit](https://sectororbit.com).
+Yes — pass one series per sector or ticker. Optional playback scrubbing helps animate rotation over time. Used in production by [Sector Orbit](https://sector-orbit-web.onrender.com/).
 
 ## Performance
 
