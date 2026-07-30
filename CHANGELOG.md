@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-07-30
+
+### Changed
+
+- Mobile playback toolbar: single-row layout (transport + speed on one line via flex `display: contents`)
+- Mobile playback buttons: ~48px touch targets, wider gaps, centered icons for easier tapping on narrow viewports
+
 ## [0.1.2] - 2026-07-30
 
 ### Changed

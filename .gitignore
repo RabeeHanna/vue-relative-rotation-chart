@@ -1,4 +1,10 @@
 node_modules/
+
+# Local secrets (npm publish token, etc.)
+.env
+.env.*
+!.env.example
+
 dist/
 demo-dist/
 coverage/
