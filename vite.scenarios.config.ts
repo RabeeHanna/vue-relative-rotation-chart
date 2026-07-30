@@ -3,6 +3,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 /** ES-only scenarios subpath — second pass so main can keep UMD (C14). */
 export default defineConfig({
+  publicDir: false,
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

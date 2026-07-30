@@ -3,10 +3,85 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>vue-relative-rotation-chart demo</title>
+    <title>Vue 3 RRG Chart Component Demo | Stock &amp; Sector Rotation</title>
+    <meta
+      name="description"
+      content="Explore a Vue 3 SVG component for RRG-style stock, ETF, and sector-rotation charts with relative-strength quadrants, animated tails, timeline playback, and PNG export."
+    />
+    <link rel="canonical" href="https://rabeehanna.github.io/vue-relative-rotation-chart/" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#1a1a2e" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Vue 3 RRG Chart Component Demo" />
+    <meta
+      property="og:description"
+      content="Explore a Vue 3 SVG component for RRG-style stock, ETF, and sector-rotation charts with relative-strength quadrants, animated tails, timeline playback, and PNG export."
+    />
+    <meta property="og:url" content="https://rabeehanna.github.io/vue-relative-rotation-chart/" />
+    <meta
+      property="og:image"
+      content="https://rabeehanna.github.io/vue-relative-rotation-chart/og-demo.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Vue 3 RRG Chart Component Demo" />
+    <meta
+      name="twitter:description"
+      content="Explore a Vue 3 SVG component for RRG-style stock, ETF, and sector-rotation charts with relative-strength quadrants, animated tails, timeline playback, and PNG export."
+    />
+    <meta
+      name="twitter:image"
+      content="https://rabeehanna.github.io/vue-relative-rotation-chart/og-demo.png"
+    />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "vue-relative-rotation-chart demo",
+        "url": "https://rabeehanna.github.io/vue-relative-rotation-chart/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "description": "Interactive demo of a Vue 3 SVG component for RRG-style relative rotation charts with quadrants, tails, playback, and PNG export.",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "RRG-style relative rotation visualization",
+          "Animated historical tails",
+          "Timeline playback controls",
+          "Viewport and series visibility controls",
+          "PNG export"
+        ],
+        "codeRepository": "https://github.com/RabeeHanna/vue-relative-rotation-chart"
+      }
+    </script>
+    <link rel="stylesheet" href="/static-shell.css" />
   </head>
   <body>
-    <div id="app"></div>
+    <main class="demo-shell">
+      <header class="demo-static-header">
+        <h1>Interactive Vue 3 Relative Rotation Graph component</h1>
+        <p>
+          Visualize relative strength and momentum for stocks, ETFs, sectors, indices, or portfolio
+          holdings with animated trails, quadrant labels, timeline playback, and PNG export.
+        </p>
+        <p class="demo-boundary">
+          Data and calculations are supplied by your application. This package renders precomputed
+          RS-Ratio and RS-Momentum series and does not fetch market prices or generate trading
+          signals.
+        </p>
+        <p class="demo-static-free">Free to use.</p>
+        <p class="demo-static-links">
+          <a href="https://www.npmjs.com/package/vue-relative-rotation-chart">npm</a>
+          <a href="https://github.com/RabeeHanna/vue-relative-rotation-chart">GitHub</a>
+        </p>
+      </header>
+      <noscript>
+        This interactive demo requires JavaScript to load the chart and controls.
+      </noscript>
+      <div id="app"></div>
+    </main>
     <script type="module" src="/demo/main.ts"></script>
   </body>
 </html>

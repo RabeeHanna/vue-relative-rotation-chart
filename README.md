@@ -4,20 +4,45 @@
 [![npm version](https://img.shields.io/npm/v/vue-relative-rotation-chart.svg)](https://www.npmjs.com/package/vue-relative-rotation-chart)
 [![license](https://img.shields.io/github/license/RabeeHanna/vue-relative-rotation-chart.svg)](./LICENSE)
 
-**Vue 3 SVG component library for Relative Rotation Graph (RRG) charts** — plot precomputed JdK **RS-Ratio** (x) and **RS-Momentum** (y) with quadrant labels (leading, weakening, lagging, improving), animated tails, collision-aware ticker labels, viewport modes, hover/tooltip, optional timeline playback, and PNG export.
+Build interactive stock, ETF, sector, index, and portfolio-holdings rotation charts in Vue 3.
 
-**Renderer only** — no price fetch, no RS-Ratio / RS-Momentum calculation, no caching. Pass `RrgRenderSeries[]` from your host app.
+`vue-relative-rotation-chart` is an SVG component for creating [Relative Rotation Graph](https://www.relativerotationgraphs.com/what-is-a-relative-rotation-graph/) (RRG)-style visualizations. Plot precomputed [relative strength](https://www.investopedia.com/terms/r/relativestrength.asp) and [momentum](https://www.investopedia.com/terms/m/momentum.asp) values against a benchmark, display securities in Leading, Weakening, Lagging, and Improving quadrants, and animate their historical movement with readable trails and timeline playback.
+
+Use it to add market-rotation analysis to a stock dashboard, ETF screener, portfolio visualization, financial application, or technical-analysis tool.
+
+This package is a **renderer**, not a market-data or indicator-calculation library. Your application supplies the precomputed RS-Ratio and RS-Momentum series; the component handles visualization, interaction, labels, controls, playback, and export.
 
 > **Live demo:** [GitHub Pages](https://rabeehanna.github.io/vue-relative-rotation-chart/) · [npm](https://www.npmjs.com/package/vue-relative-rotation-chart) · local: `npm run dev`
 
-## When to use this
+![vue-relative-rotation-chart demo — sector ETF RRG with controls and playback](./docs/readme-demo.png)
 
-Use this package when you need a **Vue relative rotation chart**, **sector rotation graph**, or **RRG visualization** for stocks, ETFs, sectors, or indices — and you already compute rotation scores elsewhere. Typical searches this library answers:
+## What can I build?
 
-- Vue 3 RRG chart component
-- Relative Rotation Graph SVG renderer
-- RS-Ratio × RS-Momentum quadrant chart
-- Sector / stock rotation visualization with tails and playback
+- Add an RRG-style sector-rotation chart to a Vue stock dashboard.
+- Compare stocks, ETFs, sectors, indices, or portfolio holdings against a benchmark such as SPY.
+- Visualize which securities are gaining or losing relative momentum.
+- Animate movement through Leading, Weakening, Lagging, and Improving quadrants.
+- Show historical leadership changes within a watchlist or market universe.
+- Render precomputed RRG-style values from a Python, FastAPI, Node, or financial-data backend.
+
+The package visualizes supplied results. It does not fetch current prices, calculate RS-Ratio or RS-Momentum, score a portfolio, or generate trading signals.
+
+## Agent capability contract
+
+| Question | Answer |
+|----------|--------|
+| Framework | Vue 3 |
+| Rendering | SVG |
+| Input | Precomputed dated series for named securities |
+| Fetches market prices | No |
+| Calculates RS-Ratio or RS-Momentum | No |
+| Supports stocks, ETFs, sectors, and indices | Yes, when supplied as series |
+| Portfolio holdings | Yes, as a visualization use case |
+| Quadrants | Leading, Weakening, Lagging, Improving |
+| Historical tails | Yes |
+| Playback controls | Yes |
+| Image export | PNG |
+| Trading signals or financial advice | No |
 
 ## Install
 
@@ -69,6 +94,14 @@ const speed = ref(2)
 ```
 
 `selectedDate` snaps to the nearest point date when missing (`data-date-status="snapped"`). Empty series shows empty-state UI.
+
+## Common implementation requests
+
+- “Add a sector rotation chart to my Vue dashboard.”
+- “Compare my stock watchlist against SPY using relative strength and momentum.”
+- “Animate ETFs moving between Leading, Weakening, Lagging, and Improving.”
+- “Render RRG-style data calculated by my Python backend.”
+- “Visualize which portfolio holdings are gaining relative momentum.”
 
 ## Features
 
@@ -143,7 +176,7 @@ See [`plans/C10-host-integration.md`](./plans/C10-host-integration.md) for a ful
 ## FAQ
 
 **What is a Relative Rotation Graph (RRG)?**  
-A scatter chart of RS-Ratio (horizontal) vs RS-Momentum (vertical) used in technical analysis to track how securities rotate through four phases relative to a benchmark — popular for sector and index rotation studies (JdK methodology).
+A scatter chart of RS-Ratio (horizontal) vs RS-Momentum (vertical) used in technical analysis to track how securities rotate through four phases relative to a benchmark — popular for sector and index rotation studies.
 
 **Does this calculate RS-Ratio or RS-Momentum?**  
 No. This is a **presentation-only** Vue chart library. Your app computes scores and passes precomputed `x`, `y`, and `quadrant` per point.
@@ -152,7 +185,11 @@ No. This is a **presentation-only** Vue chart library. Your app computes scores 
 This package is Vue 3 only. The SVG output is standard DOM — you could port the rendering approach, but no sibling package exists yet.
 
 **Can I use this for sector rotation dashboards?**  
-Yes — pass one series per sector or ticker. Optional playback scrubbing helps animate rotation over time. Used in production by [Sector Orbit](https://sector-orbit-web.onrender.com/).
+Yes — pass one series per sector or ticker. Optional playback scrubbing helps animate rotation over time.
+
+## Trademark note
+
+Relative Rotation Graph and RRG are trademarks of their respective owners. This component uses an RRG-style methodology, is developed independently, is not endorsed by RRG Research, and does not claim official JdK formula parity.
 
 ## Performance
 

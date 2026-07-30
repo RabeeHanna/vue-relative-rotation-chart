@@ -1,0 +1,35 @@
+# vue-relative-rotation-chart
+
+Vue 3 SVG component library for RRG-style relative rotation charts. Renderer only: your application supplies precomputed RS-Ratio and RS-Momentum series; the package handles quadrant visualization, animated tails, labels, controls, timeline playback, and PNG export.
+
+## Boundary
+
+- Does not fetch market prices
+- Does not calculate RS-Ratio or RS-Momentum
+- Does not generate trading signals or portfolio scores
+- Independent implementation; not endorsed by RRG Research; no official JdK formula parity claim
+
+## Input
+
+`RrgRenderSeries[]` — one object per security with `ticker`, optional `label`/`name`, and `points[]` of `{ date, x, y, quadrant }` (ISO dates, sorted).
+
+## Framework
+
+Vue 3 peer dependency (^3.5.0). SVG rendering via Vue templates; D3 used for math only.
+
+## Features
+
+- Leading / Weakening / Lagging / Improving quadrants
+- Configurable tails, spatial-bin labels, viewport modes (fit / max / center)
+- Optional `RrgPlaybackControls`, `RrgChartControlsPanel`, series visibility helpers
+- PNG export via chart ref
+
+## Install
+
+npm install vue-relative-rotation-chart
+
+## Links
+
+- Demo: https://rabeehanna.github.io/vue-relative-rotation-chart/
+- npm: https://www.npmjs.com/package/vue-relative-rotation-chart
+- Repository: https://github.com/RabeeHanna/vue-relative-rotation-chart

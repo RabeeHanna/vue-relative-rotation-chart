@@ -5,6 +5,7 @@ import { fileURLToPath, URL } from 'node:url'
 /** SPA build for GitHub Pages / static demo hosting (C14). */
 export default defineConfig({
   base: process.env.VITE_DEMO_BASE || '/vue-relative-rotation-chart/',
+  publicDir: 'public',
   plugins: [vue()],
   resolve: {
     alias: {

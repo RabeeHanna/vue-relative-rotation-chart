@@ -14,6 +14,7 @@ export default [
       'node_modules/**',
       'coverage/**',
       'spikes/label-collision/artifacts/**',
+      '.playwright-browsers/**',
     ],
   },
   js.configs.recommended,

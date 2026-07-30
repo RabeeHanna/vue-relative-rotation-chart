@@ -1,9 +1,9 @@
 {
   "name": "vue-relative-rotation-chart",
-  "version": "0.1.1",
-  "description": "Vue 3 SVG Relative Rotation Graph (RRG) chart — RS-Ratio × RS-Momentum quadrants, tails, labels, playback. Renderer only.",
+  "version": "0.1.2",
+  "description": "Vue 3 SVG renderer for RRG-style stock, ETF, sector, index, and portfolio rotation charts with animated tails, playback controls, and PNG export.",
   "license": "MIT",
-  "homepage": "https://github.com/RabeeHanna/vue-relative-rotation-chart#readme",
+  "homepage": "https://rabeehanna.github.io/vue-relative-rotation-chart/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/RabeeHanna/vue-relative-rotation-chart.git"
@@ -14,21 +14,26 @@
   "keywords": [
     "vue",
     "vue3",
-    "vue-component",
+    "typescript",
     "svg",
     "chart",
-    "rrg",
+    "data-visualization",
+    "financial-chart",
+    "stock-chart",
+    "stock-dashboard",
+    "sector-rotation",
+    "market-rotation",
     "relative-rotation-graph",
-    "relative-rotation-chart",
+    "rrg",
+    "rrg-chart",
     "relative-strength",
+    "relative-momentum",
     "rs-ratio",
     "rs-momentum",
-    "sector-rotation",
-    "stock-rotation",
-    "financial-chart",
-    "technical-analysis",
-    "data-visualization",
-    "typescript"
+    "quadrant-chart",
+    "animated-chart",
+    "timeline-playback",
+    "portfolio-visualization"
   ],
   "type": "module",
   "files": [

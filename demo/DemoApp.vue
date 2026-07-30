@@ -39,12 +39,7 @@ const {
 </script>
 
 <template>
-  <main class="demo" data-testid="demo-app">
-    <header>
-      <h1>vue-relative-rotation-chart</h1>
-      <p>Renderer only — data and calculations are supplied by the caller.</p>
-    </header>
-
+  <div class="demo" data-testid="demo-app">
     <DemoControls
       section="simple"
       v-model="controls"
@@ -118,5 +113,5 @@ const {
     </p>
 
     <DemoAgentStatePanel v-if="agentMode" :state="agentState" />
-  </main>
+  </div>
 </template>

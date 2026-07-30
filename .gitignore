@@ -17,3 +17,5 @@ blob-report/
 playwright/.cache/
 .playwright-browsers/
 *.tgz
+docs/discoverability-metrics/
+docs/public-positioning.txt

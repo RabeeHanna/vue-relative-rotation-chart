@@ -1,0 +1,75 @@
+/* Static crawlable shell (index.html) — shared typography with demo app. */
+body {
+  margin: 0;
+  color-scheme: light;
+  color: #222;
+  font-family: Georgia, 'Times New Roman', serif;
+  background:
+    radial-gradient(circle at 20% 0%, #e8efe8 0%, transparent 40%),
+    linear-gradient(180deg, #f7f7f5 0%, #eceae4 100%);
+  min-height: 100vh;
+}
+
+.demo-shell {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 0;
+}
+
+.demo-static-header h1 {
+  margin: 0 0 0.35rem;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+}
+
+.demo-static-header p {
+  margin: 0 0 0.5rem;
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.demo-static-header .demo-boundary {
+  margin: 0 0 0.65rem;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+.demo-static-links {
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+}
+
+.demo-static-links a {
+  color: #1a5c3a;
+}
+
+.demo-static-links a + a {
+  margin-left: 0.75rem;
+}
+
+.demo-static-free {
+  margin: 0 0 0.75rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+noscript {
+  display: block;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+  background: #fff8e6;
+  border: 1px solid #e6d9a8;
+  border-radius: 4px;
+  color: #5c4a1a;
+}
+
+@media (max-width: 600px) {
+  .demo-shell {
+    padding: 1rem 0.75rem 0;
+  }
+
+  .demo-static-header h1 {
+    font-size: 1.35rem;
+  }
+}

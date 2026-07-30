@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-07-30
+
+### Changed
+
+- README: outcome-oriented opening, agent capability contract, use-case sections, trademark note, demo screenshot
+- npm metadata: homepage points to GitHub Pages demo; expanded keywords and description
+- Demo: static crawlable HTML shell, JSON-LD, `llms.txt`, simple OG image
+
 ## [0.1.1] - 2026-07-30
 
 ### Changed
