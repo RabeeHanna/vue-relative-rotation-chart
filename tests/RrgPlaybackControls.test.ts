@@ -335,7 +335,7 @@ describe('RrgPlaybackControls mobile layout', () => {
     )
     expect(css).toContain('.rrg-playback--stacked .rrg-playback__toolbar')
     expect(css).toContain('.rrg-playback--stacked .rrg-playback__btn')
-    expect(css).toContain('min-height: 2.75rem')
+    expect(css).toContain('min-height: 3rem')
     expect(css).toContain('.rrg-playback--stacked .rrg-playback__scrubber')
     expect(css).toContain('height: 2.75rem')
     expect(css).toContain('.rrg-playback--stacked .rrg-playback__timeline')
