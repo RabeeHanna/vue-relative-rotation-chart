@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-07-30
+
+### Changed
+
+- README and npm metadata optimized for discoverability (RRG / relative rotation graph keywords, FAQ, concise API reference)
+- Expanded `package.json` keywords for sector rotation, RS-Ratio, RS-Momentum, and Vue chart searches
+
 ## [0.1.0] - 2026-07-25
 
 First deliberate public cut: rotation-specialist Vue SVG renderer (no fetch/calc).
