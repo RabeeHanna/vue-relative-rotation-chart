@@ -13,8 +13,11 @@ First deliberate public cut: rotation-specialist Vue SVG renderer (no fetch/calc
 
 ### Added
 
-- **`RrgChart`** — SVG RRG-style chart from precomputed `RrgRenderSeries[]` (axes, quadrants, points, tails, spatial-bin labels, hover/tooltip, tail hit targets)
-- **`RrgPlaybackControls`** — controlled timeline UI with `v-model:selected-date`, `v-model:playing`, `v-model:speed`; `loop`; `labelStyle` (`icon` \| `icon-text`)
+- **`RrgChart`** — SVG RRG-style chart from precomputed `RrgRenderSeries[]` (axes, quadrants, points, tails, spatial-bin labels, hover/tooltip, tail hit targets); ref exposes `getSvgElement` / `exportPng` for PNG export
+- **`RrgPlaybackControls`** — controlled timeline UI with `v-model:selected-date`, `v-model:playing`, `v-model:speed`, `v-model:loop`; `labelStyle` (`icon` \| `icon-text`); responsive `layout` (`auto` \| `stacked` \| `inline`) with mobile touch targets
+- **Chart controls (à la carte or composed)** — `RrgViewportControls`, `RrgSeriesVisibilityControls` (show/hide/solo/restore), `RrgDisplaySettingsControls` (tail length, label mode, tail fade), optional `RrgChartControlsPanel` shell with `sections` prop
+- **`useRrgSeriesVisibility` helpers** — `applyVisibleTickers`, `soloTicker`, `showAllTickers`, `hideAllTickers`, etc.
+- **SVG export utils** — `exportSvgElementAsPng`, `serializeSvgElement`, `svgMarkupToDataUrl`
 - Typed public contract (`RrgRenderPoint`, `RrgRenderSeries`, `RrgQuadrant`, viewport/label modes) and CSS variable theming + `vue-relative-rotation-chart/style.css`
 - Optional `copy` overrides (`RrgChartCopy` / `RrgPlaybackCopy`) for quadrant, tooltip, a11y, and control labels
 - Viewport modes `fit` \| `max` \| `center` (Fit-All product default); date snap / empty-state via `resolveChartDate` (`data-date-status`)
@@ -30,3 +33,4 @@ First deliberate public cut: rotation-specialist Vue SVG renderer (no fetch/calc
 - `RrgQuadrant` is the fixed four-value enum (`leading` \| `weakening` \| `lagging` \| `improving`) in this release
 - Default product mode uses capped `tailLength`; full-history LOD remains deferred
 - C17 FPS budgets are soft / nightly — not a hard PR gate
+- Bundle-size baselines updated for C22/C23 controls panel + mobile playback CSS (see `tests/perf/bundleSize.ts`)

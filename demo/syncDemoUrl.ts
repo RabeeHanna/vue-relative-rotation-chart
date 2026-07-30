@@ -29,6 +29,9 @@ export function syncDemoUrl(controls: DemoControlsState): void {
     pointRadius: controls.pointRadius,
     hitRadius: controls.hitRadius,
     speedMode: controls.speedMode,
+    genTickers: controls.genTickers,
+    genPoints: controls.genPoints,
+    genSeed: controls.genSeed,
   })
   history.replaceState(null, '', `${window.location.pathname}?${qs}`)
 }

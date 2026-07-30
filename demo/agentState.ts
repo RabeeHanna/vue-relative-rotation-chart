@@ -4,7 +4,8 @@
  */
 import type { RrgLabelMode, RrgRenderPoint, RrgRenderSeries, RrgViewportMode } from '../src/types/rrg'
 import { effectiveDemoTailLength } from './demoChartProps'
-import type { ChartSizePreset, DemoDataSource } from './demoUrl'
+import type { DemoDataSource } from './copySnippet'
+import type { ChartSizePreset } from './demoUrl'
 import { CHART_SIZE_PX } from './demoUrl'
 
 export const AGENT_STATE_PANEL_VERSION = 1

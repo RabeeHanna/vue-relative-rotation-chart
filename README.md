@@ -1,21 +1,19 @@
 # vue-relative-rotation-chart
 
 [![CI](https://github.com/RabeeHanna/vue-relative-rotation-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/RabeeHanna/vue-relative-rotation-chart/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/vue-relative-rotation-chart.svg)](https://www.npmjs.com/package/vue-relative-rotation-chart)
 [![license](https://img.shields.io/github/license/RabeeHanna/vue-relative-rotation-chart.svg)](./LICENSE)
 
 **Vue 3 SVG library for RRG-style relative rotation charts** — render precomputed RS-Ratio × RS-Momentum series with readable tails, collision-aware labels, viewport modes, hover/tooltip, and optional playback scrubbing.
 
 **Renderer only.** This package does not fetch prices, compute RS-Ratio / RS-Momentum, cache data, or own app routing/stores. Callers pass precomputed `RrgRenderSeries[]`.
 
-> **Not published to npm yet.** Prefer a git / `file:` / workspace link until the first deliberate publish.
->
-> **Try it live:** [GitHub Pages demo](https://rabeehanna.github.io/vue-relative-rotation-chart/) · or locally with `npm run dev`
+> **Try it live:** [GitHub Pages demo](https://rabeehanna.github.io/vue-relative-rotation-chart/) · [npm package](https://www.npmjs.com/package/vue-relative-rotation-chart) · or locally with `npm run dev`
 
 ## Install
 
 ```bash
-# After public release:
-# npm install vue-relative-rotation-chart
+npm install vue-relative-rotation-chart
 ```
 
 Also import styles once in your app:
@@ -122,9 +120,23 @@ const speed = ref(2)
 | `selectedDate` | `string` | — | Snapped to `dates`; `v-model:selected-date` |
 | `playing` | `boolean` | `false` | `v-model:playing` |
 | `speed` | `number` | `2` | `v-model:speed` |
-| `loop` | `boolean` | `true` | |
+| `loop` | `boolean` | `true` | `v-model:loop` |
+| `layout` | `'auto' \| 'stacked' \| 'inline'` | `'auto'` | Responsive row vs stacked (mobile-friendly) |
 | `labelStyle` | `'icon' \| 'icon-text'` | `'icon'` | Visible copy beside glyphs |
 | `copy` | `RrgPlaybackCopy` | — | Optional label overrides |
+
+### Chart controls (optional)
+
+Compose beside `<RrgChart />` so hosts do not reimplement display toggles:
+
+| Component | Purpose |
+|-----------|---------|
+| `RrgViewportControls` | Fit / Max / Center viewport mode |
+| `RrgSeriesVisibilityControls` | Show, hide, solo, restore tickers |
+| `RrgDisplaySettingsControls` | Tail length, label mode, tail fade |
+| `RrgChartControlsPanel` | Collapsible shell composing the above (`sections` prop to hide blocks) |
+
+`RrgChart` ref: `getSvgElement()` and `exportPng()` for PNG snapshot export. Helpers: `exportSvgElementAsPng`, `serializeSvgElement`, `useRrgSeriesVisibility` utilities.
 
 ### Scenario fixtures (optional)
 
@@ -140,9 +152,10 @@ Use `defaultScenario` for the sector baseline (`default` is a reserved word).
 Pre-1.0 may change between minors. Treat these as the surfaces most likely to move — pin carefully or read the changelog on upgrade:
 
 1. **`RrgQuadrant`** — fixed four-value enum (`leading` \| `weakening` \| `lagging` \| `improving`) only  
-2. **Playback `v-model` / emit names** — `selectedDate`, `playing`, `speed` (and related props)  
-3. **`copy` shapes** — `RrgChartCopy` / `RrgPlaybackCopy` field keys and defaults  
-4. **Visual defaults** — especially `showTailFade` (default `false`), `labelMode` (default `auto`), `pointRadius` / `hitRadius`
+2. **Playback `v-model` / emit names** — `selectedDate`, `playing`, `speed`, `loop`, `layout` (and related props)  
+3. **Controls panel v-models** — `visibleTickers`, `viewportMode`, `tailLength`, `labelMode`, `showTailFade`, `sections` on panel subcomponents  
+4. **`copy` shapes** — `RrgChartCopy` / `RrgPlaybackCopy` field keys and defaults  
+5. **Visual defaults** — especially `showTailFade` (default `false`), `labelMode` (default `auto`), `pointRadius` / `hitRadius`
 
 See also [Semver policy](#semver-policy).
 

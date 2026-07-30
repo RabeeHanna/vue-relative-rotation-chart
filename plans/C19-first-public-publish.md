@@ -5,7 +5,7 @@
 **Depends on:** [C18](./C18-pre-npm-polish.md) complete; decisions locked in [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.md); prefer [C19.5](./C19.5-demo-ux-simplify.md) **before** publish  
 **Suggested schedule:** Immediately after scrutiny lock; **before** first `npm publish`  
 **Priority:** High — publish gate  
-**Status:** Docs + pack gate ready — **npm publish blocked on auth** (`npm whoami` → ENEEDAUTH)  
+**Status:** Publish in progress — pre-flight complete; awaiting `npm publish` (2026-07-30).
 
 ---
 

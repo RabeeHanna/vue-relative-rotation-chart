@@ -12,13 +12,13 @@ export const BUNDLE_ARTIFACTS = [
 export type BundleArtifact = (typeof BUNDLE_ARTIFACTS)[number]
 
 /**
- * Baselines from a local `npm run build` on 2026-07-25 (Windows).
+ * Baselines from a local `npm run build` on 2026-07-30 (Windows) after C22/C23 controls panel.
  * Soft-warn when a file exceeds `baseline * SOFT_RATIO` — not a hard fail.
  */
 export const BUNDLE_BASELINES: Record<BundleArtifact, number> = {
-  'vue-relative-rotation-chart.js': 45_940,
-  'vue-relative-rotation-chart.umd.cjs': 36_019,
-  'vue-relative-rotation-chart.css': 3_744,
+  'vue-relative-rotation-chart.js': 62_478,
+  'vue-relative-rotation-chart.umd.cjs': 49_627,
+  'vue-relative-rotation-chart.css': 14_690,
   'scenarios.js': 15_916,
 }
 
@@ -32,7 +32,7 @@ export const SOFT_RATIO = 1.25
 export const BUNDLE_CEILINGS: Record<BundleArtifact, number> = {
   'vue-relative-rotation-chart.js': 120_000,
   'vue-relative-rotation-chart.umd.cjs': 100_000,
-  'vue-relative-rotation-chart.css': 15_000,
+  'vue-relative-rotation-chart.css': 22_000,
   'scenarios.js': 50_000,
 }
 
