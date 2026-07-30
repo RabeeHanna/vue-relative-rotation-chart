@@ -5,7 +5,7 @@
 **Depends on:** [C18](./C18-pre-npm-polish.md) complete; decisions locked in [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.md); prefer [C19.5](./C19.5-demo-ux-simplify.md) **before** publish  
 **Suggested schedule:** Immediately after scrutiny lock; **before** first `npm publish`  
 **Priority:** High — publish gate  
-**Status:** Publish in progress — pre-flight complete; awaiting `npm publish` (2026-07-30).
+**Status:** **Complete** — `0.1.0` published to npm (2026-07-30).
 
 ---
 
@@ -93,7 +93,7 @@ Full rationale: [C19-public-library-scrutiny.md](./C19-public-library-scrutiny.m
 - [x] Pack dry-run confirms `dist/` only (demo not in tarball)  
 - [x] Prefer [C20](./C20-bundle-size-perf-playbook.md) bundle-size tracking landed (or explicitly deferred with reason)  
 - [x] Host default branch still untouched by this unit  
-- [ ] Package published to npm; README install + badges updated  
+- [x] Package published to npm; README install + badges updated  
 - [x] Vitest green; typecheck/lint/build green if touched  
 
 ---

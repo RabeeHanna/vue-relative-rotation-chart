@@ -135,7 +135,7 @@ These types protect the component from host-application-specific state shape.
 | [C16](./C16-optimization.md) | Render / Playback Optimization (**done**) | Performance | 2–4 days |
 | [C17](./C17-performance-profiling.md) | Performance Testing & Profiling (**done**) | Performance / Quality | 2–4 days |
 | [C18](./C18-pre-npm-polish.md) | Pre-npm Polish — Review Artifacts + Public API / Docs (**done**) | Polish / Trust | 2–3 days |
-| [C19](./C19-first-public-publish.md) | First Public Publish — Rotation Specialist npm Cut (**draft** — [scrutiny](./C19-public-library-scrutiny.md)) | Packaging / Trust | 1–2 days |
+| [C19](./C19-first-public-publish.md) | First Public Publish — Rotation Specialist npm Cut (**done** — `0.1.0` on npm) | Packaging / Trust | 1–2 days |
 | [C19.5](./C19.5-demo-ux-simplify.md) | Demo UX — Simple / Customize Split (**done**) | Demo / Polish | 0.5–1 day |
 | [C20](./C20-bundle-size-perf-playbook.md) | Bundle Size Tracking + Perf Playbook (**done**) | Packaging / Trust | 0.5–1 day |
 | [C21](./C21-deep-profiling.md) | Deep Profiling (**deferred** — [scrutiny](./C21-profiling-scrutiny.md); evidence-gated) | Performance / Quality | 2–4 days if unlocked |
@@ -174,7 +174,7 @@ Follow this sequence. Do not begin C1 until Pre-Start is complete.
 19. C17 — Performance Testing & Profiling (harness + use-case matrix) (**complete** — [scrutiny](./C17-research.md), [results](./C17-results.md))
 20. C18 — Pre-npm Polish (review artifacts, API cleanup, README) (**complete** — [plan](./C18-pre-npm-polish.md))
 21. C19.5 — Demo UX Simple/Customize (**complete** — [plan](./C19.5-demo-ux-simplify.md))
-22. C19 — First public publish (**draft** — [plan](./C19-first-public-publish.md), [scrutiny](./C19-public-library-scrutiny.md)): rotation pitch, changelog accuracy, real-data dogfood gate, npm
+22. C19 — First public publish (**complete** — [plan](./C19-first-public-publish.md), `0.1.0` on npm)
 23. C20 — Bundle size + perf playbook (**complete** — [plan](./C20-bundle-size-perf-playbook.md))
 24. C21 — Deep profiling (**deferred** — [plan](./C21-deep-profiling.md), [scrutiny](./C21-profiling-scrutiny.md); only after evidence gate / host dogfood need)
 25. C22 — Mobile playback polish (`RrgPlaybackControls` touch/layout; Sector Orbit should adopt library scrubber) (**complete** — [plan](./C22-mobile-playback-polish.md))

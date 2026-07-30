@@ -97,7 +97,7 @@ This package started as a **host-first RRG SVG renderer**. That build-out is lar
 - [x] **Packaging:** `"files": ["dist"]` — demo/tests/plans/spikes **not** in npm tarball (confirmed; no change)  
 - [x] **Bundle size tracked** ([C20](./C20-bundle-size-perf-playbook.md) — soft warn; independent of deep profiling)  
 - [ ] Optional: demo **page** Lighthouse sanity (document-only; **not** chart FPS — see C21 O2)  
-- [ ] Deliberate `npm publish` + restore version badges  
+- [x] Deliberate `npm publish` + restore version badges  
 
 ---
 
