@@ -4,6 +4,10 @@ import { join } from 'node:path'
 const root = process.cwd()
 const dist = join(root, 'dist')
 
+if (process.env.npm_config_dry_run === 'true') {
+  process.exit(0)
+}
+
 const required = [
   'index.d.ts',
   'vue-relative-rotation-chart.js',

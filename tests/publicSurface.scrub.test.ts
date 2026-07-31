@@ -40,6 +40,7 @@ const ALLOWLIST_FILES = new Set([
   path.normalize('tests/discoverability.demoShell.test.ts'),
   path.normalize('README.md'),
   path.normalize('index.html'),
+  path.normalize('CHANGELOG.md'),
 ])
 
 function walkFiles(dir: string, out: string[]): void {
