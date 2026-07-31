@@ -33,7 +33,11 @@ Publishing:
 1. Bump version on `develop`, merge to `master` at the release commit.
 2. Tag `master` with `vX.Y.Z` matching `package.json`.
 3. Create a GitHub Release from that tag.
-4. Publish via GitHub Actions (`Publish npm` workflow) so npm provenance links to the public commit.
+4. **Publish manually from your machine** — see [`docs/publish.md`](./docs/publish.md).
+
+npm publish is **interactive** (browser login, QR / Face ID or OTP). Do not use GitHub Actions for publish; the `Publish npm` workflow was removed.
+
+Pre-publish checks (local or CI): `npm test` + `npm run build` + `npm test -- tests/pack/packConsumer.test.ts`.
 
 Consumers trace npm → Git tag → `master` commit. `develop` may be ahead of npm.
 

@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - README documents Vue `^3.5.0` peer (3.3/3.4 untested) and ESM-only `scenarios` subpath
 - `CONTRIBUTING.md` documents `develop` / `master` / tag release workflow
-- Publish workflow runs pack-consumer tests before `npm publish --provenance`
+- Publish workflow runs pack-consumer tests before `npm publish` (local; see `docs/publish.md`)
 
 ## [0.1.3] - 2026-07-30
 
