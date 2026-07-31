@@ -49,12 +49,24 @@ C27 shipped reciprocal links in `README.md` and `index.html` and allowlisted the
 
 Do **not** delete completed plan files; reduce brand density and remove `sector-orbit/plans/...` path pointers from “next steps” sections.
 
+### npm release (required)
+
+Docs-only / positioning change still ships to npm so registry README and tarball match the repo.
+
+| Step | Action |
+|------|--------|
+| Version | Patch bump `0.1.4` → `0.1.5` in `package.json` |
+| Changelog | `CHANGELOG.md` entry: standalone positioning, Sector Orbit links removed from README/demo |
+| Preflight | `npm run typecheck`, `npm run lint`, `npm test`, `npm run build`, pack-consumer test (see [`docs/publish.md`](../docs/publish.md)) |
+| Git | Squashed commit on feature branch → merge `develop` → `master`; tag `v0.1.5` |
+| Publish | Manual `npm publish` (interactive login per C28) |
+| Host follow-up | Sector Orbit bumps `vue-relative-rotation-chart` to `^0.1.5` when convenient (no API change expected) |
+
 ### Explicitly out of scope
 
 - Changing public API or component behavior
 - Removing generic terms: “host”, “consumer”, “RRG-style”, “ETF rotation”
-- Sector Orbit repo changes (SO keeps its VRRC links)
-- npm version bump unless copy changes warrant a patch release note
+- Sector Orbit repo changes in the same PR (SO can bump dependency separately)
 
 ## Acceptance criteria
 
@@ -62,7 +74,9 @@ Do **not** delete completed plan files; reduce brand density and remove `sector-
 - [ ] `npm test` green including updated `publicSurface.scrub.test.ts`
 - [ ] README positions package standalone: demo URL, npm install, minimal host snippet — no named consumer app
 - [ ] `plans/00-overview.md` lists C29 complete; no “Sector Orbit should …” in pending work bullets
-- [ ] Optional: `npm run build` + `npm run check:bundle-size` unchanged
+- [ ] `package.json` bumped to `0.1.5`; `CHANGELOG.md` updated
+- [ ] `npm run build` + `npm run check:bundle-size` unchanged
+- [ ] `v0.1.5` tagged on `master` and published to npm (manual publish per `docs/publish.md`)
 
 ## Suggested execution order
 
@@ -70,7 +84,8 @@ Do **not** delete completed plan files; reduce brand density and remove `sector-
 2. Rewrite README + demo shell + docs
 3. Tighten scrub test (drop README/index.html/CHANGELOG allowlist; add `docs/` if missing)
 4. Sweep plan files — genericize active refs; mark C27 superseded
-5. Run full test + typecheck; single squashed commit on `develop`
+5. Run full test + typecheck + build
+6. Bump version (`0.1.5`), update `CHANGELOG.md`, merge to `master`, tag `v0.1.5`, manual `npm publish`
 
 ## Cross-refs
 
