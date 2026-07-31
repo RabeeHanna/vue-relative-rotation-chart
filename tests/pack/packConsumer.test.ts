@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { copyFileSync, existsSync } from 'node:fs'
+import { copyFileSync, existsSync, rmSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
 import { join } from 'node:path'
 
@@ -55,6 +55,10 @@ describe('tarball consumer smoke', () => {
 
       const fixtureRoot = join(root, 'tests/pack/consumer-fixture')
       copyFileSync(join(root, match![0]!), join(fixtureRoot, 'package.tgz'))
+
+      rmSync(join(fixtureRoot, 'node_modules'), { recursive: true, force: true })
+      rmSync(join(fixtureRoot, 'package-lock.json'), { force: true })
+      rmSync(join(fixtureRoot, 'dist-consumer'), { recursive: true, force: true })
 
       const install = spawnSync(npmBin, ['install'], {
         cwd: fixtureRoot,

@@ -26,5 +26,6 @@ playwright/.cache/
 tests/pack/consumer-fixture/node_modules/
 tests/pack/consumer-fixture/dist-consumer/
 tests/pack/consumer-fixture/package.tgz
+tests/pack/consumer-fixture/package-lock.json
 docs/discoverability-metrics/
 docs/public-positioning.txt
