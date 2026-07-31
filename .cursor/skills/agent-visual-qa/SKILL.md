@@ -70,5 +70,5 @@ Spawn one `composer-2.5` Task subagent as adversarial UI critic (same rubric + s
 
 - Passing cycles without reading screenshot pixels
 - New Playwright pixel-diff CI in agent loops (see C24.5 in plan for later static baselines)
-- Host-page polish (use user `visual-ui-polish` for Sector Orbit)
+- Host-page polish (use host-specific visual QA workflows outside this repo)
 - Rewriting finished chart rendering internals

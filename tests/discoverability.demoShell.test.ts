@@ -27,7 +27,8 @@ describe('discoverability demo shell', () => {
     expect(html).toMatch(/<h1>Interactive Vue 3 Relative Rotation Graph component<\/h1>/)
     expect(html).toMatch(/<noscript>/)
     expect(html).toMatch(/id="app"/)
-    expect(html).toMatch(/sector-orbit-web\.onrender\.com/)
+    expect(html).toMatch(/rabeehanna\.github\.io\/vue-relative-rotation-chart/)
+    expect(html).toMatch(/npmjs\.com\/package\/vue-relative-rotation-chart/)
   })
 
   it('JSON-LD is valid and has no invented review data', () => {

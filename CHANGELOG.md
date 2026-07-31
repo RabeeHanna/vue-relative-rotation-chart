@@ -7,13 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.5] - 2026-07-31
+
+### Changed
+
+- Standalone package positioning — removed named consumer-app links from README and demo static shell
+- Public-surface scrub test tightened (`docs/` gated; README/demo allowlist removed)
+- Plan docs genericized for host-application language (archival dogfood notes retained)
+
 ## [0.1.4] - 2026-07-30
 
 ### Added
 
 - `prepack` guard — blocks publish without a complete `dist/` build
 - CI pack-consumer smoke — installs generated `.tgz` in a minimal Vite app and verifies typecheck + production build
-- Reciprocal discoverability — Sector Orbit example links in README and demo static shell
+- Reciprocal discoverability — example consumer links in README and demo static shell (removed in 0.1.5)
 
 ### Changed
 

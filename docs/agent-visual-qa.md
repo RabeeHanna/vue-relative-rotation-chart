@@ -149,4 +149,4 @@ npm run review:artifacts      # batch screenshots (C18)
 
 - Passing cycles without reading screenshot pixels
 - Playwright pixel-diff CI before [C24.5](../plans/C24-agent-visual-qa.md#c245--static-pixel-diff-baselines-deferred)
-- Host-app polish (see Sector Orbit units 217–220)
+- Host-app polish (use host-specific visual QA workflows)
