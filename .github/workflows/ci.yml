@@ -28,3 +28,4 @@ jobs:
       - run: npm run test:e2e
       - run: npm run build
       - run: npm run check:bundle-size
+      - run: npm test -- tests/pack/packConsumer.test.ts

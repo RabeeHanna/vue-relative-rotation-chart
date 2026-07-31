@@ -1,0 +1,25 @@
+import { existsSync } from 'node:fs'
+import { join } from 'node:path'
+
+const root = process.cwd()
+const dist = join(root, 'dist')
+
+const required = [
+  'index.d.ts',
+  'vue-relative-rotation-chart.js',
+  'vue-relative-rotation-chart.umd.cjs',
+  'vue-relative-rotation-chart.css',
+  'scenarios.js',
+  'scenarios/index.d.ts',
+]
+
+if (!existsSync(dist)) {
+  console.error('prepack: dist/ missing — run npm run build before npm pack')
+  process.exit(1)
+}
+
+const missing = required.filter((rel) => !existsSync(join(dist, rel)))
+if (missing.length) {
+  console.error('prepack: dist/ is incomplete. Missing:', missing.join(', '))
+  process.exit(1)
+}

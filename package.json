@@ -1,6 +1,6 @@
 {
   "name": "vue-relative-rotation-chart",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Vue 3 SVG renderer for RRG-style stock, ETF, sector, index, and portfolio rotation charts with animated tails, playback controls, and PNG export.",
   "license": "MIT",
   "homepage": "https://rabeehanna.github.io/vue-relative-rotation-chart/",
@@ -33,7 +33,8 @@
     "quadrant-chart",
     "animated-chart",
     "timeline-playback",
-    "portfolio-visualization"
+    "portfolio-visualization",
+    "etf-rotation"
   ],
   "type": "module",
   "files": [
@@ -70,7 +71,8 @@
     "review:screenshots": "npm run review:artifacts",
     "typecheck": "vue-tsc -p tsconfig.app.json --noEmit && vue-tsc -p tsconfig.build.json --noEmit",
     "lint": "eslint .",
-    "spike:labels": "vitest run spikes/label-collision"
+    "spike:labels": "vitest run spikes/label-collision",
+    "prepack": "node ./scripts/prepack-check.mjs"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
