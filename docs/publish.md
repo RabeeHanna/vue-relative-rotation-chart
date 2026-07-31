@@ -2,6 +2,8 @@
 
 npm publish for this package is **manual only**. GitHub Actions publish / OIDC provenance is not used (npm is deprecating that path for many accounts).
 
+**A failing CI run does not publish or unpublish npm.** CI is a preflight check. If the registry still shows an old version, complete the manual publish steps below.
+
 ## Before you publish
 
 On `develop`, with a clean tree:
