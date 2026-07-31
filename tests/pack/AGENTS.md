@@ -21,5 +21,5 @@ npm tarball verification: required `dist/` artifacts and clean consumer install/
 
 ## Used by
 
-- CI (`ci.yml`, `publish.yml`)
+- CI (`ci.yml`)
 - `npm test`

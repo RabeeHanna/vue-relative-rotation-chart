@@ -12,15 +12,15 @@ Verify the published tarball installs and builds in a clean Vue consumer; block 
 
 - `scripts/prepack-check.mjs` + `prepack` script
 - `tests/pack/packConsumer.test.ts` — tarball contents + consumer fixture build
-- CI and publish workflows run pack consumer tests after build
+- CI runs pack consumer tests after build (`ci.yml`)
 
 ## Acceptance criteria
 
 - [x] `prepack` fails without complete `dist/`
 - [x] Packed tarball contains JS, types, CSS, scenarios
 - [x] Consumer fixture typechecks and `vite build` from `.tgz`
-- [x] Publish workflow runs pack tests before `npm publish --provenance`
+- [x] CI runs pack tests after build
 
 ## Note
 
-Published as **0.1.4** via GHA publish workflow with provenance.
+**0.1.4** published manually (interactive `npm login` + publish). GHA publish workflow removed; see [`docs/publish.md`](../../docs/publish.md).
