@@ -15,6 +15,7 @@ export default [
       'coverage/**',
       'spikes/label-collision/artifacts/**',
       '.playwright-browsers/**',
+      'tests/pack/consumer-fixture/**',
     ],
   },
   js.configs.recommended,

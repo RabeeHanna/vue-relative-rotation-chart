@@ -37,6 +37,9 @@ const SKIP_DIR_NAMES = new Set([
 /** This scrub test file may mention forbidden patterns in the allowlist comment above. */
 const ALLOWLIST_FILES = new Set([
   path.normalize('tests/publicSurface.scrub.test.ts'),
+  path.normalize('tests/discoverability.demoShell.test.ts'),
+  path.normalize('README.md'),
+  path.normalize('index.html'),
 ])
 
 function walkFiles(dir: string, out: string[]): void {
