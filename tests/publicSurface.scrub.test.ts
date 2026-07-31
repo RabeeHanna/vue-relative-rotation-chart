@@ -15,7 +15,7 @@ const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..')
 const FORBIDDEN =
   /Sector Orbit|sector orbit|SectorOrbit|sector-orbit|sector_orbit/i
 
-const HARD_GATE_DIRS = ['src', 'demo', 'tests']
+const HARD_GATE_DIRS = ['src', 'demo', 'tests', 'docs']
 const HARD_GATE_FILES = [
   'README.md',
   'CONTRIBUTING.md',
@@ -24,6 +24,7 @@ const HARD_GATE_FILES = [
   'LICENSE',
   'package.json',
   'AGENTS.md',
+  'index.html',
 ]
 
 const SKIP_DIR_NAMES = new Set([
@@ -37,10 +38,6 @@ const SKIP_DIR_NAMES = new Set([
 /** This scrub test file may mention forbidden patterns in the allowlist comment above. */
 const ALLOWLIST_FILES = new Set([
   path.normalize('tests/publicSurface.scrub.test.ts'),
-  path.normalize('tests/discoverability.demoShell.test.ts'),
-  path.normalize('README.md'),
-  path.normalize('index.html'),
-  path.normalize('CHANGELOG.md'),
 ])
 
 function walkFiles(dir: string, out: string[]): void {

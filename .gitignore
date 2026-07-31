@@ -29,3 +29,6 @@ tests/pack/consumer-fixture/package.tgz
 tests/pack/consumer-fixture/package-lock.json
 docs/discoverability-metrics/
 docs/public-positioning.txt
+
+# Unit-of-work specs (local / agent only — not published)
+plans/

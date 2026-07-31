@@ -12,7 +12,7 @@ Use it to add market-rotation analysis to a stock dashboard, ETF screener, portf
 
 This package is a **renderer**, not a market-data or indicator-calculation library. Your application supplies the precomputed RS-Ratio and RS-Momentum series; the component handles visualization, interaction, labels, controls, playback, and export.
 
-> **Live demo:** [GitHub Pages](https://rabeehanna.github.io/vue-relative-rotation-chart/) · [npm](https://www.npmjs.com/package/vue-relative-rotation-chart) · [Sector Orbit example app](https://sector-orbit-web.onrender.com/) · local: `npm run dev`
+> **Live demo:** [GitHub Pages](https://rabeehanna.github.io/vue-relative-rotation-chart/) · [npm](https://www.npmjs.com/package/vue-relative-rotation-chart) · local: `npm run dev`
 
 ![vue-relative-rotation-chart demo — sector ETF RRG with controls and playback](./docs/readme-demo.png)
 
@@ -173,9 +173,7 @@ export function toRrgSeries(hostSeries: YourSeries[]): RrgRenderSeries[] {
 }
 ```
 
-See [`plans/C10-host-integration.md`](./plans/C10-host-integration.md) for a full adapter sketch.
-
-**Example application:** [Sector Orbit](https://sector-orbit-web.onrender.com/) — a stock and ETF sector rotation dashboard that uses this package as its SVG chart renderer (calculations stay in the host).
+Try the [live demo](https://rabeehanna.github.io/vue-relative-rotation-chart/) to see the chart and controls in action.
 
 ## FAQ
 
@@ -189,7 +187,7 @@ No. This is a **presentation-only** Vue chart library. Your app computes scores 
 This package is Vue 3 only. The SVG output is standard DOM — you could port the rendering approach, but no sibling package exists yet.
 
 **Can I use this for sector rotation dashboards?**  
-Yes — pass one series per sector or ticker. Optional playback scrubbing helps animate rotation over time. See [Sector Orbit](https://sector-orbit-web.onrender.com/) for a production example.
+Yes — pass one series per sector or ticker. Optional playback scrubbing helps animate rotation over time. See the [live demo](https://rabeehanna.github.io/vue-relative-rotation-chart/) for a working example.
 
 ## Trademark note
 

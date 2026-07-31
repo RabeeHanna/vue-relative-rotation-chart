@@ -68,7 +68,7 @@ npm publish --access public --otp=123456
 npm view vue-relative-rotation-chart version
 ```
 
-Update host apps (e.g. Sector Orbit) to `^X.Y.Z` when appropriate.
+Update host applications to `^X.Y.Z` when appropriate.
 
 ## Do not
 
