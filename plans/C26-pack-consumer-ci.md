@@ -23,4 +23,4 @@ Verify the published tarball installs and builds in a clean Vue consumer; block 
 
 ## Note
 
-npm provenance for **0.1.3** was published without attestations. Future releases via GHA publish workflow restore provenance.
+Published as **0.1.4** via GHA publish workflow with provenance.

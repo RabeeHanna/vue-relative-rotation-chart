@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-07-30
+
+### Added
+
+- `prepack` guard — blocks publish without a complete `dist/` build
+- CI pack-consumer smoke — installs generated `.tgz` in a minimal Vite app and verifies typecheck + production build
+- Reciprocal discoverability — Sector Orbit example links in README and demo static shell
+
+### Changed
+
+- README documents Vue `^3.5.0` peer (3.3/3.4 untested) and ESM-only `scenarios` subpath
+- `CONTRIBUTING.md` documents `develop` / `master` / tag release workflow
+- Publish workflow runs pack-consumer tests before `npm publish --provenance`
+
 ## [0.1.3] - 2026-07-30
 
 ### Changed
