@@ -46,10 +46,13 @@ describe('CSS theme tokens', () => {
     expect(css).toContain('border-radius: var(--rrg-ctl-radius, 0)')
     expect(css).toContain('border-radius: var(--rrg-ctl-radius, 999px)')
     expect(css).toContain('background: var(--rrg-ctl-track)')
+    expect(css).toContain('--rrg-ctl-thumb:')
+    expect(css).toContain('box-shadow: var(--rrg-ctl-thumb-shadow)')
     // Dark mode redefines tokens rather than hardcoding element colors.
     expect(css).toContain('.rrg-playback.dark')
     expect(css).toMatch(/\.rrg-playback\.dark[\s\S]*--rrg-ctl-text:\s*#f5f5f5/)
     expect(css).not.toMatch(/\.rrg-playback\.dark[\s\S]*\.rrg-playback__btn\s*\{[^}]*background:\s*#333/)
+    expect(css).not.toContain('.rrg-playback.dark .rrg-playback__scrubber')
   })
 
   it('axis and quadrant labels consume --rrg-font-family', () => {

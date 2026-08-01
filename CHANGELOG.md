@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `--rrg-font-family` CSS custom property on chart, controls surface, and playback (default: system sans stack)
 - `--rrg-ctl-radius` CSS custom property on controls surface (default: `8px`) for panel/button corner radius
+- Playback scrubber tokens `--rrg-ctl-thumb`, `--rrg-ctl-thumb-shadow` (hosts can set shadow to `none` and radius to `0` for hard-edge themes)
 
 ### Changed
 
