@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.6] - 2026-08-01
+
+### Added
+
+- `--rrg-font-family` CSS custom property on chart, controls surface, and playback (default: system sans stack)
+- `--rrg-ctl-radius` CSS custom property on controls surface (default: `8px`) for panel/button corner radius
+
+### Changed
+
+- Playback controls theme via `--rrg-ctl-*` tokens (same names as chart controls) instead of hardcoded light/dark element colors
+- Playback scrubber/button radii honor `--rrg-ctl-radius` (fallback keeps prior pill scrubber / sharp buttons)
+- Axis and quadrant SVG labels consume `--rrg-font-family`
+
 ## [0.1.5] - 2026-07-31
 
 ### Changed

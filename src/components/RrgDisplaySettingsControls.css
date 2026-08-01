@@ -17,7 +17,7 @@
   min-width: 5.5rem;
   padding: 0.35rem 0.45rem;
   border: 1px solid var(--rrg-ctl-surface-border);
-  border-radius: 8px;
+  border-radius: var(--rrg-ctl-radius, 8px);
   background: var(--rrg-ctl-field-bg);
   color: var(--rrg-ctl-field-text);
   font-family: inherit;

@@ -155,6 +155,6 @@ const centerY = computed(() => props.yScale(100))
 .rrg-axis-title {
   fill: var(--rrg-axis-label, rgba(0, 0, 0, 0.5));
   font-size: 11px;
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--rrg-font-family, ui-sans-serif, system-ui, sans-serif);
 }
 </style>

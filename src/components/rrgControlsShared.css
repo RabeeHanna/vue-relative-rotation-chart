@@ -6,7 +6,9 @@
  * so they inherit tokens from the panel host instead of re-applying light defaults.
  */
 .rrg-controls-surface {
-  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --rrg-font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --rrg-ctl-radius: 8px;
+  font-family: var(--rrg-font-family);
   font-size: 0.875rem;
   line-height: 1.35;
   color: var(--rrg-ctl-text);
