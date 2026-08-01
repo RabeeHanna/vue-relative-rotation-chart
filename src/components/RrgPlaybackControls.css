@@ -141,6 +141,12 @@
   border-color: var(--rrg-ctl-loop-border);
   background: var(--rrg-ctl-loop-bg);
 }
+.rrg-playback__icon {
+  display: block;
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
 .rrg-playback__btn-text {
   font-size: 0.75rem;
   font-weight: 500;

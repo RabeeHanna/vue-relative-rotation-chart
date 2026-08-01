@@ -89,6 +89,47 @@ describe('RrgPlaybackControls', () => {
     expect(wrapper.find('.rrg-playback__btn-text').exists()).toBe(false)
   })
 
+  it('renders SVG transport icons instead of emoji glyphs', () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-12',
+      },
+    })
+
+    const html = wrapper.html()
+    expect(html).not.toMatch(/[⏮▶⏸⏭↻]/)
+
+    expect(wrapper.get('[data-testid="rrg-playback-step-back"] .rrg-playback__icon').exists()).toBe(
+      true,
+    )
+    expect(wrapper.get('[data-testid="rrg-playback-toggle"] .rrg-playback__icon').exists()).toBe(
+      true,
+    )
+    expect(
+      wrapper.get('[data-testid="rrg-playback-step-forward"] .rrg-playback__icon').exists(),
+    ).toBe(true)
+    expect(wrapper.get('[data-testid="rrg-playback-loop-toggle"] .rrg-playback__icon').exists()).toBe(
+      true,
+    )
+  })
+
+  it('switches play and pause SVG icons with playing state', async () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-12',
+        playing: false,
+      },
+    })
+
+    const toggle = () => wrapper.get('[data-testid="rrg-playback-toggle"] .rrg-playback__icon')
+    expect(toggle().findAll('path')).toHaveLength(1)
+
+    await wrapper.setProps({ playing: true })
+    expect(toggle().findAll('path')).toHaveLength(2)
+  })
+
   it('shows copy text beside icons when labelStyle is icon-text', () => {
     const wrapper = mount(RrgPlaybackControls, {
       props: {
