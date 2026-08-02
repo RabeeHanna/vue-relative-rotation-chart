@@ -1,9 +1,11 @@
 node_modules/
 
-# Local secrets (npm publish token, etc.)
+# Local secrets
 .env
 .env.*
-!.env.example
+
+# Adversarial review copies (local / agent only)
+*adversarial-review*.md
 
 dist/
 demo-dist/

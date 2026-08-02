@@ -7,7 +7,6 @@ Maintainer-facing guides that are not the package README marketing surface.
 ## Belongs here
 
 - Performance playbook (`perf.md`), dated results (`perf-results.md`), and similar how-to docs for contributors
-- **npm publish playbook** (`publish.md`) — manual login + publish steps
 - Agent visual QA (`agent-visual-qa.md`, `agent-visual-qa-rubric.md`) — C24 browse/click loop (**repo-local; not on npm**)
 - Optional control-config persistence research (`C30-controls-persist.md`)
 - Short operational guides linked from `CONTRIBUTING.md`

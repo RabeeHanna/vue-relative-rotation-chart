@@ -28,16 +28,44 @@ npm run test:e2e
 | `develop` | Default branch — unreleased work and integration |
 | `master` | Last **published** npm release (stable docs surface) |
 
-Publishing:
+Publishing is **manual only** from your machine (interactive `npm login` with 2FA / passkey). Do not use GitHub Actions for publish.
 
-1. Bump version on `develop`, merge to `master` at the release commit.
-2. Tag `master` with `vX.Y.Z` matching `package.json`.
-3. Create a GitHub Release from that tag.
-4. **Publish manually from your machine** — see [`docs/publish.md`](./docs/publish.md).
+### Pre-publish checks
 
-npm publish is **interactive** (browser login, QR / Face ID or OTP). Do not use GitHub Actions for publish; the `Publish npm` workflow was removed.
+On `develop`, with a clean tree:
 
-Pre-publish checks (local or CI): `npm test` + `npm run build` + `npm test -- tests/pack/packConsumer.test.ts`.
+```bash
+npm run typecheck
+npm run lint
+npm test
+npm run build
+npm test -- tests/pack/packConsumer.test.ts
+```
+
+CI on `master` / `develop` runs the same pack-consumer gate after build. A failing CI run does not publish or unpublish npm.
+
+### Version and git
+
+1. Bump `package.json` version and `CHANGELOG.md` on `develop`.
+2. Commit, merge `develop` → `master`.
+3. Tag `master`: `git tag -a vX.Y.Z -m "Release X.Y.Z"`
+4. Push `develop`, `master`, and the tag.
+5. Create a GitHub Release from the tag.
+
+### npm login and publish
+
+```bash
+npm login    # browser sign-in (QR / Face ID / passkey or email OTP)
+npm whoami   # verify session
+npm run build
+npm publish --access public
+```
+
+If the CLI asks for a one-time password: `npm publish --access public --otp=123456`.
+
+`prepack` runs automatically and fails if `dist/` is missing or incomplete. Do not commit `dist/`.
+
+After publish, verify: `npm view vue-relative-rotation-chart version`.
 
 Consumers trace npm → Git tag → `master` commit. `develop` may be ahead of npm.
 
