@@ -37,9 +37,7 @@ Standalone Vue 3 SVG package that renders RRG-style relative rotation charts fro
 | `src/utils/` | Pure helpers |
 | `src/scenarios/` | Published fixture series (`/scenarios` subpath) |
 | `demo/` | Dev playground |
-| `docs/` | Maintainer playbooks (e.g. perf) |
 | `tests/` | Vitest suites |
-| `plans/` | Unit-of-work specs |
 | `spikes/` | Throwaway prototypes |
 
 See each directory’s `AGENTS.md` for placement rules. Cursor rules live in `.cursor/rules/`.

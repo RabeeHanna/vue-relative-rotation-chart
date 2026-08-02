@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/RabeeHanna/vue-relative-rotation-chart/actions/workflows/ci.yml/badge.svg)](https://github.com/RabeeHanna/vue-relative-rotation-chart/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/vue-relative-rotation-chart.svg)](https://www.npmjs.com/package/vue-relative-rotation-chart)
-[![license](https://img.shields.io/github/license/RabeeHanna/vue-relative-rotation-chart.svg)](./LICENSE)
+[![license](https://img.shields.io/github/license/RabeeHanna/vue-relative-rotation-chart.svg)](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/LICENSE)
 
 Build interactive stock, ETF, sector, index, and portfolio-holdings rotation charts in Vue 3.
 
@@ -14,7 +14,7 @@ This package is a **renderer**, not a market-data or indicator-calculation libra
 
 > **Live demo:** [GitHub Pages](https://rabeehanna.github.io/vue-relative-rotation-chart/) · [npm](https://www.npmjs.com/package/vue-relative-rotation-chart) · local: `npm run dev`
 
-![vue-relative-rotation-chart demo — sector ETF RRG with controls and playback](./docs/readme-demo.png)
+![vue-relative-rotation-chart demo — sector ETF RRG with controls and playback](https://github.com/RabeeHanna/vue-relative-rotation-chart/raw/develop/public/readme-demo.png)
 
 ## What can I build?
 
@@ -195,11 +195,11 @@ Relative Rotation Graph and RRG are trademarks of their respective owners. This 
 
 ## Performance
 
-Supported product mode (capped `tailLength`) sustains **55+ fps** for scrub and play on Chromium. Stress ceiling (100 tickers × 500 full-history points) is documented, not a supported mode. Details: [`docs/perf.md`](./docs/perf.md).
+Supported product mode (capped `tailLength`) sustains **55+ fps** for scrub and play on Chromium. Stress ceiling (100 tickers × 500 full-history points) is documented in-repo, not a supported product mode. Run `npm run test:perf` and `npm run check:bundle-size` after `npm run build` (see [CONTRIBUTING](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CONTRIBUTING.md)).
 
 ## Semver (`0.x`)
 
-Pre-1.0 may change between minors. Fragile surfaces: `RrgQuadrant` enum, playback `v-model` names, controls panel v-models, `copy` shapes, visual defaults. See [`CHANGELOG.md`](./CHANGELOG.md).
+Pre-1.0 may change between minors. Fragile surfaces: `RrgQuadrant` enum, playback `v-model` names, controls panel v-models, `copy` shapes, visual defaults. See [CHANGELOG](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CHANGELOG.md).
 
 ## Scripts
 
@@ -208,4 +208,4 @@ npm install && npm run dev    # demo at http://localhost:5173
 npm test && npm run build     # library → dist/
 ```
 
-Contributing: [`CONTRIBUTING.md`](./CONTRIBUTING.md) · Agent orientation: [`AGENTS.md`](./AGENTS.md)
+Contributing: [CONTRIBUTING.md](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CONTRIBUTING.md) · Agent orientation: [AGENTS.md](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/AGENTS.md)

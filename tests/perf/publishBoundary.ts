@@ -6,7 +6,6 @@ export const NPM_EXCLUDED_PATH_FRAGMENTS = [
   'demo/agentstate',
   'demo/demoagentstatepanel',
   'demo/agentscenarios',
-  'docs/agent-visual-qa',
   '.cursor/skills/agent-visual-qa',
   'plans/c24-agent-visual-qa',
 ] as const

@@ -72,7 +72,7 @@
     "typecheck": "vue-tsc -p tsconfig.app.json --noEmit && vue-tsc -p tsconfig.build.json --noEmit",
     "lint": "eslint .",
     "spike:labels": "vitest run spikes/label-collision",
-    "prepack": "node ./scripts/prepack-check.mjs"
+    "prepublishOnly": "node ./scripts/prepack-check.mjs"
   },
   "peerDependencies": {
     "vue": "^3.5.0"

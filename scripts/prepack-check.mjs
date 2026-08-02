@@ -18,12 +18,12 @@ const required = [
 ]
 
 if (!existsSync(dist)) {
-  console.error('prepack: dist/ missing — run npm run build before npm pack')
+  console.error('prepublishOnly: dist/ missing — run npm run build before npm publish')
   process.exit(1)
 }
 
 const missing = required.filter((rel) => !existsSync(join(dist, rel)))
 if (missing.length) {
-  console.error('prepack: dist/ is incomplete. Missing:', missing.join(', '))
+  console.error('prepublishOnly: dist/ is incomplete. Missing:', missing.join(', '))
   process.exit(1)
 }
