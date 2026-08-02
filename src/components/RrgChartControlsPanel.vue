@@ -17,7 +17,8 @@ const props = withDefaults(
     displayDisabled?: boolean
     dark?: boolean
     sections?: RrgChartControlsSection[]
-    tailLengthPresets?: number[]
+    /** Tail-length select presets (deduplicated, sorted; current value inserted when absent). */
+    tailLengthPresets?: readonly number[]
     defaultOpen?: boolean
   }>(),
   {
@@ -25,7 +26,7 @@ const props = withDefaults(
     displayDisabled: false,
     dark: false,
     sections: () => ['viewport', 'display', 'visibility'],
-    tailLengthPresets: () => [...RRG_TAIL_LENGTH_PRESETS],
+    tailLengthPresets: () => RRG_TAIL_LENGTH_PRESETS,
     defaultOpen: true,
   },
 )

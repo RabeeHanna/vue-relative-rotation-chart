@@ -16,14 +16,14 @@ const props = withDefaults(
     disabled?: boolean
     dark?: boolean
     inset?: boolean
-    /** Tail-length select options (numeric presets). */
-    tailLengthPresets?: number[]
+    /** Tail-length select presets (deduplicated, sorted; current value inserted when absent). */
+    tailLengthPresets?: readonly number[]
   }>(),
   {
     disabled: false,
     dark: false,
     inset: false,
-    tailLengthPresets: () => [...RRG_TAIL_LENGTH_PRESETS],
+    tailLengthPresets: () => RRG_TAIL_LENGTH_PRESETS,
   },
 )
 

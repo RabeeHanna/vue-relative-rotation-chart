@@ -25,21 +25,24 @@ describe('RrgDisplaySettingsControls', () => {
     expect(wrapper.emitted('update:showTailFade')).toEqual([[false]])
   })
 
-  it('renders custom tail presets and includes the current value', () => {
+  it('sorts custom presets and inserts the exact current value', () => {
     const wrapper = mount(RrgDisplaySettingsControls, {
       props: {
-        tailLength: 6,
+        tailLength: 10.5,
         labelMode: 'auto',
         showTailFade: true,
-        tailLengthPresets: [6, 10],
+        tailLengthPresets: [24, 16, 8],
       },
     })
 
     const options = wrapper.get('[data-testid="rrg-display-tail-length"]').findAll('option')
-    expect(options.map((o) => o.text())).toEqual(['6', '10'])
+    expect(options.map((o) => o.text())).toEqual(['8', '10.5', '16', '24'])
+    expect((wrapper.get('[data-testid="rrg-display-tail-length"]').element as HTMLSelectElement).value).toBe(
+      '10.5',
+    )
   })
 
-  it('inserts chart default tail length into default presets', () => {
+  it('selects the chart default from shared presets', () => {
     const wrapper = mount(RrgDisplaySettingsControls, {
       props: {
         tailLength: 10,
@@ -52,6 +55,25 @@ describe('RrgDisplaySettingsControls', () => {
     expect(options.map((o) => o.text())).toEqual(['4', '8', '10', '12', '16', '24'])
     expect((wrapper.get('[data-testid="rrg-display-tail-length"]').element as HTMLSelectElement).value).toBe(
       '10',
+    )
+  })
+
+  it('inserts a custom tail length into the select options', () => {
+    const wrapper = mount(RrgDisplaySettingsControls, {
+      props: {
+        tailLength: 15,
+        labelMode: 'auto',
+        showTailFade: false,
+      },
+    })
+
+    const options = wrapper
+      .get('[data-testid="rrg-display-tail-length"]')
+      .findAll('option')
+      .map((o) => o.text())
+    expect(options).toContain('15')
+    expect((wrapper.get('[data-testid="rrg-display-tail-length"]').element as HTMLSelectElement).value).toBe(
+      '15',
     )
   })
 })

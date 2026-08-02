@@ -20,8 +20,15 @@ export const RRG_CHART_DEFAULTS = {
   hitRadius: 12,
 } as const
 
-/** Tail-length presets for display controls (chart default may be inserted at runtime). */
-export const RRG_TAIL_LENGTH_PRESETS = [4, 8, 12, 16, 24] as const
+/** Tail-length presets for display controls; includes the chart default. */
+export const RRG_TAIL_LENGTH_PRESETS = [
+  4,
+  8,
+  RRG_CHART_DEFAULTS.tailLength,
+  12,
+  16,
+  24,
+] as const
 
 /** Defaults for `<RrgPlaybackControls />`. */
 export const RRG_PLAYBACK_DEFAULTS = {

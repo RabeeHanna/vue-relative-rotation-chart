@@ -28,7 +28,7 @@ export type {
 export type { ChartDateStatus, ResolvedChartDate } from './utils/chartDate'
 export { collectSeriesDates, resolveChartDate } from './utils/chartDate'
 
-export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from './types/rrg'
+export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS, RRG_TAIL_LENGTH_PRESETS } from './types/rrg'
 export {
   RRG_CHART_COPY_DEFAULTS,
   RRG_PLAYBACK_COPY_DEFAULTS,

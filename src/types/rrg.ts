@@ -8,7 +8,7 @@
 import type { RrgChartCopy, RrgPlaybackCopy } from './copy'
 
 export type { RrgChartCopy, RrgPlaybackCopy } from './copy'
-export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from './defaults'
+export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS, RRG_TAIL_LENGTH_PRESETS } from './defaults'
 
 /** Quadrant relative to the RRG center (x=100, y=100). */
 export type RrgQuadrant = 'leading' | 'weakening' | 'lagging' | 'improving'

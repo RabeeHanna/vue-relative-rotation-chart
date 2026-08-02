@@ -6,6 +6,13 @@ import RrgDisplaySettingsControls from '../src/components/RrgDisplaySettingsCont
 import { RRG_CHART_DEFAULTS } from '../src/types/defaults'
 import { mockSeries } from '../src/scenarios'
 
+function tailVertexCount(wrapper: ReturnType<typeof mount>, ticker: string): number {
+  const points = wrapper
+    .get(`[data-testid="rrg-tail-${ticker}"] .rrg-tail-segment`)
+    .attributes('points')
+  return points ? points.split(' ').length : 0
+}
+
 const Host = defineComponent({
   components: { RrgChart, RrgDisplaySettingsControls },
   setup() {
@@ -41,43 +48,15 @@ const Host = defineComponent({
   `,
 })
 
-describe('chart + display controls defaults', () => {
-  it('shows the chart default tail length as a selected option', () => {
+describe('chart + display controls integration', () => {
+  it('updates chart tail geometry when the select changes', async () => {
     const wrapper = mount(Host)
+    const before = tailVertexCount(wrapper, 'XLK')
+    expect(before).toBe(10)
 
-    const select = wrapper.get('[data-testid="rrg-display-tail-length"]')
-    expect((select.element as HTMLSelectElement).value).toBe(
-      String(RRG_CHART_DEFAULTS.tailLength),
-    )
-    expect(select.findAll('option').map((o) => o.text())).toContain('10')
+    await wrapper.get('[data-testid="rrg-display-tail-length"]').setValue('4')
+    await wrapper.vm.$nextTick()
 
-    expect(wrapper.get('[data-testid="rrg-chart"]').exists()).toBe(true)
-  })
-
-  it('inserts a custom tail length into the select options', () => {
-    const CustomHost = defineComponent({
-      components: { RrgDisplaySettingsControls },
-      setup() {
-        const tailLength = ref(15)
-        return { tailLength, labelMode: ref('auto'), showTailFade: ref(false) }
-      },
-      template: `
-        <RrgDisplaySettingsControls
-          v-model:tail-length="tailLength"
-          v-model:label-mode="labelMode"
-          v-model:show-tail-fade="showTailFade"
-        />
-      `,
-    })
-    const wrapper = mount(CustomHost)
-
-    const options = wrapper
-      .get('[data-testid="rrg-display-tail-length"]')
-      .findAll('option')
-      .map((o) => o.text())
-    expect(options).toContain('15')
-    expect((wrapper.get('[data-testid="rrg-display-tail-length"]').element as HTMLSelectElement).value).toBe(
-      '15',
-    )
+    expect(tailVertexCount(wrapper, 'XLK')).toBe(4)
   })
 })

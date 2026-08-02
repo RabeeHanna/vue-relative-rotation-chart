@@ -1,12 +1,18 @@
 import { RRG_TAIL_LENGTH_PRESETS } from '../types/defaults'
 
-/** Preset list with the current tail length included for select matching. */
+/**
+ * Tail-length select options: deduplicated, sorted numerically.
+ * Inserts the exact current value when finite and not already present.
+ */
 export function resolveTailLengthPresets(
   current: number,
   presets: readonly number[] = RRG_TAIL_LENGTH_PRESETS,
 ): number[] {
-  const value = Math.max(1, Math.floor(current))
-  const merged = new Set(presets)
-  merged.add(value)
-  return [...merged].sort((a, b) => a - b)
+  const values = [...new Set(presets)]
+
+  if (Number.isFinite(current) && !values.includes(current)) {
+    values.push(current)
+  }
+
+  return values.sort((a, b) => a - b)
 }
