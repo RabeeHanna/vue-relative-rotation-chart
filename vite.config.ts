@@ -31,14 +31,12 @@ export default defineConfig({
         format === 'es' ? 'vue-relative-rotation-chart.js' : 'vue-relative-rotation-chart.umd.cjs',
     },
     rollupOptions: {
-      external: ['vue', 'd3-array', 'd3-axis', 'd3-scale', 'd3-shape'],
+      external: ['vue', 'd3-array', 'd3-scale'],
       output: {
         globals: {
           vue: 'Vue',
           'd3-array': 'd3',
-          'd3-axis': 'd3',
           'd3-scale': 'd3',
-          'd3-shape': 'd3',
         },
       },
     },

@@ -19,7 +19,7 @@ Standalone Vue 3 SVG package that renders RRG-style relative rotation charts fro
 ## Depends on
 
 - Vue 3, Vite, TypeScript, Vitest
-- D3 subpackages for math only (`d3-scale`, `d3-axis`, `d3-shape`, `d3-array`)
+- D3 subpackages for math only (`d3-scale`, `d3-array`)
 - Decisions in `plans/` (PRE-C1-A Spatial Bin, PRE-C1-B Fit-All, PRE-C1-C a11y props)
 
 ## Used by
