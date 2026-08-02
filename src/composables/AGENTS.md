@@ -7,6 +7,7 @@ Reactive derivation between props and renderable chart state.
 ## Belongs here
 
 - `useRrgScales`, `useRrgViewport`, `useRrgTailSlices`
+- `useRrgChartDimensions` (resolved SVG/plot box from host measure or props)
 - `useRrgLabelLayout` (Spatial Bin — PRE-C1-A)
 - `useRrgHoverState`
 - `useRrgPlayback` / `useRrgPlaybackControls` (C12 timeline)

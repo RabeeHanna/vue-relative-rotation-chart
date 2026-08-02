@@ -12,8 +12,6 @@ export const RRG_DEFAULT_MARGIN: RrgMargin = {
   left: 52,
 }
 
-export const RRG_CHART_INJECTION = {
-  plotWidth: 'rrgPlotWidth',
-  plotHeight: 'rrgPlotHeight',
-  margin: 'rrgMargin',
-} as const
+export const RRG_DEFAULT_CHART_WIDTH = 640
+export const RRG_DEFAULT_CHART_HEIGHT = 480
+export const RRG_MIN_CHART_HEIGHT = 320

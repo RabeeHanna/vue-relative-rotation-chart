@@ -9,9 +9,9 @@ import { useRrgLabelLayout } from '../composables/useRrgLabelLayout'
 import { useRrgHoverState } from '../composables/useRrgHoverState'
 import { useRrgChartSummary } from '../composables/useRrgChartSummary'
 import { useRrgChartPointer } from '../composables/useRrgChartPointer'
+import { useRrgChartDimensions } from '../composables/useRrgChartDimensions'
 import { assignSeriesColors } from '../utils/colors'
 import { resolveChartDate } from '../utils/chartDate'
-import { RRG_DEFAULT_MARGIN } from '../utils/chartLayout'
 import RrgSvgRoot from './RrgSvgRoot.vue'
 import RrgAxes from './RrgAxes.vue'
 import RrgQuadrants from './RrgQuadrants.vue'
@@ -59,14 +59,11 @@ const viewportModeRef = toRef(props, 'viewportMode')
 const showTailFadeRef = toRef(props, 'showTailFade')
 const copyRef = toRef(props, 'copy')
 const domain = useRrgViewport(coloredSeries, resolvedDateRef, tailLengthRef, viewportModeRef)
-const plotWidth = computed(() => {
-  const w = props.width ?? 640
-  return Math.max(0, w - RRG_DEFAULT_MARGIN.left - RRG_DEFAULT_MARGIN.right)
-})
-const plotHeight = computed(() => {
-  const h = props.height ?? 480
-  return Math.max(0, h - RRG_DEFAULT_MARGIN.top - RRG_DEFAULT_MARGIN.bottom)
-})
+const { svgWidth, svgHeight, plotWidth, plotHeight } = useRrgChartDimensions(
+  chartRoot,
+  toRef(props, 'width'),
+  toRef(props, 'height'),
+)
 const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
 const { currentPoints, tailData } = useRrgTailSlices(
   coloredSeries,
@@ -139,8 +136,8 @@ const resolvedLabels = useRrgLabelLayout(
     </div>
     <RrgSvgRoot
       v-else
-      :width="width"
-      :height="height"
+      :width="svgWidth"
+      :height="svgHeight"
       :title="a11yTitle"
       :description="a11yDescription"
     >
