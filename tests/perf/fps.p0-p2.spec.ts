@@ -93,24 +93,20 @@ test.describe('C17 FPS — stress ceiling (PERF_STRESS=1)', () => {
   test('stress-ceiling scrub', async ({ page }) => {
     test.setTimeout(600_000)
     const s = stressEnv()
-    const lines = s.fullHistory
-      ? 2 * s.tickers * Math.max(0, s.points - 1)
-      : 2 * s.tickers * Math.max(0, s.tailLength - 1)
+    const tailNodes = 2 * s.tickers
     await runProfile(page, 'stress-ceiling', 'scrub', {
       scrubSteps: s.scrubSteps,
-      note: `document-only ceiling · ~${lines} SVG tail lines · T=${s.tickers} P=${s.points} fullHistory=${s.fullHistory}`,
+      note: `document-only ceiling · ~${tailNodes} SVG tail nodes · T=${s.tickers} P=${s.points} fullHistory=${s.fullHistory}`,
     })
   })
 
   test('stress-ceiling play', async ({ page }) => {
     test.setTimeout(600_000)
     const s = stressEnv()
-    const lines = s.fullHistory
-      ? 2 * s.tickers * Math.max(0, s.points - 1)
-      : 2 * s.tickers * Math.max(0, s.tailLength - 1)
+    const tailNodes = 2 * s.tickers
     await runProfile(page, 'stress-ceiling', 'play', {
       playMs: s.playMs,
-      note: `document-only ceiling · ~${lines} SVG tail lines · playMs=${s.playMs} · T=${s.tickers} P=${s.points} fullHistory=${s.fullHistory}`,
+      note: `document-only ceiling · ~${tailNodes} SVG tail nodes · playMs=${s.playMs} · T=${s.tickers} P=${s.points} fullHistory=${s.fullHistory}`,
     })
   })
 })

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { expectedTailLineCounts, PERF_TARGET_FPS, segmentsPerTicker } from './expectedTailNodes'
+import { expectedTailNodeCounts, PERF_TARGET_FPS, segmentsPerTicker } from './expectedTailNodes'
 import { computeFpsMetrics } from './fpsMetrics'
 import { profileUrl, stressEnv } from './perfHarness'
 
@@ -10,13 +10,38 @@ describe('perf helpers', () => {
     expect(segmentsPerTicker(10, 1)).toBe(0)
   })
 
-  it('expectedTailLineCounts doubles for hit+visible', () => {
+  it('expectedTailNodeCounts: default mode uses 2T consolidated polylines', () => {
     expect(
-      expectedTailLineCounts({ tickerCount: 8, tailLength: 10, pointsThroughSelected: 200 }),
+      expectedTailNodeCounts({ tickerCount: 8, tailLength: 10, pointsThroughSelected: 200 }),
     ).toEqual({
-      segments: 72,
-      hits: 72,
-      totalLines: 144,
+      visualNodes: 8,
+      hitNodes: 8,
+      totalNodes: 16,
+    })
+  })
+
+  it('expectedTailNodeCounts: no history yields zero nodes', () => {
+    expect(
+      expectedTailNodeCounts({ tickerCount: 8, tailLength: 10, pointsThroughSelected: 1 }),
+    ).toEqual({
+      visualNodes: 0,
+      hitNodes: 0,
+      totalNodes: 0,
+    })
+  })
+
+  it('expectedTailNodeCounts: fade mode uses per-segment visuals plus one hit polyline per ticker', () => {
+    expect(
+      expectedTailNodeCounts({
+        tickerCount: 8,
+        tailLength: 10,
+        pointsThroughSelected: 200,
+        showTailFade: true,
+      }),
+    ).toEqual({
+      visualNodes: 72,
+      hitNodes: 8,
+      totalNodes: 80,
     })
   })
 

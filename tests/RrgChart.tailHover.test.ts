@@ -124,7 +124,7 @@ describe('RrgChart tail hover', () => {
         },
       })
       expect(wrapper.get('[data-testid="rrg-tails"]').exists()).toBe(true)
-      expect(wrapper.findAll('[data-testid="rrg-tail-hit"]').length).toBeGreaterThan(50)
+      expect(wrapper.findAll('[data-testid="rrg-tail-hit"]').length).toBe(fixture.length)
       wrapper.unmount()
     }
   })

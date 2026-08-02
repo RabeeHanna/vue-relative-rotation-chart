@@ -16,7 +16,7 @@ const series = [
 ]
 
 describe('RrgChart tails', () => {
-  it('renders tail groups with segments behind points', () => {
+  it('renders tail groups with consolidated polylines behind points', () => {
     const wrapper = mount(RrgChart, {
       props: {
         series,
@@ -28,12 +28,29 @@ describe('RrgChart tails', () => {
     })
 
     expect(wrapper.get('[data-testid="rrg-tail-XLK"]').exists()).toBe(true)
-    expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-segment').length).toBe(2)
-    expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-hit').length).toBe(2)
+    expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-segment').length).toBe(1)
+    expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-hit').length).toBe(1)
     expect(wrapper.get('[data-testid="rrg-point-XLK"]').exists()).toBe(true)
     expect(wrapper.get('[data-testid="rrg-chart"]').attributes('data-show-tail-fade')).toBe(
       'false',
     )
+  })
+
+  it('polyline points connect the same coordinates as segment geometry', () => {
+    const wrapper = mount(RrgChart, {
+      props: {
+        series,
+        selectedDate: '2024-03-01',
+        tailLength: 10,
+        width: 640,
+        height: 480,
+      },
+    })
+
+    const polyline = wrapper.get('[data-testid="rrg-tail-XLK"] .rrg-tail-segment')
+    expect(polyline.element.tagName.toLowerCase()).toBe('polyline')
+    expect(polyline.attributes('points')).toMatch(/[\d.]+,[\d.]+/)
+    expect(polyline.attributes('points')!.split(' ').length).toBe(3)
   })
 
   it('applies segment opacity gradient when showTailFade is true', () => {
@@ -48,6 +65,9 @@ describe('RrgChart tails', () => {
     })
 
     const lines = wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-segment')
+    const hits = wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('[data-testid="rrg-tail-hit"]')
+    expect(lines).toHaveLength(2)
+    expect(hits).toHaveLength(1)
     const o0 = Number(lines[0].attributes('stroke-opacity'))
     const o1 = Number(lines[1].attributes('stroke-opacity'))
     expect(o0).toBeLessThan(o1)
@@ -56,8 +76,7 @@ describe('RrgChart tails', () => {
     )
   })
 
-  it('reuses the same segment DOM nodes across selectedDate changes (stable keys)', async () => {
-    // Fixed-length window: both frames have identical segment counts so Vue can patch in place.
+  it('reuses the same polyline DOM nodes across selectedDate changes (stable keys)', async () => {
     const history = Array.from({ length: 20 }, (_, i) => ({
       date: `2024-01-${String(i + 1).padStart(2, '0')}`,
       x: 100 + i * 0.2,
@@ -77,19 +96,17 @@ describe('RrgChart tails', () => {
     const segs = () => wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-segment')
     const hits = () =>
       wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('[data-testid="rrg-tail-hit"]')
-    expect(segs()).toHaveLength(9)
-    expect(hits()).toHaveLength(9)
+    expect(segs()).toHaveLength(1)
+    expect(hits()).toHaveLength(1)
 
-    const segEls = segs().map((s) => s.element)
-    const hitEls = hits().map((h) => h.element)
-    const x1Before = segEls.map((el) => el.getAttribute('x1'))
+    const segEl = segs()[0].element
+    const hitEl = hits()[0].element
+    const pointsBefore = segEl.getAttribute('points')
 
     await wrapper.setProps({ selectedDate: history[18].date })
 
-    const segElsAfter = segs().map((s) => s.element)
-    const hitElsAfter = hits().map((h) => h.element)
-    expect(segElsAfter).toEqual(segEls)
-    expect(hitElsAfter).toEqual(hitEls)
-    expect(segElsAfter.map((el) => el.getAttribute('x1'))).not.toEqual(x1Before)
+    expect(segs()[0].element).toBe(segEl)
+    expect(hits()[0].element).toBe(hitEl)
+    expect(segEl.getAttribute('points')).not.toEqual(pointsBefore)
   })
 })

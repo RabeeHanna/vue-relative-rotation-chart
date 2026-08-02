@@ -16,6 +16,8 @@ export type TailData = {
   ticker: string
   color: string
   segments: TailSegment[]
+  /** Uniform stroke opacity in default (non-fade) mode; every segment shares this value. */
+  strokeOpacity?: number
 }
 
 export const TAIL_OPACITY_MIN = 0.1
@@ -97,6 +99,7 @@ export function useRrgTailSlices(
         ticker: entry.ticker,
         color: entry.color ?? '#888',
         segments,
+        ...(fade ? {} : { strokeOpacity: TAIL_OPACITY_MAX }),
       })
     }
     return out

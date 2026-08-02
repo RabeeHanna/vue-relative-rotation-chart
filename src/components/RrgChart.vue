@@ -161,6 +161,7 @@ const resolvedLabels = useRrgLabelLayout(
         <RrgTails
           :tail-data="tailData"
           :hovered-ticker="effectiveHoveredTicker"
+          :show-tail-fade="showTailFade"
           @tail-enter="handleTailEnter"
           @tail-leave="handleTailLeave"
         />

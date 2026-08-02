@@ -89,7 +89,7 @@ describe('useRrgTailSlices tailData', () => {
     expect(xlk!.segments[1].date).toBe('2024-03-01')
   })
 
-  it('uses uniform opacity when showTailFade is false (default)', () => {
+  it('uses uniform strokeOpacity on TailData when showTailFade is false (default)', () => {
     const { tailData } = useRrgTailSlices(
       seriesIndex,
       computed(() => '2024-03-01'),
@@ -100,6 +100,7 @@ describe('useRrgTailSlices tailData', () => {
     const xlk = tailData.value.find((t) => t.ticker === 'XLK')
     expect(xlk?.segments).toHaveLength(2)
     expect(xlk!.segments[0].opacity).toBe(xlk!.segments[1].opacity)
+    expect(xlk!.strokeOpacity).toBe(0.85)
   })
 
   it('respects tailLength', () => {

@@ -43,7 +43,7 @@ describe('long playback stress', () => {
 
       expect(wrapper.get('[data-testid="rrg-chart"]').exists()).toBe(true)
       expect(wrapper.get('[data-testid="rrg-point-XLK"]').exists()).toBe(true)
-      expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('line').length).toBeGreaterThan(0)
+      expect(wrapper.get('[data-testid="rrg-tail-XLK"]').findAll('.rrg-tail-segment').length).toBeGreaterThan(0)
     },
   )
 
