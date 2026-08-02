@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, useId, useSlots } from 'vue'
 import { RRG_DEFAULT_MARGIN, type RrgMargin } from '../utils/chartLayout'
 
 const props = withDefaults(
@@ -7,6 +7,8 @@ const props = withDefaults(
     width: number
     height: number
     margin?: RrgMargin
+    plotWidth?: number
+    plotHeight?: number
     title?: string
     description?: string
   }>(),
@@ -17,9 +19,19 @@ const props = withDefaults(
   },
 )
 
+const slots = useSlots()
 const uid = useId()
 const titleId = computed(() => `${uid}-title`)
 const descId = computed(() => `${uid}-desc`)
+const clipPathId = computed(() => `${uid}-plot-clip`)
+const clipPathRef = computed(() => `url(#${clipPathId.value})`)
+const hasSeriesSlot = computed(() => !!slots.series)
+const resolvedPlotWidth = computed(
+  () => props.plotWidth ?? Math.max(0, props.width - props.margin.left - props.margin.right),
+)
+const resolvedPlotHeight = computed(
+  () => props.plotHeight ?? Math.max(0, props.height - props.margin.top - props.margin.bottom),
+)
 
 defineExpose({
   svgWidth: computed(() => props.width),
@@ -56,7 +68,27 @@ defineExpose({
         data-testid="rrg-plot"
         :transform="`translate(${margin.left}, ${margin.top})`"
       >
+        <defs>
+          <clipPath :id="clipPathId" data-testid="rrg-plot-clip-path">
+            <rect
+              class="rrg-plot-clip-rect"
+              data-testid="rrg-plot-clip-rect"
+              x="0"
+              y="0"
+              :width="resolvedPlotWidth"
+              :height="resolvedPlotHeight"
+            />
+          </clipPath>
+        </defs>
         <slot />
+        <g
+          v-if="hasSeriesSlot"
+          class="rrg-plot-series"
+          data-testid="rrg-plot-series"
+          :clip-path="clipPathRef"
+        >
+          <slot name="series" />
+        </g>
       </g>
     </svg>
   </div>

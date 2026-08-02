@@ -30,9 +30,9 @@ describe('viewport domain helpers', () => {
     expect(centerDomain(10)).toEqual({ xMin: 90, xMax: 110, yMin: 90, yMax: 110 })
   })
 
-  it('maxDomain covers all dates', () => {
+  it('maxDomain covers all dates and expands through center', () => {
     const domain = maxDomain(series, 0)
-    expect(domain.xMin).toBe(102)
+    expect(domain.xMin).toBe(100)
     expect(domain.xMax).toBe(150)
     expect(domain.yMin).toBe(50)
     expect(domain.yMax).toBe(103)

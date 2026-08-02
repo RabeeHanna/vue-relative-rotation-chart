@@ -69,6 +69,14 @@ export type RrgRenderSeries = {
 
 export type RrgViewportMode = 'fit' | 'max' | 'center'
 
+/**
+ * Viewport domain policy (Policy A): `fit` and `max` modes always expand the
+ * computed data extent to include the RRG center (`100` on both axes) so
+ * quadrant labels and center lines match the visible region. `center` mode uses
+ * a symmetric window around `100`. Hidden series (`visible: false`) are
+ * excluded from `fit` and `max` domain calculation.
+ */
+
 export type RrgLabelMode = 'auto' | 'always' | 'hover'
 
 /**
@@ -194,6 +202,9 @@ export type RrgPlaybackControlsEmits = {
 
 /**
  * Computed viewport domain in data space (internal; not part of the caller input contract).
+ *
+ * Auto-derived domains (`fit`, `max`) always include the RRG center (`100`)
+ * on both axes; see viewport policy on {@link RrgViewportMode}.
  */
 export type RrgDomain = {
   xMin: number

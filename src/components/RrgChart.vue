@@ -138,6 +138,8 @@ const resolvedLabels = useRrgLabelLayout(
       v-else
       :width="svgWidth"
       :height="svgHeight"
+      :plot-width="plotWidth"
+      :plot-height="plotHeight"
       :title="a11yTitle"
       :description="a11yDescription"
     >
@@ -153,26 +155,28 @@ const resolvedLabels = useRrgLabelLayout(
         :y-scale="yScale"
         :copy="resolvedCopy"
       />
-      <RrgTails
-        :tail-data="tailData"
-        :hovered-ticker="effectiveHoveredTicker"
-        @tail-enter="handleTailEnter"
-        @tail-leave="handleTailLeave"
-      />
-      <RrgPoints
-        :current-points="currentPoints"
-        :x-scale="xScale"
-        :y-scale="yScale"
-        :hovered-ticker="effectiveHoveredTicker"
-        :selected-ticker="selectedTicker"
-        :point-radius="pointRadius"
-        :hit-radius="hitRadius"
-        :copy="resolvedCopy"
-        @point-enter="handlePointEnter"
-        @point-leave="handlePointLeave"
-        @point-click="handlePointClick"
-      />
-      <RrgLabels :labels="resolvedLabels" :hovered-ticker="effectiveHoveredTicker" />
+      <template #series>
+        <RrgTails
+          :tail-data="tailData"
+          :hovered-ticker="effectiveHoveredTicker"
+          @tail-enter="handleTailEnter"
+          @tail-leave="handleTailLeave"
+        />
+        <RrgPoints
+          :current-points="currentPoints"
+          :x-scale="xScale"
+          :y-scale="yScale"
+          :hovered-ticker="effectiveHoveredTicker"
+          :selected-ticker="selectedTicker"
+          :point-radius="pointRadius"
+          :hit-radius="hitRadius"
+          :copy="resolvedCopy"
+          @point-enter="handlePointEnter"
+          @point-leave="handlePointLeave"
+          @point-click="handlePointClick"
+        />
+        <RrgLabels :labels="resolvedLabels" :hovered-ticker="effectiveHoveredTicker" />
+      </template>
       <RrgTooltip
         :hovered-point="hoveredPoint"
         :x-scale="xScale"
