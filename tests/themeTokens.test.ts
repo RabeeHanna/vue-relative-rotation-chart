@@ -55,10 +55,14 @@ describe('CSS theme tokens', () => {
     expect(css).not.toContain('.rrg-playback.dark .rrg-playback__scrubber')
   })
 
-  it('axis and quadrant labels consume --rrg-font-family', () => {
+  it('axis and quadrant labels use svg presentation attributes with --rrg-font-family', () => {
     const axes = readCss('src/components/RrgAxes.vue')
     const quadrants = readCss('src/components/RrgQuadrants.vue')
-    expect(axes).toContain('font-family: var(--rrg-font-family')
-    expect(quadrants).toContain('font-family: var(--rrg-font-family')
+    expect(axes).toContain('font-family="var(--rrg-font-family')
+    expect(axes).toContain('stroke="var(--rrg-grid')
+    expect(quadrants).toContain('font-family="var(--rrg-font-family')
+    expect(quadrants).toContain('fill="var(--rrg-quadrant-label')
+    expect(axes).not.toContain('<style scoped>')
+    expect(quadrants).not.toContain('<style scoped>')
   })
 })

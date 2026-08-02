@@ -26,29 +26,7 @@ describe('exportChartSvg', () => {
     expect(url.startsWith('data:image/svg+xml;charset=utf-8,')).toBe(true)
   })
 
-  it('embeds stylesheet and resolves dark theme variables when style host is provided', () => {
-    const wrapper = mount(RrgChart, {
-      props: {
-        series,
-        selectedDate: '2024-03-01',
-        width: 640,
-        height: 480,
-      },
-      attrs: { class: 'dark' },
-    })
-
-    const svg = wrapper.get('[data-testid="rrg-svg-root"]').element as SVGSVGElement
-    const host = wrapper.get('[data-testid="rrg-chart"]').element as HTMLElement
-    const markup = serializeSvgElement(svg, host)
-
-    expect(markup).toContain('<style')
-    expect(markup).toContain('.rrg-grid-line')
-    expect(markup).toContain('--rrg-bg:#242424')
-    expect(markup).toContain('fill="#242424"')
-    expect(markup).not.toMatch(/fill="var\(--rrg-bg/)
-  })
-
-  it('resolves light theme background on export markup', () => {
+  it('copies theme variables onto the cloned svg without an embedded stylesheet', () => {
     const wrapper = mount(RrgChart, {
       props: {
         series,
@@ -58,15 +36,35 @@ describe('exportChartSvg', () => {
       },
     })
 
-    const svg = wrapper.get('[data-testid="rrg-svg-root"]').element as SVGSVGElement
     const host = wrapper.get('[data-testid="rrg-chart"]').element as HTMLElement
+    host.style.setProperty('--rrg-bg', '#112233')
+
+    const svg = wrapper.get('[data-testid="rrg-svg-root"]').element as SVGSVGElement
     const markup = serializeSvgElement(svg, host)
 
-    expect(markup).toContain('--rrg-bg:#ffffff')
-    expect(markup).toContain('fill="#ffffff"')
+    expect(markup).not.toContain('<style')
+    expect(markup).toMatch(/--rrg-bg:\s*#112233/)
+    expect(markup).toContain('stroke="var(--rrg-grid')
+    expect(wrapper.get('.rrg-grid-line').attributes('stroke')).toContain('var(--rrg-grid')
   })
 
-  it('serializes styled markup suitable for 2x rasterization', () => {
+  it('keeps svg presentation attributes on axes and quadrant labels', () => {
+    const wrapper = mount(RrgChart, {
+      props: {
+        series,
+        selectedDate: '2024-03-01',
+        width: 640,
+        height: 480,
+      },
+    })
+
+    expect(wrapper.get('.rrg-grid-line').attributes('stroke')).toContain('var(--rrg-grid')
+    expect(wrapper.get('.rrg-quadrant-label').attributes('fill')).toContain(
+      'var(--rrg-quadrant-label',
+    )
+  })
+
+  it('serializes export markup with dimensions and theme variables', () => {
     const wrapper = mount(RrgChart, {
       props: {
         series,
@@ -76,13 +74,15 @@ describe('exportChartSvg', () => {
       },
     })
 
-    const svg = wrapper.get('[data-testid="rrg-svg-root"]').element as SVGSVGElement
     const host = wrapper.get('[data-testid="rrg-chart"]').element as HTMLElement
+    host.style.setProperty('--rrg-label', '#445566')
+
+    const svg = wrapper.get('[data-testid="rrg-svg-root"]').element as SVGSVGElement
     const markup = serializeSvgElement(svg, host)
 
     expect(markup).toContain('width="200"')
     expect(markup).toContain('height="150"')
-    expect(markup).toContain('<style')
-    expect(markup).not.toMatch(/fill="var\(--rrg-/)
+    expect(markup).toMatch(/--rrg-label:\s*#445566/)
+    expect(markup).not.toContain('<style')
   })
 })
