@@ -3,6 +3,24 @@
  *
  * This package is a renderer only — it does not fetch data or compute
  * RS-Ratio / RS-Momentum. Callers must pass precomputed series.
+ *
+ * ## Input invariants (caller responsibility)
+ *
+ * | Invariant | Requirement |
+ * |-----------|-------------|
+ * | Coordinates | Finite `x` and `y` on every point |
+ * | Dates | ISO `YYYY-MM-DD` strings, ascending per series (lexical sort = chronological) |
+ * | Uniqueness | No duplicate dates within a series; unique `ticker` per series entry |
+ * | Quadrant | Must match `x`/`y` relative to center `100`/`100` (derived internally in a future major) |
+ * | `selectedDate` | Should match a date in the union of visible series dates; otherwise snaps to nearest |
+ * | Dimensions | Positive `width` / `height` when explicitly provided |
+ *
+ * ## Sparse dates
+ *
+ * Each ticker trail may omit dates other series contain. At a given `selectedDate`,
+ * tickers **without** a point on that date are omitted from the current frame (no
+ * carry-forward / last-known-value interpolation). Supply explicit points if you need
+ * a ticker visible on every global date.
  */
 
 import type { RrgChartCopy, RrgPlaybackCopy } from './copy'
@@ -46,9 +64,11 @@ export type RrgRenderPoint = {
  * `date` must be an ISO 8601 date string (e.g. "2024-03-15").
  */
 export type RrgSeriesPoint = {
+  /** ISO `YYYY-MM-DD` date; must be unique and ascending within the parent series. */
   date: string
   x: number
   y: number
+  /** Caller-supplied; must agree with x/y vs center 100 (see module invariants). */
   quadrant: RrgQuadrant
 }
 
@@ -60,7 +80,7 @@ export type RrgRenderSeries = {
   label: string
   name?: string
   /** Full history, sorted oldest → newest by date */
-  points: RrgSeriesPoint[]
+  points: readonly RrgSeriesPoint[]
   /** Assigned by the component if omitted */
   color?: string
   /** Default true; false hides from all rendering */
@@ -88,7 +108,7 @@ export type RrgLabelMode = 'auto' | 'always' | 'hover'
  */
 export type RrgChartInput = {
   selectedDate: string
-  series: RrgRenderSeries[]
+  series: readonly RrgRenderSeries[]
   tailLength: number
   viewportMode: RrgViewportMode
 }
@@ -105,11 +125,14 @@ export type RrgChartProps = {
    * its internal date/point index. Mutating points in place without replacing
    * `series` is not supported.
    */
-  series: RrgRenderSeries[]
+  series: readonly RrgRenderSeries[]
   /**
    * ISO date selecting the current frame. Exact matches render as-is; mismatches
    * snap to the nearest series date (`data-date-status="snapped"`). Empty series
    * or no dates → empty-state (`data-date-status="empty"`).
+   *
+   * Sparse trails: tickers without a point on the resolved date are hidden for
+   * that frame (no interpolation).
    */
   selectedDate: string
 
