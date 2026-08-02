@@ -136,6 +136,13 @@ export type RrgChartProps = {
    */
   selectedDate: string
 
+  /**
+   * When bound, only tickers in this list render. Share with
+   * `RrgChartControlsPanel` / `RrgSeriesVisibilityControls` via
+   * `v-model:visible-tickers`. When omitted, each series entry's `visible` flag applies.
+   */
+  visibleTickers?: string[]
+
   /** How many historical points to show as tail (default: 10) */
   tailLength?: number
   /** Default: 'fit' (Fit-All — data extent + padding; see PRE-C1-B) */

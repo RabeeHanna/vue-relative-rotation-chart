@@ -123,6 +123,7 @@ const speed = ref(2)
 |------|------|---------|--------|
 | `series` | `RrgRenderSeries[]` | — | Precomputed trails (required) |
 | `selectedDate` | `string` | — | ISO date; snapped if missing |
+| `visibleTickers` | `string[]` | — | Optional `v-model`; share with visibility controls |
 | `tailLength` | `number` | `10` | Historical points in tail |
 | `viewportMode` | `'fit' \| 'max' \| 'center'` | `'fit'` | Fit-All / max / fixed center |
 | `labelMode` | `'auto' \| 'always' \| 'hover'` | `'auto'` | Collision-aware labels |
@@ -152,6 +153,46 @@ const speed = ref(2)
 | `RrgDisplaySettingsControls` | Tail length, label mode, tail fade |
 | `RrgChartControlsPanel` | Collapsible shell (`sections` to hide blocks) |
 | `RrgPlaybackControls` | Timeline scrub + play (`v-model` props) |
+
+Bind `v-model:visible-tickers` on both `RrgChart` and `RrgChartControlsPanel` (or `RrgSeriesVisibilityControls`) so show/hide/solo updates the chart without calling `applyVisibleTickers` yourself:
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import {
+  RrgChart,
+  RrgChartControlsPanel,
+  seriesTickers,
+} from 'vue-relative-rotation-chart'
+import type { RrgRenderSeries, RrgLabelMode, RrgViewportMode } from 'vue-relative-rotation-chart'
+
+const series: RrgRenderSeries[] = [/* … */]
+const visibleTickers = ref(seriesTickers(series))
+const selectedDate = ref(series[0]?.points.at(-1)?.date ?? '')
+const viewportMode = ref<RrgViewportMode>('fit')
+const tailLength = ref(10)
+const labelMode = ref<RrgLabelMode>('auto')
+const showTailFade = ref(false)
+</script>
+
+<template>
+  <RrgChartControlsPanel
+    v-model:visible-tickers="visibleTickers"
+    v-model:viewport-mode="viewportMode"
+    v-model:tail-length="tailLength"
+    v-model:label-mode="labelMode"
+    v-model:show-tail-fade="showTailFade"
+    :series="series"
+  />
+  <RrgChart
+    :series="series"
+    :selected-date="selectedDate"
+    v-model:visible-tickers="visibleTickers"
+  />
+</template>
+```
+
+`applyVisibleTickers` remains available when you prefer to filter series before passing them in.
 
 ## Host integration
 

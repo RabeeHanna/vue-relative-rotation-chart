@@ -11,6 +11,7 @@ import { useRrgChartSummary } from '../composables/useRrgChartSummary'
 import { useRrgChartPointer } from '../composables/useRrgChartPointer'
 import { useRrgChartDimensions } from '../composables/useRrgChartDimensions'
 import { useSeriesIndex } from '../composables/useSeriesIndex'
+import { applyVisibleTickers } from '../composables/useRrgSeriesVisibility'
 import { assignSeriesColors } from '../utils/colors'
 import { resolveChartDateFromIndex } from '../utils/chartDate'
 import RrgSvgRoot from './RrgSvgRoot.vue'
@@ -22,7 +23,7 @@ import RrgTails from './RrgTails.vue'
 import RrgTooltip from './RrgTooltip.vue'
 import './RrgChart.css'
 
-const props = withDefaults(defineProps<RrgChartProps>(), {
+const props = withDefaults(defineProps<Omit<RrgChartProps, 'visibleTickers'>>(), {
   tailLength: RRG_CHART_DEFAULTS.tailLength,
   viewportMode: RRG_CHART_DEFAULTS.viewportMode,
   labelMode: RRG_CHART_DEFAULTS.labelMode,
@@ -37,13 +38,20 @@ const props = withDefaults(defineProps<RrgChartProps>(), {
   selectedTicker: null,
 })
 
+const visibleTickers = defineModel<string[]>('visibleTickers')
+
 const emit = defineEmits<{
   pointHover: [point: RrgRenderPoint]
   pointLeave: []
   pointClick: [point: RrgRenderPoint]
 }>()
 
-const coloredSeries = computed(() => assignSeriesColors(props.series))
+const displaySeries = computed(() => {
+  if (visibleTickers.value === undefined) return props.series
+  return applyVisibleTickers(props.series, visibleTickers.value)
+})
+
+const coloredSeries = computed(() => assignSeriesColors(displaySeries.value))
 const seriesIndex = useSeriesIndex(coloredSeries)
 const dateResolution = computed(() =>
   resolveChartDateFromIndex(seriesIndex.value, props.selectedDate),

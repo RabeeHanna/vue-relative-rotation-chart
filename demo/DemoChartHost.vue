@@ -11,6 +11,8 @@ defineProps<{
   themeStyle?: Record<string, string>
 }>()
 
+const visibleTickers = defineModel<string[]>('visibleTickers')
+
 const emit = defineEmits<{
   pointHover: [point: RrgRenderPoint]
   pointLeave: []
@@ -24,6 +26,7 @@ const emit = defineEmits<{
         :class="{ dark }"
         :style="themeStyle"
         v-bind="singleProps"
+        v-model:visible-tickers="visibleTickers"
         @point-hover="emit('pointHover', $event)"
         @point-leave="emit('pointLeave')"
       />
@@ -35,6 +38,7 @@ const emit = defineEmits<{
           :class="{ dark }"
           :style="themeStyle"
           v-bind="leftProps"
+          v-model:visible-tickers="visibleTickers"
           @point-hover="emit('pointHover', $event)"
           @point-leave="emit('pointLeave')"
         />
@@ -45,6 +49,7 @@ const emit = defineEmits<{
           :class="{ dark }"
           :style="themeStyle"
           v-bind="rightProps"
+          v-model:visible-tickers="visibleTickers"
           @point-hover="emit('pointHover', $event)"
           @point-leave="emit('pointLeave')"
         />

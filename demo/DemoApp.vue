@@ -74,6 +74,7 @@ const {
       :single-props="singleProps"
       :left-props="leftProps"
       :right-props="rightProps"
+      v-model:visible-tickers="visibleTickers"
       @point-hover="hovered = $event"
       @point-leave="hovered = null"
     />
