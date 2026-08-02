@@ -99,6 +99,12 @@ export type RrgChartInput = {
  * Accessibility: prefer `tickerLabelAlwaysVisible` / labels + tooltip (PRE-C1-C).
  */
 export type RrgChartProps = {
+  /**
+   * Precomputed trails per ticker. Replace the `series` array reference (or pass a
+   * new array instance) when underlying point data changes so the chart rebuilds
+   * its internal date/point index. Mutating points in place without replacing
+   * `series` is not supported.
+   */
   series: RrgRenderSeries[]
   /**
    * ISO date selecting the current frame. Exact matches render as-is; mismatches

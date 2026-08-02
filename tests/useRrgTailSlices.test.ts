@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { computed } from 'vue'
 import { useRrgTailSlices } from '../src/composables/useRrgTailSlices'
+import { buildSeriesIndex } from '../src/utils/seriesIndex'
 import type { RrgRenderSeries } from '../src/types/rrg'
 
 const series: RrgRenderSeries[] = [
@@ -21,10 +22,12 @@ const series: RrgRenderSeries[] = [
   },
 ]
 
+const seriesIndex = computed(() => buildSeriesIndex(series))
+
 describe('useRrgTailSlices currentPoints', () => {
   it('returns the point matching selectedDate', () => {
     const { currentPoints } = useRrgTailSlices(
-      computed(() => series),
+      seriesIndex,
       computed(() => '2024-03-01'),
     )
     expect(currentPoints.value).toHaveLength(1)
@@ -39,7 +42,7 @@ describe('useRrgTailSlices currentPoints', () => {
 
   it('excludes series with visible=false', () => {
     const { currentPoints } = useRrgTailSlices(
-      computed(() => series),
+      seriesIndex,
       computed(() => '2024-03-01'),
     )
     expect(currentPoints.value.find((p) => p.ticker === 'XLF')).toBeUndefined()
@@ -47,7 +50,7 @@ describe('useRrgTailSlices currentPoints', () => {
 
   it('returns empty when selectedDate is missing', () => {
     const { currentPoints } = useRrgTailSlices(
-      computed(() => series),
+      seriesIndex,
       computed(() => '2099-01-01'),
     )
     expect(currentPoints.value).toEqual([])
@@ -55,7 +58,7 @@ describe('useRrgTailSlices currentPoints', () => {
 
   it('returns empty for empty series', () => {
     const { currentPoints } = useRrgTailSlices(
-      computed(() => []),
+      computed(() => buildSeriesIndex([])),
       computed(() => '2024-03-01'),
     )
     expect(currentPoints.value).toEqual([])
@@ -72,7 +75,7 @@ describe('useRrgTailSlices tailData', () => {
 
   it('builds opacity-faded segments when showTailFade is true', () => {
     const { tailData } = useRrgTailSlices(
-      computed(() => series),
+      seriesIndex,
       computed(() => '2024-03-01'),
       computed(() => 10),
       identity,
@@ -88,7 +91,7 @@ describe('useRrgTailSlices tailData', () => {
 
   it('uses uniform opacity when showTailFade is false (default)', () => {
     const { tailData } = useRrgTailSlices(
-      computed(() => series),
+      seriesIndex,
       computed(() => '2024-03-01'),
       computed(() => 10),
       identity,
@@ -101,7 +104,7 @@ describe('useRrgTailSlices tailData', () => {
 
   it('respects tailLength', () => {
     const { tailData } = useRrgTailSlices(
-      computed(() => series),
+      seriesIndex,
       computed(() => '2024-03-01'),
       computed(() => 2),
       identity,

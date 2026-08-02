@@ -10,8 +10,9 @@ import { useRrgHoverState } from '../composables/useRrgHoverState'
 import { useRrgChartSummary } from '../composables/useRrgChartSummary'
 import { useRrgChartPointer } from '../composables/useRrgChartPointer'
 import { useRrgChartDimensions } from '../composables/useRrgChartDimensions'
+import { useSeriesIndex } from '../composables/useSeriesIndex'
 import { assignSeriesColors } from '../utils/colors'
-import { resolveChartDate } from '../utils/chartDate'
+import { resolveChartDateFromIndex } from '../utils/chartDate'
 import RrgSvgRoot from './RrgSvgRoot.vue'
 import RrgAxes from './RrgAxes.vue'
 import RrgQuadrants from './RrgQuadrants.vue'
@@ -43,8 +44,9 @@ const emit = defineEmits<{
 }>()
 
 const coloredSeries = computed(() => assignSeriesColors(props.series))
+const seriesIndex = useSeriesIndex(coloredSeries)
 const dateResolution = computed(() =>
-  resolveChartDate(coloredSeries.value, props.selectedDate),
+  resolveChartDateFromIndex(seriesIndex.value, props.selectedDate),
 )
 const resolvedDate = computed(() => dateResolution.value.date)
 const dateStatus = computed(() => dateResolution.value.status)
@@ -58,7 +60,7 @@ const tailLengthRef = toRef(props, 'tailLength')
 const viewportModeRef = toRef(props, 'viewportMode')
 const showTailFadeRef = toRef(props, 'showTailFade')
 const copyRef = toRef(props, 'copy')
-const domain = useRrgViewport(coloredSeries, resolvedDateRef, tailLengthRef, viewportModeRef)
+const domain = useRrgViewport(seriesIndex, resolvedDateRef, tailLengthRef, viewportModeRef)
 const { svgWidth, svgHeight, plotWidth, plotHeight } = useRrgChartDimensions(
   chartRoot,
   toRef(props, 'width'),
@@ -66,7 +68,7 @@ const { svgWidth, svgHeight, plotWidth, plotHeight } = useRrgChartDimensions(
 )
 const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
 const { currentPoints, tailData } = useRrgTailSlices(
-  coloredSeries,
+  seriesIndex,
   resolvedDateRef,
   tailLengthRef,
   xScale,

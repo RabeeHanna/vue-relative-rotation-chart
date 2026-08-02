@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { computed } from 'vue'
 import { useRrgViewport } from '../src/composables/useRrgViewport'
 import { centerDomain, fitDomain, maxDomain } from '../src/utils/viewportDomain'
+import { buildSeriesIndex } from '../src/utils/seriesIndex'
 import type { RrgRenderSeries } from '../src/types/rrg'
 
 const series: RrgRenderSeries[] = [
@@ -46,10 +47,12 @@ describe('viewport domain helpers', () => {
 })
 
 describe('useRrgViewport', () => {
+  const seriesIndex = computed(() => buildSeriesIndex(series))
+
   it('switches modes reactively', () => {
     const mode = computed(() => 'center' as const)
     const domain = useRrgViewport(
-      computed(() => series),
+      seriesIndex,
       computed(() => '2024-03-01'),
       computed(() => 10),
       mode,
@@ -59,7 +62,7 @@ describe('useRrgViewport', () => {
 
   it('fit expands for outliers instead of clipping them', () => {
     const domain = useRrgViewport(
-      computed(() => series),
+      seriesIndex,
       computed(() => '2024-03-01'),
       computed(() => 10),
       computed(() => 'fit'),

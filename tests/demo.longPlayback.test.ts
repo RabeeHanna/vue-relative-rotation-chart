@@ -5,6 +5,7 @@ import { mount } from '@vue/test-utils'
 import { scaleLinear } from 'd3-scale'
 import RrgChart from '../src/components/RrgChart.vue'
 import { useRrgTailSlices } from '../src/composables/useRrgTailSlices'
+import { buildSeriesIndex } from '../src/utils/seriesIndex'
 import type { RrgScale } from '../src/composables/useRrgScales'
 import {
   LONG_PLAYBACK_LENGTHS,
@@ -61,11 +62,12 @@ describe('long playback stress', () => {
       const selectedDate = series[0].points[points - 1].date
       const iterations = points >= 200 ? 10 : 20
 
+      const seriesIndex = computed(() => buildSeriesIndex(series))
       const start = performance.now()
       let segments = 0
       for (let i = 0; i < iterations; i++) {
         const { tailData } = useRrgTailSlices(
-          computed(() => series),
+          seriesIndex,
           computed(() => selectedDate),
           computed(() => 10),
           xScale,

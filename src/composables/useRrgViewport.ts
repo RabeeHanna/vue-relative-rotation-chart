@@ -1,6 +1,11 @@
 import { computed, type ComputedRef, type Ref } from 'vue'
-import type { RrgDomain, RrgRenderSeries, RrgViewportMode } from '../types/rrg'
-import { centerDomain, fitDomain, maxDomain } from '../utils/viewportDomain'
+import type { RrgDomain, RrgViewportMode } from '../types/rrg'
+import {
+  centerDomain,
+  fitDomainFromIndex,
+  maxDomainFromIndex,
+} from '../utils/viewportDomain'
+import type { SeriesIndex } from '../utils/seriesIndex'
 
 export type ViewportOptions = {
   centerRadius?: number
@@ -14,7 +19,7 @@ type MaybeRef<T> = ComputedRef<T> | Ref<T>
  * Viewport domain for fit (Fit-All), max, and center modes (PRE-C1-B).
  */
 export function useRrgViewport(
-  series: MaybeRef<RrgRenderSeries[]>,
+  seriesIndex: MaybeRef<SeriesIndex>,
   selectedDate: MaybeRef<string>,
   tailLength: MaybeRef<number>,
   viewportMode: MaybeRef<RrgViewportMode>,
@@ -27,15 +32,16 @@ export function useRrgViewport(
   } = options
 
   return computed((): RrgDomain => {
+    const index = seriesIndex.value
     switch (viewportMode.value) {
       case 'center':
         return centerDomain(centerRadius)
       case 'max':
-        return maxDomain(series.value, maxPadding)
+        return maxDomainFromIndex(index, maxPadding)
       case 'fit':
       default:
-        return fitDomain(
-          series.value,
+        return fitDomainFromIndex(
+          index,
           selectedDate.value,
           tailLength.value,
           fitPadding,

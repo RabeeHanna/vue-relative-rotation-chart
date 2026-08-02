@@ -1,5 +1,6 @@
 import type { RrgRenderSeries } from '../types/rrg'
 import { snapDateIndex } from './playback'
+import { buildSeriesIndex, type SeriesIndex } from './seriesIndex'
 
 export type ChartDateStatus = 'exact' | 'snapped' | 'empty'
 
@@ -13,26 +14,19 @@ export type ResolvedChartDate = {
 
 /** Collect unique ISO dates from visible series, sorted ascending. */
 export function collectSeriesDates(series: RrgRenderSeries[]): string[] {
-  const set = new Set<string>()
-  for (const s of series) {
-    if (s.visible === false) continue
-    for (const p of s.points) {
-      if (p.date) set.add(p.date)
-    }
-  }
-  return [...set].sort()
+  return [...buildSeriesIndex(series).dates]
 }
 
 /**
- * Resolve `selectedDate` against series dates.
+ * Resolve `selectedDate` against a prebuilt series index.
  * Mismatches snap to the nearest date (`snapDateIndex`).
  * Empty series / no dates → `empty`.
  */
-export function resolveChartDate(
-  series: RrgRenderSeries[],
+export function resolveChartDateFromIndex(
+  index: SeriesIndex,
   selectedDate: string,
 ): ResolvedChartDate {
-  const dates = collectSeriesDates(series)
+  const dates = [...index.dates]
   if (dates.length === 0) {
     return { status: 'empty', date: '', dates }
   }
@@ -46,4 +40,16 @@ export function resolveChartDate(
     date,
     dates,
   }
+}
+
+/**
+ * Resolve `selectedDate` against series dates.
+ * Mismatches snap to the nearest date (`snapDateIndex`).
+ * Empty series / no dates → `empty`.
+ */
+export function resolveChartDate(
+  series: RrgRenderSeries[],
+  selectedDate: string,
+): ResolvedChartDate {
+  return resolveChartDateFromIndex(buildSeriesIndex(series), selectedDate)
 }
