@@ -6,14 +6,14 @@
 
 ## Goal
 
-Investigate how `vue-relative-rotation-chart` can optionally persist **all control-surface configs** (viewport, display, visibility, and future knobs) so hosts like Sector Orbit do not lose settings such as `labelMode` on refresh — **without** remembering to wire each new field into a cache list by hand.
+Investigate how `vue-relative-rotation-chart` can optionally persist **all control-surface configs** (viewport, display, visibility, and future knobs) so production hosts do not lose settings such as `labelMode` on refresh — **without** remembering to wire each new field into a cache list by hand.
 
-This is a **library-only** unit. Sector Orbit adoption (URL vs session vs library cache) is out of scope here except as a consumer feasibility note.
+This is a **library-only** unit. Host adoption (URL vs session vs library cache) is out of scope here except as a consumer feasibility note.
 
 ## Problem (observed)
 
 - Demo already persists many controls via `demo/demoSession.ts` + URL (`labelMode`, `showTailFade`, `viewportMode`, …).
-- Production hosts that only v-model library controls (e.g. Sector Orbit) may persist a subset (tail, viewport) in their own session/URL and **omit** others (`labelMode`, `showTailFade`, visibility). Refresh resets those to defaults.
+- Production hosts that only v-model library controls may persist a subset (tail, viewport) in their own session/URL and **omit** others (`labelMode`, `showTailFade`, visibility). Refresh resets those to defaults.
 - Every new control today requires a host (or demo) to remember: URL key + session field + merge logic. That does not scale.
 
 ## Desired outcome
@@ -21,7 +21,7 @@ This is a **library-only** unit. Sector Orbit adoption (URL vs session vs librar
 1. **Feasibility report** — can the library own optional persistence safely without becoming a host app store?
 2. **Recommended design** — opt-in API (e.g. `persist-controls` / `cache-configs`) with a single schema so **new controls are auto-included**.
 3. **Opt-out** — `persist-controls={false}` (default) preserves today’s behavior; no surprise writes to `sessionStorage`.
-4. **Sketch of host interface** — how Sector Orbit (or any host) enables one prop and stops hand-maintaining per-field cache lists.
+4. **Sketch of host interface** — how a host enables one prop and stops hand-maintaining per-field cache lists.
 
 ## Constraints
 
@@ -30,7 +30,7 @@ This is a **library-only** unit. Sector Orbit adoption (URL vs session vs librar
 - Must not break controlled `v-model` usage (host remains source of truth when it passes models).
 - Default **off** — library must not write storage unless the host opts in.
 - Prefer `sessionStorage` (tab-scoped) as the default backend; document swap-in for `localStorage` if needed later.
-- No SO-specific types in the public API.
+- No host-specific types in the public API.
 
 ## Research tasks
 
@@ -72,7 +72,7 @@ const RRG_CONTROLS_SCHEMA = {
 ## Out of scope for C30 (research)
 
 - Implementing the composable (unless research proves a tiny spike is needed — keep under `spikes/` if so)
-- Changing Sector Orbit URL state
+- Changing host URL state
 - Persisting series data or selectedDate frame scrub position (optional follow-up; call out in R1)
 
 ## Acceptance criteria
