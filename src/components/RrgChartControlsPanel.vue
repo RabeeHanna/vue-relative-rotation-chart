@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { RrgLabelMode, RrgRenderSeries, RrgViewportMode } from '../types/rrg'
+import { RRG_TAIL_LENGTH_PRESETS } from '../types/defaults'
 import RrgDisplaySettingsControls from './RrgDisplaySettingsControls.vue'
 import RrgSeriesVisibilityControls from './RrgSeriesVisibilityControls.vue'
 import RrgViewportControls from './RrgViewportControls.vue'
@@ -24,7 +25,7 @@ const props = withDefaults(
     displayDisabled: false,
     dark: false,
     sections: () => ['viewport', 'display', 'visibility'],
-    tailLengthPresets: () => [4, 8, 12, 16, 24],
+    tailLengthPresets: () => [...RRG_TAIL_LENGTH_PRESETS],
     defaultOpen: true,
   },
 )

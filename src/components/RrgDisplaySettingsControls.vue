@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { RrgLabelMode } from '../types/rrg'
+import { RRG_TAIL_LENGTH_PRESETS } from '../types/defaults'
+import { resolveTailLengthPresets } from '../utils/tailLengthPresets'
 import {
   RRG_LABEL_MODES,
   rrgLabelModeDescription,
@@ -8,7 +11,7 @@ import {
 import './rrgControlsShared.css'
 import './RrgDisplaySettingsControls.css'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     disabled?: boolean
     dark?: boolean
@@ -20,13 +23,17 @@ withDefaults(
     disabled: false,
     dark: false,
     inset: false,
-    tailLengthPresets: () => [4, 8, 12, 16, 24],
+    tailLengthPresets: () => [...RRG_TAIL_LENGTH_PRESETS],
   },
 )
 
 const tailLength = defineModel<number>('tailLength', { required: true })
 const labelMode = defineModel<RrgLabelMode>('labelMode', { required: true })
 const showTailFade = defineModel<boolean>('showTailFade', { required: true })
+
+const resolvedTailLengthPresets = computed(() =>
+  resolveTailLengthPresets(tailLength.value, props.tailLengthPresets),
+)
 </script>
 
 <template>
@@ -47,7 +54,7 @@ const showTailFade = defineModel<boolean>('showTailFade', { required: true })
         data-testid="rrg-display-tail-length"
         :disabled="disabled"
       >
-        <option v-for="preset in tailLengthPresets" :key="preset" :value="preset">
+        <option v-for="preset in resolvedTailLengthPresets" :key="preset" :value="preset">
           {{ preset }}
         </option>
       </select>
