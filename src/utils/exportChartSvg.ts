@@ -1,3 +1,5 @@
+import { prepareSvgCloneForExport } from './exportChartStyles'
+
 export type ExportChartPngOptions = {
   /** Canvas scale factor (default 2). */
   scale?: number
@@ -6,8 +8,14 @@ export type ExportChartPngOptions = {
 }
 
 /** Clone and serialize an SVG element for export. */
-export function serializeSvgElement(svg: SVGSVGElement): string {
+export function serializeSvgElement(
+  svg: SVGSVGElement,
+  styleHost?: HTMLElement | null,
+): string {
   const clone = svg.cloneNode(true) as SVGSVGElement
+  if (styleHost) {
+    prepareSvgCloneForExport(clone, styleHost)
+  }
   if (!clone.getAttribute('xmlns')) {
     clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
   }
@@ -54,8 +62,9 @@ export async function rasterizeSvgToPngDataUrl(
 export async function exportSvgElementAsPng(
   svg: SVGSVGElement,
   options: ExportChartPngOptions = {},
+  styleHost?: HTMLElement | null,
 ): Promise<string> {
-  const markup = serializeSvgElement(svg)
+  const markup = serializeSvgElement(svg, styleHost)
   const { width, height } = readSvgDimensions(svg)
   return rasterizeSvgToPngDataUrl(markup, width, height, options)
 }

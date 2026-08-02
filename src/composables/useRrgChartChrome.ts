@@ -32,7 +32,7 @@ export function useRrgChartExport(chartRoot: Ref<HTMLElement | null>) {
   async function exportPng(options?: ExportChartPngOptions): Promise<string | null> {
     const svg = getSvgElement()
     if (!svg) return null
-    return exportSvgElementAsPng(svg, options)
+    return exportSvgElementAsPng(svg, options, chartRoot.value)
   }
 
   return { getSvgElement, exportPng }
