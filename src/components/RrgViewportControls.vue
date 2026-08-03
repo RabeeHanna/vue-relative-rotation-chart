@@ -1,28 +1,41 @@
 <script setup lang="ts">
 import type { RrgViewportMode } from '../types/rrg'
-import {
-  RRG_VIEWPORT_MODES,
-  rrgViewportModeDescription,
-  rrgViewportModeLabel,
-} from '../utils/viewportLabels'
+import type { ResolvedRrgControlsCopy } from '../types/controlsCopy'
+import { RRG_CONTROLS_COPY_DEFAULTS } from '../types/controlsCopy'
+import { RRG_VIEWPORT_MODES } from '../utils/viewportLabels'
 import './rrgControlsShared.css'
 import './RrgViewportControls.css'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     disabled?: boolean
     dark?: boolean
-    /** Inherit panel tokens when composed inside `RrgChartControlsPanel`. */
     inset?: boolean
+    controlsCopy?: ResolvedRrgControlsCopy
   }>(),
   {
     disabled: false,
     dark: false,
     inset: false,
+    controlsCopy: () => RRG_CONTROLS_COPY_DEFAULTS,
   },
 )
 
 const viewportMode = defineModel<RrgViewportMode>('viewportMode', { required: true })
+
+function modeLabel(mode: RrgViewportMode): string {
+  const c = props.controlsCopy
+  if (mode === 'max') return c.viewportMax
+  if (mode === 'center') return c.viewportCenter
+  return c.viewportFit
+}
+
+function modeDescription(mode: RrgViewportMode): string {
+  const c = props.controlsCopy
+  if (mode === 'max') return c.viewportMaxDescription
+  if (mode === 'center') return c.viewportCenterDescription
+  return c.viewportFitDescription
+}
 </script>
 
 <template>
@@ -34,13 +47,13 @@ const viewportMode = defineModel<RrgViewportMode>('viewportMode', { required: tr
     ]"
     data-testid="rrg-viewport"
     role="radiogroup"
-    aria-label="Chart viewport mode"
+    :aria-label="controlsCopy.viewportGroup"
   >
     <label
       v-for="mode in RRG_VIEWPORT_MODES"
       :key="mode"
       class="rrg-viewport__option"
-      :title="rrgViewportModeDescription(mode)"
+      :title="modeDescription(mode)"
     >
       <input
         v-model="viewportMode"
@@ -48,8 +61,8 @@ const viewportMode = defineModel<RrgViewportMode>('viewportMode', { required: tr
         :value="mode"
         :disabled="disabled"
         :data-testid="`rrg-viewport-${mode}`"
-      />
-      {{ rrgViewportModeLabel(mode) }}
+      >
+      {{ modeLabel(mode) }}
     </label>
   </div>
 </template>

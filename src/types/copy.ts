@@ -1,3 +1,5 @@
+import { omitEmpty } from './copyUtils'
+
 /**
  * Overridable UI copy for chart + playback (localization / branding).
  * Omitted keys fall back to English defaults.
@@ -18,6 +20,14 @@ export type RrgChartCopy = {
    * `{leading}`, `{improving}`. When set, replaces the default summary sentence set.
    */
   chartDescription?: string
+  /** Empty state when every series is hidden via visibility. */
+  emptyAllHidden?: string
+  /** Empty state when no dates exist in the series union. */
+  emptyNoDates?: string
+  /** Horizontal axis title below the plot. */
+  axisTitleX?: string
+  /** Vertical axis title beside the plot. */
+  axisTitleY?: string
 }
 
 export type RrgPlaybackCopy = {
@@ -49,6 +59,10 @@ export const RRG_CHART_COPY_DEFAULTS: ResolvedRrgChartCopy = {
   chartTitle: 'Relative Rotation Chart — {date}',
   chartDescription:
     'RRG chart showing {count} tickers as of {date}. Viewport mode: {viewport}. Leading quadrant: {leading}. Improving quadrant: {improving}.',
+  emptyAllHidden: 'All series are hidden',
+  emptyNoDates: 'No series dates to display',
+  axisTitleX: 'RS-Ratio →',
+  axisTitleY: 'RS-Momentum ↑',
 }
 
 export const RRG_PLAYBACK_COPY_DEFAULTS: ResolvedRrgPlaybackCopy = {
@@ -77,15 +91,4 @@ export function formatCopy(template: string, vars: Record<string, string | numbe
   return template.replace(/\{([a-zA-Z]+)\}/g, (_, key: string) =>
     key in vars ? String(vars[key]) : `{${key}}`,
   )
-}
-
-function omitEmpty(
-  partial?: Record<string, string | undefined> | null,
-): Record<string, string> {
-  if (!partial) return {}
-  const out: Record<string, string> = {}
-  for (const [k, v] of Object.entries(partial)) {
-    if (typeof v === 'string' && v.trim() !== '') out[k] = v
-  }
-  return out
 }

@@ -1,6 +1,6 @@
 import { describe, expect, expectTypeOf, it } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { RrgChart, RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from '../src'
+import { RrgChart, RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS, RRG_TAIL_LENGTH_PRESETS } from '../src'
 import type {
   RrgChartEmits,
   RrgChartInput,
@@ -52,7 +52,7 @@ describe('public type contract', () => {
     expectTypeOf<RrgPlaybackControlsEmits>().toHaveProperty('update:selectedDate')
   })
 
-  it('includes PRE-C1-C accessibility props as optional booleans', () => {
+  it('includes optional accessibility identity props', () => {
     expectTypeOf<RrgChartProps['tickerLabelAlwaysVisible']>().toEqualTypeOf<
       boolean | undefined
     >()
@@ -66,6 +66,7 @@ describe('public type contract', () => {
     expect(RRG_CHART_DEFAULTS.showTailFade).toBe(false)
     expect(RRG_CHART_DEFAULTS.pointRadius).toBe(5.5)
     expect(RRG_CHART_DEFAULTS.hitRadius).toBe(12)
+    expect(RRG_TAIL_LENGTH_PRESETS).toContain(RRG_CHART_DEFAULTS.tailLength)
     expect(RRG_PLAYBACK_DEFAULTS.labelStyle).toBe('icon')
   })
 })

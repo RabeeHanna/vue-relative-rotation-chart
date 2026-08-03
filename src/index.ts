@@ -14,6 +14,7 @@ export type {
   RrgChartProps,
   RrgChartEmits,
   RrgChartCopy,
+  RrgChartFormatters,
   RrgPlaybackCopy,
   RrgPlaybackControlsProps,
   RrgPlaybackControlsEmits,
@@ -28,7 +29,7 @@ export type {
 export type { ChartDateStatus, ResolvedChartDate } from './utils/chartDate'
 export { collectSeriesDates, resolveChartDate } from './utils/chartDate'
 
-export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from './types/rrg'
+export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS, RRG_TAIL_LENGTH_PRESETS } from './types/rrg'
 export {
   RRG_CHART_COPY_DEFAULTS,
   RRG_PLAYBACK_COPY_DEFAULTS,
@@ -36,6 +37,13 @@ export {
   mergePlaybackCopy,
   formatCopy,
 } from './types/copy'
+export {
+  RRG_CONTROLS_COPY_DEFAULTS,
+  mergeControlsCopy,
+  type RrgControlsCopy,
+  type ResolvedRrgControlsCopy,
+} from './types/controlsCopy'
+export { resolveChartFormatters } from './utils/chartFormatters'
 export {
   RRG_VIEWPORT_MODES,
   isRrgViewportMode,

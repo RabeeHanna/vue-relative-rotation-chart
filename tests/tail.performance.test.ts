@@ -3,6 +3,7 @@ import { performance } from 'node:perf_hooks'
 import { computed } from 'vue'
 import { scaleLinear } from 'd3-scale'
 import { useRrgTailSlices } from '../src/composables/useRrgTailSlices'
+import { buildSeriesIndex } from '../src/utils/seriesIndex'
 import type { RrgRenderSeries } from '../src/types/rrg'
 import type { RrgScale } from '../src/composables/useRrgScales'
 
@@ -30,10 +31,11 @@ describe('tail performance smoke', () => {
       () => scaleLinear().domain([90, 120]).range([500, 0]) as RrgScale,
     )
 
+    const seriesIndex = computed(() => buildSeriesIndex(series))
     const start = performance.now()
     for (let i = 0; i < 30; i++) {
       const { tailData } = useRrgTailSlices(
-        computed(() => series),
+        seriesIndex,
         computed(() => selectedDate),
         computed(() => 30),
         xScale,

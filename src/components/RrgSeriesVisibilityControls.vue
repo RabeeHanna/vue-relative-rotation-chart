@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { RrgRenderSeries } from '../types/rrg'
+import type { ResolvedRrgControlsCopy } from '../types/controlsCopy'
+import { RRG_CONTROLS_COPY_DEFAULTS } from '../types/controlsCopy'
 import { assignSeriesColors } from '../utils/colors'
 import {
+  filterVisibleTickers,
   hideAllTickers,
   showAllTickers,
   soloTicker,
@@ -16,11 +19,13 @@ const props = withDefaults(
     disabled?: boolean
     dark?: boolean
     inset?: boolean
+    controlsCopy?: ResolvedRrgControlsCopy
   }>(),
   {
     disabled: false,
     dark: false,
     inset: false,
+    controlsCopy: () => RRG_CONTROLS_COPY_DEFAULTS,
   },
 )
 
@@ -29,11 +34,16 @@ const visibleTickers = defineModel<string[]>('visibleTickers', { required: true 
 const coloredSeries = computed(() => assignSeriesColors(props.series))
 
 const preSoloTickers = ref<string[] | null>(null)
+let visibilityPatchFromControl = false
 
 const visibleSet = computed(() => new Set(visibleTickers.value))
 
 function setVisible(next: string[]) {
+  visibilityPatchFromControl = true
   visibleTickers.value = next
+  queueMicrotask(() => {
+    visibilityPatchFromControl = false
+  })
 }
 
 function toggleTicker(ticker: string) {
@@ -63,9 +73,29 @@ function onSolo(ticker: string) {
 
 function onRestore() {
   if (!preSoloTickers.value) return
-  setVisible([...preSoloTickers.value])
+  setVisible(filterVisibleTickers(preSoloTickers.value, props.series))
   preSoloTickers.value = null
 }
+
+watch(
+  () => props.series,
+  (next) => {
+    preSoloTickers.value = null
+    const filtered = filterVisibleTickers(visibleTickers.value, next)
+    if (
+      filtered.length !== visibleTickers.value.length ||
+      filtered.some((ticker, index) => ticker !== visibleTickers.value[index])
+    ) {
+      setVisible(filtered.length > 0 ? filtered : showAllTickers(next))
+    }
+  },
+)
+
+watch(visibleTickers, () => {
+  if (!visibilityPatchFromControl) {
+    preSoloTickers.value = null
+  }
+})
 </script>
 
 <template>
@@ -77,7 +107,7 @@ function onRestore() {
     ]"
     data-testid="rrg-series-visibility"
     role="group"
-    aria-label="Series visibility"
+    :aria-label="controlsCopy.visibilityGroup"
   >
     <div class="rrg-series-visibility__actions">
       <button
@@ -86,7 +116,7 @@ function onRestore() {
         :disabled="disabled"
         @click="onShowAll"
       >
-        Show all
+        {{ controlsCopy.showAll }}
       </button>
       <button
         type="button"
@@ -94,7 +124,7 @@ function onRestore() {
         :disabled="disabled"
         @click="onHideAll"
       >
-        Hide all
+        {{ controlsCopy.hideAll }}
       </button>
       <button
         type="button"
@@ -102,7 +132,7 @@ function onRestore() {
         :disabled="disabled || !preSoloTickers"
         @click="onRestore"
       >
-        Restore
+        {{ controlsCopy.restore }}
       </button>
     </div>
 
@@ -127,7 +157,7 @@ function onRestore() {
             :disabled="disabled"
             :data-testid="`rrg-series-visibility-check-${item.ticker}`"
             @change="toggleTicker(item.ticker)"
-          />
+          >
           {{ item.label || item.ticker }}
         </label>
         <button
@@ -137,7 +167,7 @@ function onRestore() {
           :disabled="disabled"
           @click="onSolo(item.ticker)"
         >
-          Solo
+          {{ controlsCopy.solo }}
         </button>
       </li>
     </ul>

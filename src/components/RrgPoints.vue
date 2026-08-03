@@ -5,6 +5,9 @@ import type { RrgScale } from '../composables/useRrgScales'
 import type { ResolvedRrgChartCopy } from '../types/copy'
 import { RRG_CHART_COPY_DEFAULTS } from '../types/copy'
 
+import type { ResolvedRrgChartFormatters } from '../utils/chartFormatters'
+import { RRG_CHART_FORMATTER_DEFAULTS } from '../utils/chartFormatters'
+
 const props = defineProps({
   currentPoints: {
     type: Array as PropType<RrgRenderPoint[]>,
@@ -19,6 +22,10 @@ const props = defineProps({
   copy: {
     type: Object as PropType<ResolvedRrgChartCopy>,
     default: () => RRG_CHART_COPY_DEFAULTS,
+  },
+  formatters: {
+    type: Object as PropType<ResolvedRrgChartFormatters>,
+    default: () => RRG_CHART_FORMATTER_DEFAULTS,
   },
 })
 
@@ -37,7 +44,7 @@ function quadrantWord(point: RrgRenderPoint): string {
 }
 
 function ariaLabel(point: RrgRenderPoint): string {
-  return `${point.ticker} — ${quadrantWord(point)} quadrant, ${props.copy.rsRatio} ${point.x.toFixed(1)}, ${props.copy.rsMomentum} ${point.y.toFixed(1)}`
+  return `${point.ticker} — ${quadrantWord(point)} ${props.copy.quadrant}, ${props.copy.rsRatio} ${props.formatters.formatNumber(point.x)}, ${props.copy.rsMomentum} ${props.formatters.formatNumber(point.y)}`
 }
 </script>
 

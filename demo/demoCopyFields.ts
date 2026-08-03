@@ -14,6 +14,10 @@ export const EMPTY_CHART_COPY: DemoChartCopyFields = {
   quadrant: '',
   chartTitle: '',
   chartDescription: '',
+  emptyAllHidden: '',
+  emptyNoDates: '',
+  axisTitleX: '',
+  axisTitleY: '',
 }
 
 export const EMPTY_PLAYBACK_COPY: DemoPlaybackCopyFields = {

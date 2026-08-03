@@ -17,6 +17,7 @@ import {
 } from './demoSession'
 import { chartThemeStyle, syncThemeCssPickers } from './demoThemeCss'
 import { applyAgentDemoShellFlags } from './demoAgentShell'
+import { isDevHarness } from './devHarness'
 import { datesForSeries, scenarioById } from './scenarios'
 import { useDemoAgentState } from './useDemoAgentState'
 import { watchDemoSideEffects } from './watchDemoSideEffects'
@@ -30,9 +31,10 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const overrideSeries = ref<RrgRenderSeries[] | null>(null)
   const urlKeys = presentUrlKeys(search)
   const bootGenerate =
-    controls.value.source === 'generated' ||
-    urlKeys.has('genTickers') ||
-    urlKeys.has('genPoints')
+    isDevHarness &&
+    (controls.value.source === 'generated' ||
+      urlKeys.has('genTickers') ||
+      urlKeys.has('genPoints'))
   if (bootGenerate) {
     generateDemoSeries(controls.value, overrideSeries)
   }
@@ -50,8 +52,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
     },
     { immediate: true },
   )
-  const chartSeries = computed(() => applyVisibleTickers(series.value, visibleTickers.value))
-  const dates = computed(() => datesForSeries(chartSeries.value))
+  const dates = computed(() => datesForSeries(series.value))
   const firstDate = dates.value[0] ?? ''
   const hasSavedDate =
     typeof saved?.playback?.selectedDate === 'string' &&
@@ -84,7 +85,9 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const themeStyle = computed(() => chartThemeStyle(controls.value.theme, controls.value))
   const dark = computed(() => controls.value.theme === 'dark')
   const dataNotInLink = computed(() => controls.value.source !== 'preset')
-  const currentPoints = computed(() => demoCurrentPoints(chartSeries.value, selectedDate.value))
+  const currentPoints = computed(() =>
+    demoCurrentPoints(applyVisibleTickers(series.value, visibleTickers.value), selectedDate.value),
+  )
   const summaryMode = computed(() =>
     controls.value.compare ? controls.value.viewportLeft : controls.value.viewportMode,
   )
@@ -104,7 +107,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
       tailLength: effectiveDemoTailLength(
         controls.value.tailLength,
         controls.value.fullHistoryTail,
-        chartSeries.value,
+        series.value,
       ),
       tickerLabelAlwaysVisible: controls.value.tickerLabelAlwaysVisible,
       showTailFade: controls.value.showTailFade,
@@ -122,7 +125,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const singleProps = computed(() =>
     demoChartPropsFromControls(
       controls.value,
-      chartSeries.value,
+      series.value,
       selectedDate.value,
       controls.value.viewportMode,
     ),
@@ -130,7 +133,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const leftProps = computed(() =>
     demoChartPropsFromControls(
       controls.value,
-      chartSeries.value,
+      series.value,
       selectedDate.value,
       controls.value.viewportLeft,
     ),
@@ -138,7 +141,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const rightProps = computed(() =>
     demoChartPropsFromControls(
       controls.value,
-      chartSeries.value,
+      series.value,
       selectedDate.value,
       controls.value.viewportRight,
     ),
@@ -149,7 +152,7 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const { agentMode, agentState, showPerfPanel } = useDemoAgentState({
     search,
     controls,
-    series: chartSeries,
+    series: series,
     selectedDate,
     playing,
     speed,
@@ -159,7 +162,6 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   return {
     controls,
     series,
-    chartSeries,
     visibleTickers,
     dates,
     selectedDate,

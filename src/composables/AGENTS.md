@@ -7,12 +7,14 @@ Reactive derivation between props and renderable chart state.
 ## Belongs here
 
 - `useRrgScales`, `useRrgViewport`, `useRrgTailSlices`
-- `useRrgLabelLayout` (Spatial Bin — PRE-C1-A)
+- `useSeriesIndex` — memoized date/point index per `series` reference
+- `useRrgChartDimensions` — resolved SVG/plot box from host measure or props
+- `useRrgLabelLayout` — spatial bin label placement
 - `useRrgHoverState`
-- `useRrgPlayback` / `useRrgPlaybackControls` (C12 timeline)
-- `useRrgChartSummary` (accessible SVG title/desc)
-- `useRrgChartChrome` (empty state + PNG export helpers for `RrgChart`)
-- `useRrgSeriesVisibility` helpers (C23 — apply/filter visible tickers)
+- `useRrgPlayback` / `useRrgPlaybackControls` — timeline playback
+- `useRrgChartSummary` — accessible SVG title/desc
+- `useRrgChartChrome` — empty state + PNG export helpers for `RrgChart`
+- `useRrgSeriesVisibility` — apply/filter visible tickers
 
 ## Does not belong here
 

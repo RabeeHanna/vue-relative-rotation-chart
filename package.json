@@ -1,6 +1,6 @@
 {
   "name": "vue-relative-rotation-chart",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "Vue 3 SVG renderer for RRG-style stock, ETF, sector, index, and portfolio rotation charts with animated tails, playback controls, and PNG export.",
   "license": "MIT",
   "homepage": "https://rabeehanna.github.io/vue-relative-rotation-chart/",
@@ -40,14 +40,14 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/vue-relative-rotation-chart.umd.cjs",
+  "main": "./dist/vue-relative-rotation-chart.cjs",
   "module": "./dist/vue-relative-rotation-chart.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/vue-relative-rotation-chart.js",
-      "require": "./dist/vue-relative-rotation-chart.umd.cjs"
+      "require": "./dist/vue-relative-rotation-chart.cjs"
     },
     "./style.css": "./dist/vue-relative-rotation-chart.css",
     "./scenarios": {
@@ -70,26 +70,21 @@
     "review:artifacts": "playwright test --config=playwright.review.config.ts",
     "review:screenshots": "npm run review:artifacts",
     "typecheck": "vue-tsc -p tsconfig.app.json --noEmit && vue-tsc -p tsconfig.build.json --noEmit",
-    "lint": "eslint .",
-    "spike:labels": "vitest run spikes/label-collision",
-    "prepack": "node ./scripts/prepack-check.mjs"
+    "lint": "eslint . --max-warnings=0",
+    "prepublishOnly": "node ./scripts/prepack-check.mjs"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
   },
   "dependencies": {
     "d3-array": "^3.2.4",
-    "d3-axis": "^3.0.0",
-    "d3-scale": "^4.0.2",
-    "d3-shape": "^3.2.0"
+    "d3-scale": "^4.0.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
     "@playwright/test": "^1.62.0",
     "@types/d3-array": "^3.2.1",
-    "@types/d3-axis": "^3.0.6",
     "@types/d3-scale": "^4.0.9",
-    "@types/d3-shape": "^3.1.7",
     "@types/node": "^22.15.32",
     "@typescript-eslint/eslint-plugin": "^8.35.1",
     "@typescript-eslint/parser": "^8.35.1",
@@ -99,7 +94,7 @@
     "eslint": "^9.30.1",
     "eslint-plugin-vue": "^10.2.0",
     "globals": "^16.3.0",
-    "happy-dom": "^18.0.1",
+    "happy-dom": "^20.11.1",
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
     "vite-plugin-dts": "^4.5.4",

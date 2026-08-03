@@ -9,9 +9,13 @@ import { useRrgLabelLayout } from '../composables/useRrgLabelLayout'
 import { useRrgHoverState } from '../composables/useRrgHoverState'
 import { useRrgChartSummary } from '../composables/useRrgChartSummary'
 import { useRrgChartPointer } from '../composables/useRrgChartPointer'
+import { useRrgChartDimensions } from '../composables/useRrgChartDimensions'
+import { useSeriesIndex } from '../composables/useSeriesIndex'
+import { applyVisibleTickers } from '../composables/useRrgSeriesVisibility'
 import { assignSeriesColors } from '../utils/colors'
-import { resolveChartDate } from '../utils/chartDate'
-import { RRG_DEFAULT_MARGIN } from '../utils/chartLayout'
+import { resolveChartFormatters } from '../utils/chartFormatters'
+import { mergeChartCopy } from '../types/copy'
+import { resolveChartDateFromIndex } from '../utils/chartDate'
 import RrgSvgRoot from './RrgSvgRoot.vue'
 import RrgAxes from './RrgAxes.vue'
 import RrgQuadrants from './RrgQuadrants.vue'
@@ -21,7 +25,7 @@ import RrgTails from './RrgTails.vue'
 import RrgTooltip from './RrgTooltip.vue'
 import './RrgChart.css'
 
-const props = withDefaults(defineProps<RrgChartProps>(), {
+const props = withDefaults(defineProps<Omit<RrgChartProps, 'visibleTickers'>>(), {
   tailLength: RRG_CHART_DEFAULTS.tailLength,
   viewportMode: RRG_CHART_DEFAULTS.viewportMode,
   labelMode: RRG_CHART_DEFAULTS.labelMode,
@@ -36,20 +40,35 @@ const props = withDefaults(defineProps<RrgChartProps>(), {
   selectedTicker: null,
 })
 
+const visibleTickers = defineModel<string[]>('visibleTickers')
+
 const emit = defineEmits<{
   pointHover: [point: RrgRenderPoint]
   pointLeave: []
   pointClick: [point: RrgRenderPoint]
 }>()
 
-const coloredSeries = computed(() => assignSeriesColors(props.series))
+const displaySeries = computed(() => {
+  if (visibleTickers.value === undefined) return props.series
+  return applyVisibleTickers(props.series, visibleTickers.value)
+})
+
+const coloredSeries = computed(() => assignSeriesColors(displaySeries.value))
+const seriesIndex = useSeriesIndex(coloredSeries)
 const dateResolution = computed(() =>
-  resolveChartDate(coloredSeries.value, props.selectedDate),
+  resolveChartDateFromIndex(seriesIndex.value, props.selectedDate),
 )
 const resolvedDate = computed(() => dateResolution.value.date)
 const dateStatus = computed(() => dateResolution.value.status)
 const chartRoot = ref<HTMLElement | null>(null)
-const { isEmpty, emptyReason, emptyMessage } = useRrgChartEmptyState(coloredSeries, dateStatus)
+const copyRef = toRef(props, 'copy')
+const resolvedCopy = computed(() => mergeChartCopy(copyRef.value))
+const resolvedFormatters = computed(() => resolveChartFormatters(props.formatters))
+const { isEmpty, emptyReason, emptyMessage } = useRrgChartEmptyState(
+  coloredSeries,
+  dateStatus,
+  resolvedCopy,
+)
 const { getSvgElement, exportPng } = useRrgChartExport(chartRoot)
 defineExpose({ getSvgElement, exportPng })
 
@@ -57,19 +76,15 @@ const resolvedDateRef = resolvedDate
 const tailLengthRef = toRef(props, 'tailLength')
 const viewportModeRef = toRef(props, 'viewportMode')
 const showTailFadeRef = toRef(props, 'showTailFade')
-const copyRef = toRef(props, 'copy')
-const domain = useRrgViewport(coloredSeries, resolvedDateRef, tailLengthRef, viewportModeRef)
-const plotWidth = computed(() => {
-  const w = props.width ?? 640
-  return Math.max(0, w - RRG_DEFAULT_MARGIN.left - RRG_DEFAULT_MARGIN.right)
-})
-const plotHeight = computed(() => {
-  const h = props.height ?? 480
-  return Math.max(0, h - RRG_DEFAULT_MARGIN.top - RRG_DEFAULT_MARGIN.bottom)
-})
+const domain = useRrgViewport(seriesIndex, resolvedDateRef, tailLengthRef, viewportModeRef)
+const { svgWidth, svgHeight, plotWidth, plotHeight } = useRrgChartDimensions(
+  chartRoot,
+  toRef(props, 'width'),
+  toRef(props, 'height'),
+)
 const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
 const { currentPoints, tailData } = useRrgTailSlices(
-  coloredSeries,
+  seriesIndex,
   resolvedDateRef,
   tailLengthRef,
   xScale,
@@ -81,7 +96,7 @@ const { hoveredTicker, hoveredPoint, onPointEnter, onPointLeave, onPointClick } 
 const effectiveHoveredTicker = computed(
   () => hoveredTicker.value ?? props.highlightedTicker ?? null,
 )
-const { title: a11yTitle, description: a11yDescription, resolvedCopy } = useRrgChartSummary(
+const { title: a11yTitle, description: a11yDescription } = useRrgChartSummary(
   resolvedDateRef,
   viewportModeRef,
   currentPoints,
@@ -139,8 +154,10 @@ const resolvedLabels = useRrgLabelLayout(
     </div>
     <RrgSvgRoot
       v-else
-      :width="width"
-      :height="height"
+      :width="svgWidth"
+      :height="svgHeight"
+      :plot-width="plotWidth"
+      :plot-height="plotHeight"
       :title="a11yTitle"
       :description="a11yDescription"
     >
@@ -149,6 +166,8 @@ const resolvedLabels = useRrgLabelLayout(
         :x-scale="xScale"
         :y-scale="yScale"
         :show-grid="showGrid"
+        :copy="resolvedCopy"
+        :formatters="resolvedFormatters"
       />
       <RrgQuadrants
         v-if="showQuadrantLabels"
@@ -156,26 +175,30 @@ const resolvedLabels = useRrgLabelLayout(
         :y-scale="yScale"
         :copy="resolvedCopy"
       />
-      <RrgTails
-        :tail-data="tailData"
-        :hovered-ticker="effectiveHoveredTicker"
-        @tail-enter="handleTailEnter"
-        @tail-leave="handleTailLeave"
-      />
-      <RrgPoints
-        :current-points="currentPoints"
-        :x-scale="xScale"
-        :y-scale="yScale"
-        :hovered-ticker="effectiveHoveredTicker"
-        :selected-ticker="selectedTicker"
-        :point-radius="pointRadius"
-        :hit-radius="hitRadius"
-        :copy="resolvedCopy"
-        @point-enter="handlePointEnter"
-        @point-leave="handlePointLeave"
-        @point-click="handlePointClick"
-      />
-      <RrgLabels :labels="resolvedLabels" :hovered-ticker="effectiveHoveredTicker" />
+      <template #series>
+        <RrgTails
+          :tail-data="tailData"
+          :hovered-ticker="effectiveHoveredTicker"
+          :show-tail-fade="showTailFade"
+          @tail-enter="handleTailEnter"
+          @tail-leave="handleTailLeave"
+        />
+        <RrgPoints
+          :current-points="currentPoints"
+          :x-scale="xScale"
+          :y-scale="yScale"
+          :hovered-ticker="effectiveHoveredTicker"
+          :selected-ticker="selectedTicker"
+          :point-radius="pointRadius"
+          :hit-radius="hitRadius"
+          :copy="resolvedCopy"
+          :formatters="resolvedFormatters"
+          @point-enter="handlePointEnter"
+          @point-leave="handlePointLeave"
+          @point-click="handlePointClick"
+        />
+        <RrgLabels :labels="resolvedLabels" :hovered-ticker="effectiveHoveredTicker" />
+      </template>
       <RrgTooltip
         :hovered-point="hoveredPoint"
         :x-scale="xScale"
@@ -183,6 +206,7 @@ const resolvedLabels = useRrgLabelLayout(
         :plot-width="plotWidth"
         :plot-height="plotHeight"
         :copy="resolvedCopy"
+        :formatters="resolvedFormatters"
       />
     </RrgSvgRoot>
   </div>

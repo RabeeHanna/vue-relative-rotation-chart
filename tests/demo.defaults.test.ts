@@ -8,7 +8,7 @@ import {
 } from '../demo/demoSession'
 import { datesForSeries, scenarioById } from '../demo/scenarios'
 
-describe('demo C18 defaults', () => {
+describe('demo defaults', () => {
   it('uses dark theme and loop-on factory defaults', () => {
     expect(DEMO_CONTROL_DEFAULTS.theme).toBe('dark')
     expect(DEMO_CONTROL_DEFAULTS.playbackLoop).toBe(true)

@@ -11,6 +11,8 @@ defineProps<{
   themeStyle?: Record<string, string>
 }>()
 
+const visibleTickers = defineModel<string[]>('visibleTickers')
+
 const emit = defineEmits<{
   pointHover: [point: RrgRenderPoint]
   pointLeave: []
@@ -21,9 +23,10 @@ const emit = defineEmits<{
   <div class="chart-host" :style="hostStyle" data-testid="demo-chart-host">
     <div v-if="!compare" class="rrg-chart-wrap" :class="{ dark }">
       <RrgChart
+        v-bind="singleProps"
+        v-model:visible-tickers="visibleTickers"
         :class="{ dark }"
         :style="themeStyle"
-        v-bind="singleProps"
         @point-hover="emit('pointHover', $event)"
         @point-leave="emit('pointLeave')"
       />
@@ -32,9 +35,10 @@ const emit = defineEmits<{
       <div class="rrg-chart-wrap" :class="{ dark }" data-testid="demo-compare-left">
         <p class="pane-label">{{ leftProps.viewportMode }}</p>
         <RrgChart
+          v-bind="leftProps"
+          v-model:visible-tickers="visibleTickers"
           :class="{ dark }"
           :style="themeStyle"
-          v-bind="leftProps"
           @point-hover="emit('pointHover', $event)"
           @point-leave="emit('pointLeave')"
         />
@@ -42,9 +46,10 @@ const emit = defineEmits<{
       <div class="rrg-chart-wrap" :class="{ dark }" data-testid="demo-compare-right">
         <p class="pane-label">{{ rightProps.viewportMode }}</p>
         <RrgChart
+          v-bind="rightProps"
+          v-model:visible-tickers="visibleTickers"
           :class="{ dark }"
           :style="themeStyle"
-          v-bind="rightProps"
           @point-hover="emit('pointHover', $event)"
           @point-leave="emit('pointLeave')"
         />

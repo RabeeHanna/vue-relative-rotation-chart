@@ -63,7 +63,7 @@ function resetCopy() {
           type="text"
           :placeholder="RRG_CHART_COPY_DEFAULTS[key]"
           :data-testid="`demo-copy-chart-${key}`"
-        />
+        >
       </label>
 
       <h3>Playback</h3>
@@ -74,7 +74,7 @@ function resetCopy() {
           type="text"
           :placeholder="RRG_PLAYBACK_COPY_DEFAULTS[key]"
           :data-testid="`demo-copy-playback-${key}`"
-        />
+        >
       </label>
     </div>
 

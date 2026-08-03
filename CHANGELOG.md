@@ -7,6 +7,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Replace UMD `require` bundle with a CommonJS build (`vue-relative-rotation-chart.cjs`) for Node `require()` consumers; ESM `import` path unchanged
+- Roll up published root TypeScript declarations to the public API surface only (`rollupTypes`); scenarios types remain at `vue-relative-rotation-chart/scenarios`
+- Qualify README performance language as an engineering baseline tied to `tests/perf/` fixtures (not a consumer FPS guarantee)
+
+## [0.1.7] - 2026-08-01
+
+### Changed
+
+- `RrgPlaybackControls` transport buttons use SVG icons (`currentColor`) instead of emoji glyphs for skip, play/pause, and loop
+
+## [0.1.6] - 2026-08-01
+
+### Added
+
+- `--rrg-font-family` CSS custom property on chart, controls surface, and playback (default: system sans stack)
+- `--rrg-ctl-radius` CSS custom property on controls surface (default: `8px`) for panel/button corner radius
+- Playback scrubber tokens `--rrg-ctl-thumb`, `--rrg-ctl-thumb-shadow` (hosts can set shadow to `none` and radius to `0` for hard-edge themes)
+
+### Changed
+
+- Playback controls theme via `--rrg-ctl-*` tokens (same names as chart controls) instead of hardcoded light/dark element colors
+- Playback scrubber/button radii honor `--rrg-ctl-radius` (fallback keeps prior pill scrubber / sharp buttons)
+- Axis and quadrant SVG labels consume `--rrg-font-family`
+
 ## [0.1.5] - 2026-07-31
 
 ### Changed
@@ -27,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - README documents Vue `^3.5.0` peer (3.3/3.4 untested) and ESM-only `scenarios` subpath
 - `CONTRIBUTING.md` documents `develop` / `master` / tag release workflow
-- Publish workflow runs pack-consumer tests before `npm publish` (local; see `docs/publish.md`)
+- Publish workflow runs pack-consumer tests before `npm publish` (local; see `CONTRIBUTING.md`)
 
 ## [0.1.3] - 2026-07-30
 

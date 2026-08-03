@@ -18,7 +18,7 @@ export function seriesColorAt(series: RrgRenderSeries, index: number): string {
   return series.color ?? DEFAULT_PALETTE[index % DEFAULT_PALETTE.length]
 }
 
-export function assignSeriesColors(series: RrgRenderSeries[]): RrgRenderSeries[] {
+export function assignSeriesColors(series: readonly RrgRenderSeries[]): RrgRenderSeries[] {
   return series.map((s, i) => ({
     ...s,
     color: seriesColorAt(s, i),

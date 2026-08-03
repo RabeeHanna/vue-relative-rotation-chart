@@ -89,7 +89,7 @@ describe('adversarial mocks', () => {
       },
     })
     expect(outlier.get('[data-testid="rrg-point-OUT"]').exists()).toBe(true)
-    expect(outlier.get('[data-testid="rrg-tail-OUT"]').findAll('line').length).toBeGreaterThan(0)
+    expect(outlier.get('[data-testid="rrg-tail-OUT"]').findAll('.rrg-tail-segment').length).toBeGreaterThan(0)
 
     const noisyDate = datesForSeries(noisyTailMock).at(-1)!
     const noisy = mount(RrgChart, {
@@ -100,6 +100,7 @@ describe('adversarial mocks', () => {
         height: 480,
       },
     })
-    expect(noisy.get('[data-testid="rrg-tail-ZZY"]').findAll('line').length).toBeGreaterThan(2)
+    const noisyPolyline = noisy.get('[data-testid="rrg-tail-ZZY"] .rrg-tail-segment')
+    expect(noisyPolyline.attributes('points')!.split(' ').length).toBeGreaterThan(2)
   })
 })

@@ -14,9 +14,16 @@ Autonomous loop for the **VRRC Vite demo** only. No human input mid-cycle.
 
 - URL: `http://localhost:5173/?agent=1` (or `PLAYWRIGHT_BASE_URL`)
 - Dev server: `npm run dev` in repo root
-- Rubric: `docs/agent-visual-qa-rubric.md`
-- Selectors: `docs/agent-visual-qa.md`
 - Missions: `demo/agentScenarios.ts` (headless: `npm run test:agent-guide`)
+- Key `data-testid` hooks: `rrg-chart`, `rrg-playback-scrubber`, viewport/display/visibility controls in demo
+
+## Rubric (judge from full-page screenshots)
+
+1. Hero chart + controls fill the first viewport without a large empty band.
+2. Default load shows scenario, axes, and an obvious interaction (scrub or viewport).
+3. No overlapping controls, clipped labels, or dead zones in default + stress scenarios.
+4. Stress scenario (`/?scenario=stress&agent=1`) remains readable.
+5. A non-developer can tell what to change without reading source.
 
 ## Constraints
 

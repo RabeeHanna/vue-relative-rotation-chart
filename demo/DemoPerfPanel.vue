@@ -24,8 +24,8 @@ async function run(interaction: 'scrub' | 'play') {
   <details class="demo-perf" data-testid="demo-perf">
     <summary>Perf sample (local convenience — Playwright is source of truth)</summary>
     <p class="demo-perf__hint">
-      Soft local rAF sample for DevTools pairing. Official C17 numbers come from
-      <code>npm run test:perf</code>.
+      Soft local rAF sample for DevTools pairing. Reproducible baselines live in
+      <code>npm run test:perf</code> (engineering harness — not a consumer SLA).
     </p>
     <div class="demo-perf__actions">
       <button

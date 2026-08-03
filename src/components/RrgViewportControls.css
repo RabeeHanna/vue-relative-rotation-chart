@@ -10,7 +10,7 @@
   gap: 0.35rem;
   padding: 0.35rem 0.55rem;
   border: 1px solid var(--rrg-ctl-surface-border);
-  border-radius: 8px;
+  border-radius: var(--rrg-ctl-radius, 8px);
   background: var(--rrg-ctl-surface);
   color: var(--rrg-ctl-text);
   font-size: inherit;

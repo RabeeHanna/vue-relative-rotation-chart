@@ -5,6 +5,8 @@ import type { RrgScale } from '../composables/useRrgScales'
 import { computeTooltipPosition } from '../utils/tooltipPosition'
 import type { ResolvedRrgChartCopy } from '../types/copy'
 import { RRG_CHART_COPY_DEFAULTS } from '../types/copy'
+import type { ResolvedRrgChartFormatters } from '../utils/chartFormatters'
+import { RRG_CHART_FORMATTER_DEFAULTS } from '../utils/chartFormatters'
 
 const TOOLTIP_WIDTH = 168
 const TOOLTIP_HEIGHT = 78
@@ -21,6 +23,10 @@ const props = defineProps({
   copy: {
     type: Object as PropType<ResolvedRrgChartCopy>,
     default: () => RRG_CHART_COPY_DEFAULTS,
+  },
+  formatters: {
+    type: Object as PropType<ResolvedRrgChartFormatters>,
+    default: () => RRG_CHART_FORMATTER_DEFAULTS,
   },
 })
 
@@ -88,10 +94,10 @@ const position = computed(() => {
       {{ hoveredPoint.date }}
     </text>
     <text dy="41" dx="8" font-size="10" fill="var(--rrg-axis-label)">
-      {{ copy.rsRatio }}: {{ hoveredPoint.x.toFixed(2) }}
+      {{ copy.rsRatio }}: {{ formatters.formatNumber(hoveredPoint.x) }}
     </text>
     <text dy="54" dx="8" font-size="10" fill="var(--rrg-axis-label)">
-      {{ copy.rsMomentum }}: {{ hoveredPoint.y.toFixed(2) }}
+      {{ copy.rsMomentum }}: {{ formatters.formatNumber(hoveredPoint.y) }}
     </text>
     <text
       dy="67"

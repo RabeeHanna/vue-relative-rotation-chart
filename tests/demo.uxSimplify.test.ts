@@ -17,7 +17,7 @@ function mountControls(overrides: Partial<typeof DEMO_CONTROL_DEFAULTS> = {}) {
   })
 }
 
-describe('demo C19.5 UX simplify', () => {
+describe('demo UX simplify', () => {
   it('defaults Customize and snippet closed; Simple shows scenario + theme', () => {
     expect(DEMO_CONTROL_DEFAULTS.customizeOpen).toBe(false)
     expect(DEMO_CONTROL_DEFAULTS.snippetOpen).toBe(false)

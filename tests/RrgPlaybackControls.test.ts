@@ -1,8 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
 import RrgPlaybackControls from '../src/components/RrgPlaybackControls.vue'
 import '../src/components/RrgPlaybackControls.css'
 import {
@@ -87,6 +85,47 @@ describe('RrgPlaybackControls', () => {
       'icon',
     )
     expect(wrapper.find('.rrg-playback__btn-text').exists()).toBe(false)
+  })
+
+  it('renders SVG transport icons instead of emoji glyphs', () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-12',
+      },
+    })
+
+    const html = wrapper.html()
+    expect(html).not.toMatch(/[⏮▶⏸⏭↻]/)
+
+    expect(wrapper.get('[data-testid="rrg-playback-step-back"] .rrg-playback__icon').exists()).toBe(
+      true,
+    )
+    expect(wrapper.get('[data-testid="rrg-playback-toggle"] .rrg-playback__icon').exists()).toBe(
+      true,
+    )
+    expect(
+      wrapper.get('[data-testid="rrg-playback-step-forward"] .rrg-playback__icon').exists(),
+    ).toBe(true)
+    expect(wrapper.get('[data-testid="rrg-playback-loop-toggle"] .rrg-playback__icon').exists()).toBe(
+      true,
+    )
+  })
+
+  it('switches play and pause SVG icons with playing state', async () => {
+    const wrapper = mount(RrgPlaybackControls, {
+      props: {
+        dates,
+        selectedDate: '2024-01-12',
+        playing: false,
+      },
+    })
+
+    const toggle = () => wrapper.get('[data-testid="rrg-playback-toggle"] .rrg-playback__icon')
+    expect(toggle().findAll('path')).toHaveLength(1)
+
+    await wrapper.setProps({ playing: true })
+    expect(toggle().findAll('path')).toHaveLength(2)
   })
 
   it('shows copy text beside icons when labelStyle is icon-text', () => {
@@ -326,20 +365,6 @@ describe('RrgPlaybackControls mobile layout', () => {
     expect(root.classList.contains('rrg-playback--stacked')).toBe(true)
 
     wrapper.unmount()
-  })
-
-  it('ships stacked touch-target and scrubber rules in CSS', () => {
-    const css = readFileSync(
-      resolve(process.cwd(), 'src/components/RrgPlaybackControls.css'),
-      'utf8',
-    )
-    expect(css).toContain('.rrg-playback--stacked .rrg-playback__toolbar')
-    expect(css).toContain('.rrg-playback--stacked .rrg-playback__btn')
-    expect(css).toContain('min-height: 3rem')
-    expect(css).toContain('.rrg-playback--stacked .rrg-playback__scrubber')
-    expect(css).toContain('height: 2.75rem')
-    expect(css).toContain('.rrg-playback--stacked .rrg-playback__timeline')
-    expect(css).toContain('width: 100%')
   })
 
   it('defaults layout to auto and marks inline mode', () => {

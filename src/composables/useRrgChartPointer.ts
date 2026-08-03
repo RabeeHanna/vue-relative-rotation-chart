@@ -7,7 +7,7 @@ type HoverApi = {
   onPointClick: (point: RrgRenderPoint) => void
 }
 
-/** Point/tail pointer handoff with relatedTarget guards (C15). */
+/** Point/tail pointer handoff with relatedTarget guards. */
 export function useRrgChartPointer(
   currentPoints: Ref<RrgRenderPoint[]>,
   hover: HoverApi,

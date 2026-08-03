@@ -3,12 +3,30 @@
  *
  * This package is a renderer only — it does not fetch data or compute
  * RS-Ratio / RS-Momentum. Callers must pass precomputed series.
+ *
+ * ## Input invariants (caller responsibility)
+ *
+ * | Invariant | Requirement |
+ * |-----------|-------------|
+ * | Coordinates | Finite `x` and `y` on every point |
+ * | Dates | ISO `YYYY-MM-DD` strings, ascending per series (lexical sort = chronological) |
+ * | Uniqueness | No duplicate dates within a series; unique `ticker` per series entry |
+ * | Quadrant | Must match `x`/`y` relative to center `100`/`100` (derived internally in a future major) |
+ * | `selectedDate` | Should match a date in the union of visible series dates; otherwise snaps to nearest |
+ * | Dimensions | Positive `width` / `height` when explicitly provided |
+ *
+ * ## Sparse dates
+ *
+ * Each ticker trail may omit dates other series contain. At a given `selectedDate`,
+ * tickers **without** a point on that date are omitted from the current frame (no
+ * carry-forward / last-known-value interpolation). Supply explicit points if you need
+ * a ticker visible on every global date.
  */
 
 import type { RrgChartCopy, RrgPlaybackCopy } from './copy'
 
 export type { RrgChartCopy, RrgPlaybackCopy } from './copy'
-export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS } from './defaults'
+export { RRG_CHART_DEFAULTS, RRG_PLAYBACK_DEFAULTS, RRG_TAIL_LENGTH_PRESETS } from './defaults'
 
 /** Quadrant relative to the RRG center (x=100, y=100). */
 export type RrgQuadrant = 'leading' | 'weakening' | 'lagging' | 'improving'
@@ -46,9 +64,11 @@ export type RrgRenderPoint = {
  * `date` must be an ISO 8601 date string (e.g. "2024-03-15").
  */
 export type RrgSeriesPoint = {
+  /** ISO `YYYY-MM-DD` date; must be unique and ascending within the parent series. */
   date: string
   x: number
   y: number
+  /** Caller-supplied; must agree with x/y vs center 100 (see module invariants). */
   quadrant: RrgQuadrant
 }
 
@@ -60,7 +80,7 @@ export type RrgRenderSeries = {
   label: string
   name?: string
   /** Full history, sorted oldest → newest by date */
-  points: RrgSeriesPoint[]
+  points: readonly RrgSeriesPoint[]
   /** Assigned by the component if omitted */
   color?: string
   /** Default true; false hides from all rendering */
@@ -69,7 +89,23 @@ export type RrgRenderSeries = {
 
 export type RrgViewportMode = 'fit' | 'max' | 'center'
 
+/**
+ * Viewport domain policy (Policy A): `fit` and `max` modes always expand the
+ * computed data extent to include the RRG center (`100` on both axes) so
+ * quadrant labels and center lines match the visible region. `center` mode uses
+ * a symmetric window around `100`. Hidden series (`visible: false`) are
+ * excluded from `fit` and `max` domain calculation.
+ */
+
 export type RrgLabelMode = 'auto' | 'always' | 'hover'
+
+/** Optional number formatting hooks for chart rendering. */
+export type RrgChartFormatters = {
+  /** Format numeric values in tooltips and point aria labels. */
+  formatNumber?: (value: number) => string
+  /** Format axis tick labels; defaults to `formatNumber` when omitted. */
+  formatAxisTick?: (value: number, axis: 'x' | 'y') => string
+}
 
 /**
  * Convenience input shape matching chart props for adapters.
@@ -80,7 +116,7 @@ export type RrgLabelMode = 'auto' | 'always' | 'hover'
  */
 export type RrgChartInput = {
   selectedDate: string
-  series: RrgRenderSeries[]
+  series: readonly RrgRenderSeries[]
   tailLength: number
   viewportMode: RrgViewportMode
 }
@@ -88,20 +124,36 @@ export type RrgChartInput = {
 /**
  * Public props for `<RrgChart />`.
  *
- * Accessibility: prefer `tickerLabelAlwaysVisible` / labels + tooltip (PRE-C1-C).
+ * Accessibility: prefer `tickerLabelAlwaysVisible` with labels and tooltip for colorblind / monochrome identity.
  */
 export type RrgChartProps = {
-  series: RrgRenderSeries[]
+  /**
+   * Precomputed trails per ticker. Replace the `series` array reference (or pass a
+   * new array instance) when underlying point data changes so the chart rebuilds
+   * its internal date/point index. Mutating points in place without replacing
+   * `series` is not supported.
+   */
+  series: readonly RrgRenderSeries[]
   /**
    * ISO date selecting the current frame. Exact matches render as-is; mismatches
    * snap to the nearest series date (`data-date-status="snapped"`). Empty series
    * or no dates → empty-state (`data-date-status="empty"`).
+   *
+   * Sparse trails: tickers without a point on the resolved date are hidden for
+   * that frame (no interpolation).
    */
   selectedDate: string
 
+  /**
+   * When bound, only tickers in this list render. Share with
+   * `RrgChartControlsPanel` / `RrgSeriesVisibilityControls` via
+   * `v-model:visible-tickers`. When omitted, each series entry's `visible` flag applies.
+   */
+  visibleTickers?: string[]
+
   /** How many historical points to show as tail (default: 10) */
   tailLength?: number
-  /** Default: 'fit' (Fit-All — data extent + padding; see PRE-C1-B) */
+  /** Default: 'fit' (Fit-All — data extent + padding) */
   viewportMode?: RrgViewportMode
   /** Default: 'auto' */
   labelMode?: RrgLabelMode
@@ -122,7 +174,7 @@ export type RrgChartProps = {
 
   /**
    * When true, override labelMode / collision hide and always show all labels.
-   * Primary colorblind / monochrome identity strategy (see PRE-C1-C).
+   * Primary colorblind / monochrome identity strategy when labels would otherwise hide.
    * Default false.
    */
   tickerLabelAlwaysVisible?: boolean
@@ -134,6 +186,8 @@ export type RrgChartProps = {
 
   /** Optional UI copy overrides (quadrants, tooltip, a11y title/desc). */
   copy?: RrgChartCopy
+  /** Optional number formatting overrides for ticks and tooltips. */
+  formatters?: RrgChartFormatters
 }
 
 export type RrgChartEmits = {
@@ -194,6 +248,9 @@ export type RrgPlaybackControlsEmits = {
 
 /**
  * Computed viewport domain in data space (internal; not part of the caller input contract).
+ *
+ * Auto-derived domains (`fit`, `max`) always include the RRG center (`100`)
+ * on both axes; see viewport policy on {@link RrgViewportMode}.
  */
 export type RrgDomain = {
   xMin: number

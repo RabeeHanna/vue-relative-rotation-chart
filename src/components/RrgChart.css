@@ -9,9 +9,10 @@
   --rrg-muted-label: #888;
   --rrg-point-stroke: #fff;
   --rrg-tooltip-bg: rgba(255, 255, 255, 0.95);
+  --rrg-font-family: ui-sans-serif, system-ui, sans-serif;
   width: 100%;
   color: var(--rrg-label);
-  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--rrg-font-family);
 }
 
 .rrg-chart__empty {

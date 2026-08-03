@@ -15,7 +15,6 @@ C17 performance harness + C20 bundle-size checks: deterministic Vitest invariant
 
 - Production chart code (`src/`)
 - Interactive demo UI (`demo/DemoPerfPanel.vue` — convenience only)
-- Contributor playbook prose (`docs/perf.md`)
 - Shipping in the npm package (`files: ["dist"]` only)
 
 ## Depends on
@@ -23,7 +22,6 @@ C17 performance harness + C20 bundle-size checks: deterministic Vitest invariant
 - Long-playback fixtures / scenarios
 - Demo app for Playwright (`npm run test:perf`)
 - Built `dist/` for `npm run check:bundle-size` (CI runs this after `npm run build`)
-- Locked decisions in `plans/C17-research.md`; C20 in `plans/C20-bundle-size-perf-playbook.md`
 
 ## Used by
 
@@ -31,4 +29,3 @@ C17 performance harness + C20 bundle-size checks: deterministic Vitest invariant
 - `npm run check:bundle-size` (requires `dist/`)
 - `npm run test:perf` + `.github/workflows/perf-nightly.yml` (Layer B)
 - Optional: `PERF_STRESS=1 npm run test:perf` for generator ceiling (long play/scrub; document-only)
-- Playbook: [`docs/perf.md`](../../docs/perf.md)

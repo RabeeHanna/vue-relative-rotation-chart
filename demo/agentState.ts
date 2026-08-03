@@ -1,6 +1,6 @@
 /**
  * Demo-only agent QA snapshot (`?agent=1`). Not built into `dist/` or published on npm.
- * @see plans/C24-agent-visual-qa.md — Publish boundary
+ * Demo-only agent QA state — not published on npm.
  */
 import type { RrgLabelMode, RrgRenderPoint, RrgRenderSeries, RrgViewportMode } from '../src/types/rrg'
 import { effectiveDemoTailLength } from './demoChartProps'

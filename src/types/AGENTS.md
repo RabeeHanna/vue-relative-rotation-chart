@@ -8,6 +8,8 @@ Public TypeScript contract for the package.
 
 - `rrg.ts` — `RrgRenderSeries`, chart/playback props, emits, viewport/label modes
 - `copy.ts` — `RrgChartCopy` / `RrgPlaybackCopy`, merge helpers, English defaults
+- `controlsCopy.ts` — `RrgControlsCopy` for control panel strings
+- `copyUtils.ts` — shared merge helper
 - `defaults.ts` — `RRG_CHART_DEFAULTS` / `RRG_PLAYBACK_DEFAULTS`
 - JSDoc documenting caller assumptions (sorted dates, no validation)
 

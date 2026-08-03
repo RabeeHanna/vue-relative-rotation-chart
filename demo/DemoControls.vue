@@ -4,6 +4,7 @@ import type { ChartSizePreset } from './demoUrl'
 import type { DemoControlsState } from './demoControlsState'
 import DemoAdvanced from './DemoAdvanced.vue'
 import DemoCopyOverrides from './DemoCopyOverrides.vue'
+import { isDevHarness } from './devHarness'
 import './DemoControls.css'
 
 const state = defineModel<DemoControlsState>({ required: true })
@@ -84,7 +85,7 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
               v-model="state.fullHistoryTail"
               type="checkbox"
               data-testid="demo-full-history-tail"
-            />
+            >
             Full history
           </label>
           <span
@@ -113,7 +114,7 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
             v-model="state.tickerLabelAlwaysVisible"
             type="checkbox"
             data-testid="demo-labels-always"
-          />
+          >
           Always labels
         </label>
       </div>
@@ -144,6 +145,7 @@ const sizes: ChartSizePreset[] = ['compact', 'default', 'wide']
       <DemoCopyOverrides v-model="state" />
 
       <DemoAdvanced
+        v-if="isDevHarness"
         v-model="state"
         @apply-json="emit('applyJson')"
         @generate="emit('generate')"

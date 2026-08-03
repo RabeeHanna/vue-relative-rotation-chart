@@ -6,7 +6,7 @@
 
 .rrg-chart-controls__section {
   border: 1px solid var(--rrg-ctl-border);
-  border-radius: 8px;
+  border-radius: var(--rrg-ctl-radius, 8px);
   background: var(--rrg-ctl-panel-bg);
   padding: 0.45rem 0.55rem 0.55rem;
 }

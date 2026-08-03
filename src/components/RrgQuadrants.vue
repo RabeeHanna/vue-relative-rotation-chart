@@ -66,20 +66,14 @@ const labels = computed(() => {
       :y="label.y"
       :text-anchor="label.anchor"
       dominant-baseline="middle"
+      fill="var(--rrg-quadrant-label, rgba(0, 0, 0, 0.15))"
+      font-size="12"
+      font-family="var(--rrg-font-family, ui-sans-serif, system-ui, sans-serif)"
+      font-weight="500"
+      letter-spacing="0.02em"
+      pointer-events="none"
     >
       {{ label.text }}
     </text>
   </g>
 </template>
-
-<style scoped>
-.rrg-quadrant-label {
-  fill: var(--rrg-quadrant-label, rgba(0, 0, 0, 0.15));
-  font-size: 12px;
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  pointer-events: none;
-  user-select: none;
-}
-</style>

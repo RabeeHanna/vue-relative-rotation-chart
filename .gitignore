@@ -1,9 +1,11 @@
 node_modules/
 
-# Local secrets (npm publish token, etc.)
+# Local secrets
 .env
 .env.*
-!.env.example
+
+# Adversarial review copies (local / agent only)
+*adversarial-review*.md
 
 dist/
 demo-dist/
@@ -16,7 +18,6 @@ Thumbs.db
 .turbo/
 *.tsbuildinfo
 spikes/output/
-spikes/label-collision/artifacts/*.png
 test-results/
 playwright-report/
 blob-report/
@@ -27,8 +28,6 @@ tests/pack/consumer-fixture/node_modules/
 tests/pack/consumer-fixture/dist-consumer/
 tests/pack/consumer-fixture/package.tgz
 tests/pack/consumer-fixture/package-lock.json
-docs/discoverability-metrics/
-docs/public-positioning.txt
 
 # Unit-of-work specs (local / agent only — not published)
 plans/

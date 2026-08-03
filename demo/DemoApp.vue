@@ -41,8 +41,8 @@ const {
 <template>
   <div class="demo" data-testid="demo-app">
     <DemoControls
-      section="simple"
       v-model="controls"
+      section="simple"
       :snippet="snippet"
       :summary-title="summaryTitle"
       :summary-desc="summaryDesc"
@@ -67,6 +67,7 @@ const {
     />
 
     <DemoChartHost
+      v-model:visible-tickers="visibleTickers"
       :compare="controls.compare"
       :dark="dark"
       :host-style="hostStyle"
@@ -79,12 +80,12 @@ const {
     />
 
     <RrgPlaybackControls
-      :class="{ dark }"
-      :dates="dates"
       v-model:selected-date="selectedDate"
       v-model:playing="playing"
       v-model:speed="speed"
       v-model:loop="controls.playbackLoop"
+      :class="{ dark }"
+      :dates="dates"
       :min-speed="controls.minSpeed"
       :max-speed="controls.maxSpeed"
       :speed-mode="controls.speedMode"
@@ -92,8 +93,8 @@ const {
     />
 
     <DemoControls
-      section="customize"
       v-model="controls"
+      section="customize"
       :snippet="snippet"
       :summary-title="summaryTitle"
       :summary-desc="summaryDesc"

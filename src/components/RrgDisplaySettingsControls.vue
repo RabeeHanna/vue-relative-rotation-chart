@@ -1,32 +1,52 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { RrgLabelMode } from '../types/rrg'
-import {
-  RRG_LABEL_MODES,
-  rrgLabelModeDescription,
-  rrgLabelModeLabel,
-} from '../utils/labelModeLabels'
+import { RRG_TAIL_LENGTH_PRESETS } from '../types/defaults'
+import type { ResolvedRrgControlsCopy } from '../types/controlsCopy'
+import { RRG_CONTROLS_COPY_DEFAULTS } from '../types/controlsCopy'
+import { resolveTailLengthPresets } from '../utils/tailLengthPresets'
+import { RRG_LABEL_MODES } from '../utils/labelModeLabels'
 import './rrgControlsShared.css'
 import './RrgDisplaySettingsControls.css'
 
-withDefaults(
+const props = withDefaults(
   defineProps<{
     disabled?: boolean
     dark?: boolean
     inset?: boolean
-    /** Tail-length select options (numeric presets). */
-    tailLengthPresets?: number[]
+    tailLengthPresets?: readonly number[]
+    controlsCopy?: ResolvedRrgControlsCopy
   }>(),
   {
     disabled: false,
     dark: false,
     inset: false,
-    tailLengthPresets: () => [4, 8, 12, 16, 24],
+    tailLengthPresets: () => RRG_TAIL_LENGTH_PRESETS,
+    controlsCopy: () => RRG_CONTROLS_COPY_DEFAULTS,
   },
 )
 
 const tailLength = defineModel<number>('tailLength', { required: true })
 const labelMode = defineModel<RrgLabelMode>('labelMode', { required: true })
 const showTailFade = defineModel<boolean>('showTailFade', { required: true })
+
+const resolvedTailLengthPresets = computed(() =>
+  resolveTailLengthPresets(tailLength.value, props.tailLengthPresets),
+)
+
+function labelModeLabel(mode: RrgLabelMode): string {
+  const c = props.controlsCopy
+  if (mode === 'always') return c.labelAlways
+  if (mode === 'hover') return c.labelHover
+  return c.labelAuto
+}
+
+function labelModeDescription(mode: RrgLabelMode): string {
+  const c = props.controlsCopy
+  if (mode === 'always') return c.labelAlwaysDescription
+  if (mode === 'hover') return c.labelHoverDescription
+  return c.labelAutoDescription
+}
 </script>
 
 <template>
@@ -38,23 +58,23 @@ const showTailFade = defineModel<boolean>('showTailFade', { required: true })
     ]"
     data-testid="rrg-display-settings"
     role="group"
-    aria-label="Chart display settings"
+    :aria-label="controlsCopy.displayGroup"
   >
     <label class="rrg-display-settings__field">
-      Tail
+      {{ controlsCopy.tail }}
       <select
         v-model.number="tailLength"
         data-testid="rrg-display-tail-length"
         :disabled="disabled"
       >
-        <option v-for="preset in tailLengthPresets" :key="preset" :value="preset">
+        <option v-for="preset in resolvedTailLengthPresets" :key="preset" :value="preset">
           {{ preset }}
         </option>
       </select>
     </label>
 
     <label class="rrg-display-settings__field">
-      Labels
+      {{ controlsCopy.labels }}
       <select
         v-model="labelMode"
         data-testid="rrg-display-label-mode"
@@ -64,9 +84,9 @@ const showTailFade = defineModel<boolean>('showTailFade', { required: true })
           v-for="mode in RRG_LABEL_MODES"
           :key="mode"
           :value="mode"
-          :title="rrgLabelModeDescription(mode)"
+          :title="labelModeDescription(mode)"
         >
-          {{ rrgLabelModeLabel(mode) }}
+          {{ labelModeLabel(mode) }}
         </option>
       </select>
     </label>
@@ -77,8 +97,8 @@ const showTailFade = defineModel<boolean>('showTailFade', { required: true })
         type="checkbox"
         data-testid="rrg-display-tail-fade"
         :disabled="disabled"
-      />
-      Tail fade
+      >
+      {{ controlsCopy.tailFade }}
     </label>
   </div>
 </template>

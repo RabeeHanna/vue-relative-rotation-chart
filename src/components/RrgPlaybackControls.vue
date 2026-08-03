@@ -5,6 +5,7 @@ import {
   type RrgPlaybackControlsProps,
 } from '../types/rrg'
 import { useRrgPlaybackControls } from '../composables/useRrgPlaybackControls'
+import RrgPlaybackTransportIcon from './RrgPlaybackTransportIcon.vue'
 import './RrgPlaybackControls.css'
 
 const props = withDefaults(
@@ -124,7 +125,7 @@ function onKeydown(event: KeyboardEvent) {
         @input="onScrubInput"
         @change="onScrubCommit"
         @pointerup="onScrubCommit"
-      />
+      >
       <div class="rrg-playback__meta">
         <span data-testid="rrg-playback-date">{{ displayDate }}</span>
         <span data-testid="rrg-playback-frame">{{ frameLabel }}</span>
@@ -145,7 +146,7 @@ function onKeydown(event: KeyboardEvent) {
           :title="resolvedCopy.stepBackward"
           @click="stepBy(-1)"
         >
-          <span aria-hidden="true">⏮</span>
+          <RrgPlaybackTransportIcon name="skip-back" />
           <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.stepBackward }}</span>
         </button>
         <button
@@ -157,7 +158,7 @@ function onKeydown(event: KeyboardEvent) {
           :title="playing ? resolvedCopy.pause : resolvedCopy.play"
           @click="togglePlaying"
         >
-          <span aria-hidden="true">{{ playing ? '⏸' : '▶' }}</span>
+          <RrgPlaybackTransportIcon :name="playing ? 'pause' : 'play'" />
           <span v-if="showTextLabels" class="rrg-playback__btn-text">
             {{ playing ? resolvedCopy.pause : resolvedCopy.play }}
           </span>
@@ -171,7 +172,7 @@ function onKeydown(event: KeyboardEvent) {
           :title="resolvedCopy.stepForward"
           @click="stepBy(1)"
         >
-          <span aria-hidden="true">⏭</span>
+          <RrgPlaybackTransportIcon name="skip-forward" />
           <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.stepForward }}</span>
         </button>
       </div>
@@ -188,7 +189,7 @@ function onKeydown(event: KeyboardEvent) {
           :title="resolvedCopy.loop"
           @click="toggleLoop"
         >
-          <span aria-hidden="true">↻</span>
+          <RrgPlaybackTransportIcon name="loop" />
           <span v-if="showTextLabels" class="rrg-playback__btn-text">{{ resolvedCopy.loop }}</span>
         </button>
         <button
