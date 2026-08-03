@@ -71,7 +71,6 @@ function ariaLabel(point: RrgRenderPoint): string {
         tabindex="0"
         role="button"
         :aria-label="ariaLabel(point)"
-        :aria-pressed="selectedTicker === point.ticker ? 'true' : 'false'"
         style="cursor: pointer"
         @pointerenter="$emit('pointEnter', point)"
         @pointerleave="$emit('pointLeave', $event)"
@@ -79,7 +78,6 @@ function ariaLabel(point: RrgRenderPoint): string {
         @blur="$emit('pointLeave')"
         @click="$emit('pointClick', point)"
         @keydown.enter.prevent="$emit('pointClick', point)"
-        @keydown.space.prevent="$emit('pointClick', point)"
       />
       <circle
         v-if="selectedTicker === point.ticker"

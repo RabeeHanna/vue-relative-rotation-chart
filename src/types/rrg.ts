@@ -188,11 +188,6 @@ export type RrgChartProps = {
   copy?: RrgChartCopy
   /** Optional number formatting overrides for ticks and tooltips. */
   formatters?: RrgChartFormatters
-  /**
-   * DOM `id` on the chart root for linking playback (`chartRegionId` on
-   * `RrgPlaybackControls`). Auto-generated when omitted.
-   */
-  regionId?: string
 }
 
 export type RrgChartEmits = {
@@ -242,8 +237,6 @@ export type RrgPlaybackControlsProps = {
   layout?: RrgPlaybackLayout
   /** Optional UI copy overrides (buttons, frame label, aria). */
   copy?: RrgPlaybackCopy
-  /** `id` of the linked `RrgChart` root (`aria-controls` on the timeline scrubber). */
-  chartRegionId?: string
 }
 
 export type RrgPlaybackControlsEmits = {

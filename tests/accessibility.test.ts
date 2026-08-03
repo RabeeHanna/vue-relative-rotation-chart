@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { mount } from '@vue/test-utils'
 import RrgChart from '../src/components/RrgChart.vue'
-import RrgPlaybackControls from '../src/components/RrgPlaybackControls.vue'
 
 const series = [
   {
@@ -105,84 +104,5 @@ describe('accessibility and test hooks', () => {
     const tooltip = wrapper.get('[data-testid="rrg-tooltip"]')
     expect(tooltip.attributes('data-ticker')).toBe('XLK')
     expect(tooltip.text()).toContain('XLK')
-  })
-
-  it('activates points with Enter and Space when focused', async () => {
-    const wrapper = mount(RrgChart, {
-      props: {
-        series,
-        selectedDate: '2024-03-01',
-        width: 640,
-        height: 480,
-      },
-    })
-
-    const hit = wrapper.get('[data-testid="rrg-point-XLF"] .rrg-point-hit')
-
-    await hit.trigger('keydown', { key: 'Enter' })
-    expect(wrapper.emitted('pointClick')?.[0]?.[0]).toMatchObject({ ticker: 'XLF' })
-
-    await hit.trigger('keydown', { key: ' ' })
-    expect(wrapper.emitted('pointClick')?.[1]?.[0]).toMatchObject({ ticker: 'XLF' })
-  })
-
-  it('exposes aria-pressed on the selected ticker point', () => {
-    const wrapper = mount(RrgChart, {
-      props: {
-        series,
-        selectedDate: '2024-03-01',
-        selectedTicker: 'XLK',
-        width: 640,
-        height: 480,
-      },
-    })
-
-    const selected = wrapper.get('[data-testid="rrg-point-XLK"] .rrg-point-hit')
-    const other = wrapper.get('[data-testid="rrg-point-XLF"] .rrg-point-hit')
-    expect(selected.attributes('aria-pressed')).toBe('true')
-    expect(other.attributes('aria-pressed')).toBe('false')
-  })
-
-  it('assigns a chart region id for playback aria-controls', () => {
-    const wrapper = mount(RrgChart, {
-      props: {
-        series,
-        selectedDate: '2024-03-01',
-        width: 640,
-        height: 480,
-        regionId: 'linked-chart',
-      },
-    })
-
-    expect(wrapper.get('[data-testid="rrg-chart"]').attributes('id')).toBe('linked-chart')
-  })
-
-  it('links playback scrubber to chart via aria-controls and valuetext', () => {
-    const chart = mount(RrgChart, {
-      props: {
-        series,
-        selectedDate: '2024-03-01',
-        width: 640,
-        height: 480,
-        regionId: 'chart-a11y',
-      },
-    })
-
-    const playback = mount(RrgPlaybackControls, {
-      props: {
-        dates: ['2024-01-01', '2024-03-01'],
-        selectedDate: '2024-03-01',
-        chartRegionId: 'chart-a11y',
-      },
-    })
-
-    const scrubber = playback.get('[data-testid="rrg-playback-scrubber"]')
-    expect(scrubber.attributes('aria-controls')).toBe('chart-a11y')
-    expect(scrubber.attributes('aria-valuetext')).toContain('2024-03-01')
-    expect(scrubber.attributes('aria-valuetext')).toContain('Frame 2 of 2')
-    expect(chart.get('[data-testid="rrg-chart"]').attributes('id')).toBe('chart-a11y')
-
-    chart.unmount()
-    playback.unmount()
   })
 })
