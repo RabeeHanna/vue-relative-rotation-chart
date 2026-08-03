@@ -15,6 +15,7 @@ export default [
       'coverage/**',
       '.playwright-browsers/**',
       'tests/pack/consumer-fixture/**',
+      'tests/pack/cjs-consumer-fixture/**',
     ],
   },
   js.configs.recommended,

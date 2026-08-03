@@ -11,7 +11,7 @@ const PACK_TIMEOUT_MS = 60_000
 const REQUIRED_DIST_FILES = [
   'index.d.ts',
   'vue-relative-rotation-chart.js',
-  'vue-relative-rotation-chart.umd.cjs',
+  'vue-relative-rotation-chart.cjs',
   'vue-relative-rotation-chart.css',
   'scenarios.js',
   'scenarios/index.d.ts',
@@ -86,5 +86,43 @@ describe('tarball consumer smoke', () => {
       expect(existsSync(join(fixtureRoot, 'dist-consumer'))).toBe(true)
     },
     PACK_TIMEOUT_MS * 4,
+  )
+
+  it.skipIf(!existsSync(distDir))(
+    'clean CJS consumer requires the package and loads named exports',
+    () => {
+      const pack = spawnSync(npmBin, ['pack', '--pack-destination', root], {
+        cwd: root,
+        encoding: 'utf8',
+        shell: process.platform === 'win32',
+        timeout: PACK_TIMEOUT_MS,
+      })
+      expect(pack.status, pack.stderr).toBe(0)
+      const match = (pack.stdout ?? '').match(/vue-relative-rotation-chart-[\d.]+\.tgz/)
+      expect(match).toBeTruthy()
+
+      const fixtureRoot = join(root, 'tests/pack/cjs-consumer-fixture')
+      copyFileSync(join(root, match![0]!), join(fixtureRoot, 'package.tgz'))
+
+      rmSync(join(fixtureRoot, 'node_modules'), { recursive: true, force: true })
+      rmSync(join(fixtureRoot, 'package-lock.json'), { force: true })
+
+      const install = spawnSync(npmBin, ['install'], {
+        cwd: fixtureRoot,
+        encoding: 'utf8',
+        shell: process.platform === 'win32',
+        timeout: PACK_TIMEOUT_MS,
+      })
+      expect(install.status, install.stderr).toBe(0)
+
+      const smoke = spawnSync(process.execPath, ['smoke.cjs'], {
+        cwd: fixtureRoot,
+        encoding: 'utf8',
+        timeout: PACK_TIMEOUT_MS,
+      })
+      expect(smoke.status, `${smoke.stderr}\n${smoke.stdout}`).toBe(0)
+      expect(smoke.stdout).toContain('cjs smoke ok')
+    },
+    PACK_TIMEOUT_MS * 3,
   )
 })

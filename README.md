@@ -65,6 +65,8 @@ const speed = ref(2)
 
 Peer dependency: Vue `^3.5.0`. Subpath `vue-relative-rotation-chart/scenarios` is **ESM-only** (`import`).
 
+**Module formats:** bundlers should use `import` (ESM). Node `require()` resolves to the CommonJS build (`vue-relative-rotation-chart.cjs`). There is no browser `<script>` CDN bundle — host Vue and D3 yourself if you need globals.
+
 Use `collectSeriesDates(series)` for the playback timeline — do not assume every ticker shares the same dates. Tickers without a point on the resolved `selectedDate` are hidden for that frame (no interpolation).
 
 ## Chart + controls integration
@@ -166,7 +168,7 @@ See `RrgChartProps` JSDoc in the published types for the full contract.
 
 **Export** — `exportPng()` and `getSvgElement()` on the chart ref. PNG rasterizes computed styles; complex themes may need verification.
 
-**Performance** — capped `tailLength` (default product mode) targets **55+ fps** for scrub and play on Chromium in our harness. Full-history stress (100 tickers × 500 points) is documented for ceiling testing only, not a supported product configuration.
+**Performance (engineering baseline, not a guarantee)** — under the default Playwright FPS fixture (`scenario=default`, 8 tickers, `tailLength=10`, Chromium, Layer B harness in `tests/perf/`), median frame rate stayed above **55 FPS** in local runs on 2026-08-03. The long-playback profile (`longPlayback200`, still capped `tailLength=10`) is also tracked as a soft target in the same harness. Results vary by hardware, dataset size, tail length, and host layout — treat these as contributor baselines, not a consumer SLA. Full-history stress (100 tickers × 500 points via `PERF_STRESS=1`) is ceiling testing only.
 
 ## Chart props (summary)
 
@@ -207,7 +209,7 @@ Relative Rotation Graph and RRG are trademarks of their respective owners. This 
 
 ## Semver (`0.x`)
 
-Pre-1.0 may change between minors. Fragile surfaces: `RrgQuadrant` enum, playback `v-model` names, controls panel v-models, `copy` shapes, visual defaults. See [CHANGELOG](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CHANGELOG.md).
+Pre-1.0 may change between minors. Fragile surfaces: `RrgQuadrant` enum, playback `v-model` names, controls panel v-models, `copy` shapes, visual defaults. Only types and values exported from `vue-relative-rotation-chart` and `vue-relative-rotation-chart/scenarios` are semver-guaranteed; rolled-up `.d.ts` files intentionally omit internal component/composable declarations. See [CHANGELOG](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CHANGELOG.md).
 
 ## Links
 

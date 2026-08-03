@@ -11,7 +11,7 @@ if (process.env.npm_config_dry_run === 'true') {
 const required = [
   'index.d.ts',
   'vue-relative-rotation-chart.js',
-  'vue-relative-rotation-chart.umd.cjs',
+  'vue-relative-rotation-chart.cjs',
   'vue-relative-rotation-chart.css',
   'scenarios.js',
   'scenarios/index.d.ts',

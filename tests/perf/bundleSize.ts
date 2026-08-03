@@ -4,7 +4,7 @@ import { join } from 'node:path'
 /** Published artifacts that belong in the npm tarball (`files: ["dist"]`). */
 export const BUNDLE_ARTIFACTS = [
   'vue-relative-rotation-chart.js',
-  'vue-relative-rotation-chart.umd.cjs',
+  'vue-relative-rotation-chart.cjs',
   'vue-relative-rotation-chart.css',
   'scenarios.js',
 ] as const
@@ -17,7 +17,7 @@ export type BundleArtifact = (typeof BUNDLE_ARTIFACTS)[number]
  */
 export const BUNDLE_BASELINES: Record<BundleArtifact, number> = {
   'vue-relative-rotation-chart.js': 62_478,
-  'vue-relative-rotation-chart.umd.cjs': 49_627,
+  'vue-relative-rotation-chart.cjs': 49_627,
   'vue-relative-rotation-chart.css': 14_690,
   'scenarios.js': 15_916,
 }
@@ -31,7 +31,7 @@ export const SOFT_RATIO = 1.25
  */
 export const BUNDLE_CEILINGS: Record<BundleArtifact, number> = {
   'vue-relative-rotation-chart.js': 120_000,
-  'vue-relative-rotation-chart.umd.cjs': 100_000,
+  'vue-relative-rotation-chart.cjs': 100_000,
   'vue-relative-rotation-chart.css': 22_000,
   'scenarios.js': 50_000,
 }

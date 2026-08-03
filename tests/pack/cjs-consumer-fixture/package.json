@@ -1,0 +1,8 @@
+{
+  "name": "vrrc-cjs-consumer-smoke",
+  "private": true,
+  "dependencies": {
+    "vue": "^3.5.0",
+    "vue-relative-rotation-chart": "file:./package.tgz"
+  }
+}
