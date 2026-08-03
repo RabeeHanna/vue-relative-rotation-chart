@@ -7,11 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.8] - 2026-08-03
+
 ### Changed
 
 - Replace UMD `require` bundle with a CommonJS build (`vue-relative-rotation-chart.cjs`) for Node `require()` consumers; ESM `import` path unchanged
 - Roll up published root TypeScript declarations to the public API surface only (`rollupTypes`); scenarios types remain at `vue-relative-rotation-chart/scenarios`
 - Qualify README performance language as an engineering baseline tied to `tests/perf/` fixtures (not a consumer FPS guarantee)
+- README and demo reorganized for adoption; dev-only harness separated from public demo surface
+- Remove label-collision spike; document spatial-bin decision in `plans/adr-label-collision.md`
+- Scrub process/plan language from public `src/` JSDoc and `AGENTS.md` boundaries
 
 ## [0.1.7] - 2026-08-01
 

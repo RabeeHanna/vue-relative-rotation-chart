@@ -1,6 +1,6 @@
 {
   "name": "vue-relative-rotation-chart",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Vue 3 SVG renderer for RRG-style stock, ETF, sector, index, and portfolio rotation charts with animated tails, playback controls, and PNG export.",
   "license": "MIT",
   "homepage": "https://rabeehanna.github.io/vue-relative-rotation-chart/",
