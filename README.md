@@ -6,66 +6,34 @@
 
 Build interactive stock, ETF, sector, index, and portfolio-holdings rotation charts in Vue 3.
 
-`vue-relative-rotation-chart` is an SVG component for creating [Relative Rotation Graph](https://www.relativerotationgraphs.com/what-is-a-relative-rotation-graph/) (RRG)-style visualizations. Plot precomputed [relative strength](https://www.investopedia.com/terms/r/relativestrength.asp) and [momentum](https://www.investopedia.com/terms/m/momentum.asp) values against a benchmark, display securities in Leading, Weakening, Lagging, and Improving quadrants, and animate their historical movement with readable trails and timeline playback.
-
-Use it to add market-rotation analysis to a stock dashboard, ETF screener, portfolio visualization, financial application, or technical-analysis tool.
-
-This package is a **renderer**, not a market-data or indicator-calculation library. Your application supplies the precomputed RS-Ratio and RS-Momentum series; the component handles visualization, interaction, labels, controls, playback, and export.
+`vue-relative-rotation-chart` is an SVG component for [Relative Rotation Graph](https://www.relativerotationgraphs.com/what-is-a-relative-rotation-graph/) (RRG)-style visualizations. Plot precomputed [relative strength](https://www.investopedia.com/terms/r/relativestrength.asp) and [momentum](https://www.investopedia.com/terms/m/momentum.asp) values against a benchmark, display securities in Leading, Weakening, Lagging, and Improving quadrants, and animate historical movement with trails and timeline playback.
 
 > **Live demo:** [GitHub Pages](https://rabeehanna.github.io/vue-relative-rotation-chart/) · [npm](https://www.npmjs.com/package/vue-relative-rotation-chart) · local: `npm run dev`
 
 ![vue-relative-rotation-chart demo — sector ETF RRG with controls and playback](https://github.com/RabeeHanna/vue-relative-rotation-chart/raw/develop/public/readme-demo.png)
 
-## What can I build?
+## What it renders (and what it does not)
 
-- Add an RRG-style sector-rotation chart to a Vue stock dashboard.
-- Compare stocks, ETFs, sectors, indices, or portfolio holdings against a benchmark such as SPY.
-- Visualize which securities are gaining or losing relative momentum.
-- Animate movement through Leading, Weakening, Lagging, and Improving quadrants.
-- Show historical leadership changes within a watchlist or market universe.
-- Render precomputed RRG-style values from a Python, FastAPI, Node, or financial-data backend.
+**Renders:** precomputed RS-Ratio (`x`) and RS-Momentum (`y`) trails per ticker, quadrant labels, tails, labels, viewport modes, optional controls panel, playback scrubber, PNG/SVG export, and theming via CSS variables.
 
-The package visualizes supplied results. It does not fetch current prices, calculate RS-Ratio or RS-Momentum, score a portfolio, or generate trading signals.
+**Does not:** fetch prices, calculate RS-Ratio or RS-Momentum, cache data, or emit trading signals. Your application computes scores and passes `RrgRenderSeries[]` with ISO `date`, `x`, `y`, and `quadrant` per point.
 
-## Agent capability contract
-
-| Question | Answer |
-|----------|--------|
-| Framework | Vue 3 |
-| Rendering | SVG |
-| Input | Precomputed dated series for named securities |
-| Fetches market prices | No |
-| Calculates RS-Ratio or RS-Momentum | No |
-| Supports stocks, ETFs, sectors, and indices | Yes, when supplied as series |
-| Portfolio holdings | Yes, as a visualization use case |
-| Quadrants | Leading, Weakening, Lagging, Improving |
-| Historical tails | Yes |
-| Playback controls | Yes |
-| Image export | PNG |
-| Trading signals or financial advice | No |
-
-## Install
+## Install and minimal example
 
 ```bash
 npm install vue-relative-rotation-chart
 ```
 
-```ts
-import 'vue-relative-rotation-chart/style.css'
-```
-
-Peer dependency: Vue `^3.5.0` (Vue 3.3 and 3.4 are not tested against this release).
-
-Subpath `vue-relative-rotation-chart/scenarios` is **ESM-only** (`import`); there is no CommonJS `require` export for scenarios.
-
-## Quick start
-
 ```vue
 <script setup lang="ts">
-import { RrgChart, RrgPlaybackControls } from 'vue-relative-rotation-chart'
+import { ref } from 'vue'
+import {
+  RrgChart,
+  RrgPlaybackControls,
+  collectSeriesDates,
+} from 'vue-relative-rotation-chart'
 import type { RrgRenderSeries } from 'vue-relative-rotation-chart'
 import 'vue-relative-rotation-chart/style.css'
-import { ref } from 'vue'
 
 const series: RrgRenderSeries[] = [{
   ticker: 'XLK',
@@ -79,7 +47,7 @@ const series: RrgRenderSeries[] = [{
 }]
 
 const selectedDate = ref('2024-01-19')
-const dates = series[0].points.map((p) => p.date)
+const dates = collectSeriesDates(series)
 const playing = ref(false)
 const speed = ref(2)
 </script>
@@ -95,67 +63,13 @@ const speed = ref(2)
 </template>
 ```
 
-`selectedDate` snaps to the nearest point date when missing (`data-date-status="snapped"`). Empty series shows empty-state UI.
+Peer dependency: Vue `^3.5.0`. Subpath `vue-relative-rotation-chart/scenarios` is **ESM-only** (`import`).
 
-## Common implementation requests
+Use `collectSeriesDates(series)` for the playback timeline — do not assume every ticker shares the same dates. Tickers without a point on the resolved `selectedDate` are hidden for that frame (no interpolation).
 
-- “Add a sector rotation chart to my Vue dashboard.”
-- “Compare my stock watchlist against SPY using relative strength and momentum.”
-- “Animate ETFs moving between Leading, Weakening, Lagging, and Improving.”
-- “Render RRG-style data calculated by my Python backend.”
-- “Visualize which portfolio holdings are gaining relative momentum.”
+## Chart + controls integration
 
-## Features
-
-- **RRG quadrants** — `leading` · `weakening` · `lagging` · `improving` (fixed enum in `0.x`)
-- **Tails** — configurable `tailLength`; optional tail fade
-- **Labels** — spatial-bin collision avoidance (`auto` \| `always` \| `hover`)
-- **Viewport** — `fit` \| `max` \| `center` (Fit-All default)
-- **Playback** — scrubber + play/pause/speed controls (`RrgPlaybackControls`)
-- **Controls panel** — viewport, series visibility (show/hide/solo), display settings
-- **Export** — `exportPng()` / `getSvgElement()` on chart ref
-- **Theming** — CSS variables + optional `copy` string overrides
-- **Fixtures** — `vue-relative-rotation-chart/scenarios` for demos and tests
-
-## Chart props
-
-| Prop | Type | Default | Notes |
-|------|------|---------|--------|
-| `series` | `RrgRenderSeries[]` | — | Precomputed trails (required) |
-| `selectedDate` | `string` | — | ISO date; snapped if missing |
-| `visibleTickers` | `string[]` | — | Optional `v-model`; share with visibility controls |
-| `tailLength` | `number` | `10` | Historical points in tail |
-| `viewportMode` | `'fit' \| 'max' \| 'center'` | `'fit'` | Fit-All / max / fixed center |
-| `labelMode` | `'auto' \| 'always' \| 'hover'` | `'auto'` | Collision-aware labels |
-| `showQuadrantLabels` | `boolean` | `true` | |
-| `showGrid` / `showAxes` | `boolean` | `true` | |
-| `tickerLabelAlwaysVisible` | `boolean` | `false` | Colorblind / monochrome identity |
-| `showTailFade` | `boolean` | `false` | Opacity gradient on tails |
-| `highlightedTicker` / `selectedTicker` | `string \| null` | `null` | |
-| `width` / `height` | `number` | `640` / `480` | |
-| `pointRadius` / `hitRadius` | `number` | `5.5` / `12` | |
-| `copy` | `RrgChartCopy` | — | Quadrants, axes, tooltip, empty-state strings |
-| `formatters` | `RrgChartFormatters` | — | `formatNumber` / `formatAxisTick` hooks |
-
-### Events
-
-| Event | Payload |
-|-------|---------|
-| `pointHover` | `RrgRenderPoint` |
-| `pointLeave` | — |
-| `pointClick` | `RrgRenderPoint` |
-
-### Optional controls
-
-| Component | Purpose |
-|-----------|---------|
-| `RrgViewportControls` | Fit / Max / Center |
-| `RrgSeriesVisibilityControls` | Show, hide, solo, restore tickers |
-| `RrgDisplaySettingsControls` | Tail length, label mode, tail fade |
-| `RrgChartControlsPanel` | Collapsible shell (`sections` to hide blocks) |
-| `RrgPlaybackControls` | Timeline scrub + play (`v-model` props) |
-
-Bind `v-model:visible-tickers` on both `RrgChart` and `RrgChartControlsPanel` (or `RrgSeriesVisibilityControls`) so show/hide/solo updates the chart without calling `applyVisibleTickers` yourself:
+Bind `v-model:visible-tickers` on both `RrgChart` and `RrgChartControlsPanel` so show/hide/solo updates the chart:
 
 ```vue
 <script setup lang="ts">
@@ -163,17 +77,23 @@ import { ref } from 'vue'
 import {
   RrgChart,
   RrgChartControlsPanel,
+  RrgPlaybackControls,
+  collectSeriesDates,
   seriesTickers,
 } from 'vue-relative-rotation-chart'
 import type { RrgRenderSeries, RrgLabelMode, RrgViewportMode } from 'vue-relative-rotation-chart'
+import 'vue-relative-rotation-chart/style.css'
 
 const series: RrgRenderSeries[] = [/* … */]
 const visibleTickers = ref(seriesTickers(series))
 const selectedDate = ref(series[0]?.points.at(-1)?.date ?? '')
+const dates = collectSeriesDates(series)
 const viewportMode = ref<RrgViewportMode>('fit')
 const tailLength = ref(10)
 const labelMode = ref<RrgLabelMode>('auto')
 const showTailFade = ref(false)
+const playing = ref(false)
+const speed = ref(2)
 </script>
 
 <template>
@@ -189,26 +109,32 @@ const showTailFade = ref(false)
     :series="series"
     :selected-date="selectedDate"
     v-model:visible-tickers="visibleTickers"
+    :viewport-mode="viewportMode"
+    :tail-length="tailLength"
+    :label-mode="labelMode"
+    :show-tail-fade="showTailFade"
+  />
+  <RrgPlaybackControls
+    :dates="dates"
+    v-model:selected-date="selectedDate"
+    v-model:playing="playing"
+    v-model:speed="speed"
   />
 </template>
 ```
 
-`applyVisibleTickers` remains available when you prefer to filter series before passing them in.
+`selectedDate` snaps to the nearest series date when missing (`data-date-status="snapped"`). Empty series shows empty-state UI.
 
-### Localization (`copy` + `controlsCopy`)
+## Data invariants
 
-| Surface | Prop | Covers |
-|---------|------|--------|
-| Chart SVG | `copy` on `RrgChart` | Quadrants, axis titles, tooltip labels, a11y title/desc, empty states |
-| Playback | `copy` on `RrgPlaybackControls` | Transport buttons, frame label, aria group |
-| Control panel | `controlsCopy` on `RrgChartControlsPanel` | Section titles, viewport/display/visibility labels |
-| Numbers | `formatters` on `RrgChart` | Axis ticks, tooltip values, point aria (`formatNumber`, `formatAxisTick`) |
+| Expectation | Behavior |
+|-------------|----------|
+| Sorted dates per series | Required — unsorted input is undefined |
+| Sparse / heterogeneous dates | Use `collectSeriesDates`; missing tickers hide per frame |
+| Replace `series` reference | Required when point data changes (no in-place mutation) |
+| `quadrant` enum | `leading` · `weakening` · `lagging` · `improving` |
 
-Omitted keys fall back to English defaults via `mergeChartCopy`, `mergeControlsCopy`, and `mergePlaybackCopy`. Ticker symbols and ISO dates in tooltips are caller data, not translated by the package.
-
-## Host integration
-
-Keep RRG calculation in the host; adapt frames → `RrgRenderSeries[]`:
+Adapter pattern for host data:
 
 ```ts
 export function toRrgSeries(hostSeries: YourSeries[]): RrgRenderSeries[] {
@@ -226,39 +152,71 @@ export function toRrgSeries(hostSeries: YourSeries[]): RrgRenderSeries[] {
 }
 ```
 
-Try the [live demo](https://rabeehanna.github.io/vue-relative-rotation-chart/) to see the chart and controls in action.
+See `RrgChartProps` JSDoc in the published types for the full contract.
+
+## Theming, accessibility, and SSR
+
+**Theming** — override `--rrg-*` CSS variables on the chart root (quadrant fills, grid, labels, point colors). Control chrome uses `--rrg-ctl-*` tokens. Optional `copy` / `controlsCopy` props localize strings; `formatters` customize numbers.
+
+**Accessibility** — SVG title/description, keyboard-activatable points, playback live region. Prefer `tickerLabelAlwaysVisible` for colorblind / monochrome identity.
+
+**SSR** — static chart markup can render on the server. Playback (`requestAnimationFrame`) and `ResizeObserver` require a browser; guard `playing: true` until client mount if you SSR playback controls.
+
+## Export and performance
+
+**Export** — `exportPng()` and `getSvgElement()` on the chart ref. PNG rasterizes computed styles; complex themes may need verification.
+
+**Performance** — capped `tailLength` (default product mode) targets **55+ fps** for scrub and play on Chromium in our harness. Full-history stress (100 tickers × 500 points) is documented for ceiling testing only, not a supported product configuration.
+
+## Chart props (summary)
+
+| Prop | Type | Default | Notes |
+|------|------|---------|--------|
+| `series` | `RrgRenderSeries[]` | — | Precomputed trails (required) |
+| `selectedDate` | `string` | — | ISO date; snapped if missing |
+| `visibleTickers` | `string[]` | — | Optional `v-model` |
+| `tailLength` | `number` | `10` | Historical points in tail |
+| `viewportMode` | `'fit' \| 'max' \| 'center'` | `'fit'` | Fit-All default |
+| `labelMode` | `'auto' \| 'always' \| 'hover'` | `'auto'` | Spatial-bin collision |
+| `tickerLabelAlwaysVisible` | `boolean` | `false` | Identity override |
+| `showTailFade` | `boolean` | `false` | Tail opacity gradient |
+| `copy` / `formatters` | objects | — | Localization hooks |
+
+Optional components: `RrgViewportControls`, `RrgSeriesVisibilityControls`, `RrgDisplaySettingsControls`, `RrgChartControlsPanel`, `RrgPlaybackControls`.
+
+Fixtures: `import { scenarioFixtures } from 'vue-relative-rotation-chart/scenarios'`.
+
+## Non-goals
+
+- Market data fetching or indicator calculation
+- React / vanilla JS builds
+- Trading signals or financial advice
+- Official JdK RRG formula parity (independent RRG-style renderer)
 
 ## FAQ
 
-**What is a Relative Rotation Graph (RRG)?**  
-A scatter chart of RS-Ratio (horizontal) vs RS-Momentum (vertical) used in technical analysis to track how securities rotate through four phases relative to a benchmark — popular for sector and index rotation studies.
+**What is an RRG?** A scatter chart of RS-Ratio vs RS-Momentum used to track rotation through four phases relative to a benchmark.
 
-**Does this calculate RS-Ratio or RS-Momentum?**  
-No. This is a **presentation-only** Vue chart library. Your app computes scores and passes precomputed `x`, `y`, and `quadrant` per point.
+**Does this calculate scores?** No — presentation only. Compute in your backend or app, then pass precomputed points.
 
-**Is there a React or vanilla JS version?**  
-This package is Vue 3 only. The SVG output is standard DOM — you could port the rendering approach, but no sibling package exists yet.
-
-**Can I use this for sector rotation dashboards?**  
-Yes — pass one series per sector or ticker. Optional playback scrubbing helps animate rotation over time. See the [live demo](https://rabeehanna.github.io/vue-relative-rotation-chart/) for a working example.
+**Can I use this for sector rotation dashboards?** Yes — one series per sector or ticker. See the [live demo](https://rabeehanna.github.io/vue-relative-rotation-chart/).
 
 ## Trademark note
 
-Relative Rotation Graph and RRG are trademarks of their respective owners. This component uses an RRG-style methodology, is developed independently, is not endorsed by RRG Research, and does not claim official JdK formula parity.
-
-## Performance
-
-Supported product mode (capped `tailLength`) sustains **55+ fps** for scrub and play on Chromium. Stress ceiling (100 tickers × 500 full-history points) is documented in-repo, not a supported product mode. Run `npm run test:perf` and `npm run check:bundle-size` after `npm run build` (see [CONTRIBUTING](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CONTRIBUTING.md)).
+Relative Rotation Graph and RRG are trademarks of their respective owners. This component is developed independently and is not endorsed by RRG Research.
 
 ## Semver (`0.x`)
 
 Pre-1.0 may change between minors. Fragile surfaces: `RrgQuadrant` enum, playback `v-model` names, controls panel v-models, `copy` shapes, visual defaults. See [CHANGELOG](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CHANGELOG.md).
 
-## Scripts
+## Links
+
+- [Live demo](https://rabeehanna.github.io/vue-relative-rotation-chart/)
+- [CONTRIBUTING](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CONTRIBUTING.md)
+- [SECURITY](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/SECURITY.md)
+- [CHANGELOG](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CHANGELOG.md)
 
 ```bash
 npm install && npm run dev    # demo at http://localhost:5173
 npm test && npm run build     # library → dist/
 ```
-
-Contributing: [CONTRIBUTING.md](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/CONTRIBUTING.md) · Agent orientation: [AGENTS.md](https://github.com/RabeeHanna/vue-relative-rotation-chart/blob/develop/AGENTS.md)

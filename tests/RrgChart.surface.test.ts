@@ -10,7 +10,7 @@ const series = [
   },
 ]
 
-describe('RrgChart C3 surface', () => {
+describe('RrgChart surface', () => {
   it('renders axes, center lines, and quadrant labels', () => {
     const wrapper = mount(RrgChart, {
       props: {

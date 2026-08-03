@@ -85,7 +85,7 @@ describe('long playback stress', () => {
     }
 
     // Visible in vitest output for future optimization planning.
-    // eslint-disable-next-line no-console
+     
     console.table(report)
   })
 })

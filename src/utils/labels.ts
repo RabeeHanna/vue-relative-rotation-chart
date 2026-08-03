@@ -85,7 +85,7 @@ function binsCoveredByRect(
 }
 
 /**
- * Spatial Bin label layout (PRE-C1-A decision).
+ * Spatial bin label layout — grid-based collision avoidance.
  * Sort by label length asc, then ticker; occupy AABB bins; hide if no slot.
  */
 export function computeSpatialBinLayout(

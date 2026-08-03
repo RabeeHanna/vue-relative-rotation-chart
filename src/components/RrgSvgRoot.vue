@@ -14,6 +14,8 @@ const props = withDefaults(
   }>(),
   {
     margin: () => ({ ...RRG_DEFAULT_MARGIN }),
+    plotWidth: undefined,
+    plotHeight: undefined,
     title: 'Relative Rotation Chart',
     description: '',
   },

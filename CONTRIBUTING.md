@@ -82,7 +82,15 @@ npm run test:perf          # Layer B — Chromium FPS (soft ≥55)
 npm run build && npm run check:bundle-size
 ```
 
-## Agent visual QA (demo UX)
+## Demo surfaces
+
+| Surface | Command | Notes |
+|---------|---------|-------|
+| Public demo | `npm run dev` / GitHub Pages | Scenario, theme, chart, controls, playback |
+| Dev harness | `npm run dev` with `?agent=1` or `?perf=1` | Agent state panel, stress generator, perf overlay — not in production demo build |
+| Agent guide e2e | `npm run test:agent-guide` | Local/dev only; requires dev harness |
+
+## Agent visual QA (maintainers)
 
 Before demo layout or control polish PRs, run the agent loop:
 

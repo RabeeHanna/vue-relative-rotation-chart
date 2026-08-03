@@ -157,7 +157,7 @@ watch(visibleTickers, () => {
             :disabled="disabled"
             :data-testid="`rrg-series-visibility-check-${item.ticker}`"
             @change="toggleTicker(item.ticker)"
-          />
+          >
           {{ item.label || item.ticker }}
         </label>
         <button

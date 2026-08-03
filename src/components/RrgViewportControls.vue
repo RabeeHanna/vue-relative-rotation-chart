@@ -61,7 +61,7 @@ function modeDescription(mode: RrgViewportMode): string {
         :value="mode"
         :disabled="disabled"
         :data-testid="`rrg-viewport-${mode}`"
-      />
+      >
       {{ modeLabel(mode) }}
     </label>
   </div>

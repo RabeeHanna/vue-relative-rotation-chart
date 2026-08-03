@@ -13,7 +13,6 @@ export default [
       'test-results/**',
       'node_modules/**',
       'coverage/**',
-      'spikes/label-collision/artifacts/**',
       '.playwright-browsers/**',
       'tests/pack/consumer-fixture/**',
     ],
@@ -54,6 +53,12 @@ export default [
       'vue/multi-word-component-names': 'off',
       'vue/max-attributes-per-line': 'off',
       'vue/singleline-html-element-content-newline': 'off',
+    },
+  },
+  {
+    files: ['tests/**/*.test.ts'],
+    rules: {
+      'vue/one-component-per-file': 'off',
     },
   },
 ]

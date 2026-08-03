@@ -97,7 +97,7 @@ function labelModeDescription(mode: RrgLabelMode): string {
         type="checkbox"
         data-testid="rrg-display-tail-fade"
         :disabled="disabled"
-      />
+      >
       {{ controlsCopy.tailFade }}
     </label>
   </div>

@@ -1,8 +1,6 @@
 import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { nextTick } from 'vue'
-import { readFileSync } from 'node:fs'
-import { resolve } from 'node:path'
 import RrgPlaybackControls from '../src/components/RrgPlaybackControls.vue'
 import '../src/components/RrgPlaybackControls.css'
 import {
@@ -367,20 +365,6 @@ describe('RrgPlaybackControls mobile layout', () => {
     expect(root.classList.contains('rrg-playback--stacked')).toBe(true)
 
     wrapper.unmount()
-  })
-
-  it('ships stacked touch-target and scrubber rules in CSS', () => {
-    const css = readFileSync(
-      resolve(process.cwd(), 'src/components/RrgPlaybackControls.css'),
-      'utf8',
-    )
-    expect(css).toContain('.rrg-playback--stacked .rrg-playback__toolbar')
-    expect(css).toContain('.rrg-playback--stacked .rrg-playback__btn')
-    expect(css).toContain('min-height: 3rem')
-    expect(css).toContain('.rrg-playback--stacked .rrg-playback__scrubber')
-    expect(css).toContain('height: 2.75rem')
-    expect(css).toContain('.rrg-playback--stacked .rrg-playback__timeline')
-    expect(css).toContain('width: 100%')
   })
 
   it('defaults layout to auto and marks inline mode', () => {

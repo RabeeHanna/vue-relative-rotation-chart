@@ -8,7 +8,7 @@ Standalone Vue 3 SVG package that renders RRG-style relative rotation charts fro
 
 - Public chart API (`RrgChart`, exported types)
 - SVG rendering, viewport modes, label collision, hover/tooltip
-- Vitest unit tests, Vite demo playground, plan specs, spikes
+- Vitest unit tests, Vite demo playground, spikes
 
 ## Does not belong here
 
@@ -20,11 +20,10 @@ Standalone Vue 3 SVG package that renders RRG-style relative rotation charts fro
 
 - Vue 3, Vite, TypeScript, Vitest
 - D3 subpackages for math only (`d3-scale`, `d3-array`)
-- Decisions in `plans/` (PRE-C1-A Spatial Bin, PRE-C1-B Fit-All, PRE-C1-C a11y props)
 
 ## Used by
 
-- Host applications via `file:` / workspace / git link (integration unit C10)
+- Host applications via npm, workspace, or git link
 - Local demo (`npm run dev`)
 
 ## Agent map
@@ -40,4 +39,4 @@ Standalone Vue 3 SVG package that renders RRG-style relative rotation charts fro
 | `tests/` | Vitest suites |
 | `spikes/` | Throwaway prototypes |
 
-See each directory’s `AGENTS.md` for placement rules. Cursor rules live in `.cursor/rules/`.
+See each directory's `AGENTS.md` for placement rules. Contributor workflow: [CONTRIBUTING.md](CONTRIBUTING.md).

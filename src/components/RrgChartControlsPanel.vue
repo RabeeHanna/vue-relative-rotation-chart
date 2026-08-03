@@ -30,6 +30,7 @@ const props = withDefaults(
     sections: () => ['viewport', 'display', 'visibility'],
     tailLengthPresets: () => RRG_TAIL_LENGTH_PRESETS,
     defaultOpen: true,
+    controlsCopy: undefined,
   },
 )
 

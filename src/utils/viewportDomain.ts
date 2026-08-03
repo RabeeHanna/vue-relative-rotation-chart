@@ -53,7 +53,7 @@ export function maxDomain(series: RrgRenderSeries[], padding = 2): RrgDomain {
   return maxDomainFromIndex(buildSeriesIndex(series), padding)
 }
 
-/** Fit-All: extent of current frame + tails, no outlier clipping (PRE-C1-B). */
+/** Fit-All: extent of current frame + tails, no outlier clipping. */
 export function fitDomainFromIndex(
   index: SeriesIndex,
   selectedDate: string,

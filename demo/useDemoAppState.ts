@@ -17,6 +17,7 @@ import {
 } from './demoSession'
 import { chartThemeStyle, syncThemeCssPickers } from './demoThemeCss'
 import { applyAgentDemoShellFlags } from './demoAgentShell'
+import { isDevHarness } from './devHarness'
 import { datesForSeries, scenarioById } from './scenarios'
 import { useDemoAgentState } from './useDemoAgentState'
 import { watchDemoSideEffects } from './watchDemoSideEffects'
@@ -30,9 +31,10 @@ export function useDemoAppState(search = typeof window !== 'undefined' ? window.
   const overrideSeries = ref<RrgRenderSeries[] | null>(null)
   const urlKeys = presentUrlKeys(search)
   const bootGenerate =
-    controls.value.source === 'generated' ||
-    urlKeys.has('genTickers') ||
-    urlKeys.has('genPoints')
+    isDevHarness &&
+    (controls.value.source === 'generated' ||
+      urlKeys.has('genTickers') ||
+      urlKeys.has('genPoints'))
   if (bootGenerate) {
     generateDemoSeries(controls.value, overrideSeries)
   }

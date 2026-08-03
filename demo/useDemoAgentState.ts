@@ -3,6 +3,7 @@ import type { RrgRenderPoint, RrgRenderSeries } from '../src/types/rrg'
 import { buildAgentDemoState, isAgentModeEnabled, type AgentDemoState } from './agentState'
 import type { DemoControlsState } from './demoControlsState'
 import { isPerfPanelEnabled } from './demoAgentShell'
+import { isDevHarness } from './devHarness'
 
 export function useDemoAgentState(input: {
   search: string
@@ -14,6 +15,7 @@ export function useDemoAgentState(input: {
   hovered: Ref<RrgRenderPoint | null>
 }) {
   const agentMode = computed(() =>
+    isDevHarness &&
     isAgentModeEnabled(typeof window !== 'undefined' ? window.location.search : input.search),
   )
 
@@ -40,6 +42,7 @@ export function useDemoAgentState(input: {
   )
 
   const showPerfPanel = computed(() =>
+    isDevHarness &&
     isPerfPanelEnabled(typeof window !== 'undefined' ? window.location.search : input.search),
   )
 

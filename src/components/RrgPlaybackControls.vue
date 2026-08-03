@@ -125,7 +125,7 @@ function onKeydown(event: KeyboardEvent) {
         @input="onScrubInput"
         @change="onScrubCommit"
         @pointerup="onScrubCommit"
-      />
+      >
       <div class="rrg-playback__meta">
         <span data-testid="rrg-playback-date">{{ displayDate }}</span>
         <span data-testid="rrg-playback-frame">{{ frameLabel }}</span>

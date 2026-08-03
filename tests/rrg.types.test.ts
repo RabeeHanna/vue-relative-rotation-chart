@@ -52,7 +52,7 @@ describe('public type contract', () => {
     expectTypeOf<RrgPlaybackControlsEmits>().toHaveProperty('update:selectedDate')
   })
 
-  it('includes PRE-C1-C accessibility props as optional booleans', () => {
+  it('includes optional accessibility identity props', () => {
     expectTypeOf<RrgChartProps['tickerLabelAlwaysVisible']>().toEqualTypeOf<
       boolean | undefined
     >()

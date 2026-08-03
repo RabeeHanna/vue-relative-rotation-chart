@@ -70,8 +70,7 @@
     "review:artifacts": "playwright test --config=playwright.review.config.ts",
     "review:screenshots": "npm run review:artifacts",
     "typecheck": "vue-tsc -p tsconfig.app.json --noEmit && vue-tsc -p tsconfig.build.json --noEmit",
-    "lint": "eslint .",
-    "spike:labels": "vitest run spikes/label-collision",
+    "lint": "eslint . --max-warnings=0",
     "prepublishOnly": "node ./scripts/prepack-check.mjs"
   },
   "peerDependencies": {

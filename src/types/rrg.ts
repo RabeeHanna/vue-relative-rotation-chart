@@ -124,7 +124,7 @@ export type RrgChartInput = {
 /**
  * Public props for `<RrgChart />`.
  *
- * Accessibility: prefer `tickerLabelAlwaysVisible` / labels + tooltip (PRE-C1-C).
+ * Accessibility: prefer `tickerLabelAlwaysVisible` with labels and tooltip for colorblind / monochrome identity.
  */
 export type RrgChartProps = {
   /**
@@ -153,7 +153,7 @@ export type RrgChartProps = {
 
   /** How many historical points to show as tail (default: 10) */
   tailLength?: number
-  /** Default: 'fit' (Fit-All — data extent + padding; see PRE-C1-B) */
+  /** Default: 'fit' (Fit-All — data extent + padding) */
   viewportMode?: RrgViewportMode
   /** Default: 'auto' */
   labelMode?: RrgLabelMode
@@ -174,7 +174,7 @@ export type RrgChartProps = {
 
   /**
    * When true, override labelMode / collision hide and always show all labels.
-   * Primary colorblind / monochrome identity strategy (see PRE-C1-C).
+   * Primary colorblind / monochrome identity strategy when labels would otherwise hide.
    * Default false.
    */
   tickerLabelAlwaysVisible?: boolean

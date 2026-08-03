@@ -8,7 +8,7 @@ Security fixes are applied on the latest published release line on npm. Pre-1.0 
 
 Please **do not** open a public GitHub issue for security vulnerabilities.
 
-Email the maintainers with:
+Report privately via [GitHub Security Advisories](https://github.com/RabeeHanna/vue-relative-rotation-chart/security/advisories/new) (preferred) or email **security@rabeehanna.dev** with:
 
 - A description of the issue and impact
 - Steps to reproduce or a proof of concept (if available)

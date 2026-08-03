@@ -9,7 +9,7 @@ const state = defineModel<DemoControlsState>({ required: true })
     <h3>Power user</h3>
     <label>
       Selected ticker
-      <input v-model="state.selectedTicker" type="text" data-testid="demo-selected-ticker" />
+      <input v-model="state.selectedTicker" type="text" data-testid="demo-selected-ticker">
     </label>
     <label>
       Min speed
@@ -20,7 +20,7 @@ const state = defineModel<DemoControlsState>({ required: true })
         max="4"
         step="0.25"
         data-testid="demo-min-speed"
-      />
+      >
     </label>
     <label>
       Max speed
@@ -31,7 +31,7 @@ const state = defineModel<DemoControlsState>({ required: true })
         max="16"
         step="0.5"
         data-testid="demo-max-speed"
-      />
+      >
     </label>
     <label>
       Speed mode
@@ -49,7 +49,7 @@ const state = defineModel<DemoControlsState>({ required: true })
         max="16"
         step="0.5"
         data-testid="demo-point-radius"
-      />
+      >
     </label>
     <label>
       Hit r
@@ -60,19 +60,19 @@ const state = defineModel<DemoControlsState>({ required: true })
         max="32"
         step="1"
         data-testid="demo-hit-radius"
-      />
+      >
     </label>
     <label>
       --rrg-bg
-      <input v-model="state.cssBg" type="color" data-testid="demo-css-bg" />
+      <input v-model="state.cssBg" type="color" data-testid="demo-css-bg">
     </label>
     <label>
       --rrg-label
-      <input v-model="state.cssLabel" type="color" data-testid="demo-css-label" />
+      <input v-model="state.cssLabel" type="color" data-testid="demo-css-label">
     </label>
     <label>
       --rrg-grid
-      <input v-model="state.cssGrid" type="color" data-testid="demo-css-grid" />
+      <input v-model="state.cssGrid" type="color" data-testid="demo-css-grid">
     </label>
   </div>
 </template>

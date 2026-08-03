@@ -16,7 +16,7 @@ export type ViewportOptions = {
 type MaybeRef<T> = ComputedRef<T> | Ref<T>
 
 /**
- * Viewport domain for fit (Fit-All), max, and center modes (PRE-C1-B).
+ * Viewport domain for fit (Fit-All), max, and center modes.
  */
 export function useRrgViewport(
   seriesIndex: MaybeRef<SeriesIndex>,

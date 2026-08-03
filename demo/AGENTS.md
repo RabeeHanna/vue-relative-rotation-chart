@@ -2,22 +2,25 @@
 
 ## Purpose
 
-Local Vite playground for visual development and adoption of `RrgChart` (C13).
+Local Vite playground for visual development and adoption of `RrgChart`.
 
 ## Belongs here
 
 - App shell (`main.ts`, `DemoApp.vue`, `DemoControls.vue`, `DemoAdvanced.vue`, `DemoChartHost.vue`)
-- Simple defaults: Scenario + Theme; power knobs under **Customize** (closed); playback stays below the chart (C19.5)
-- Snippet behind a closed `<details>`; Tail / Full history clustered with override helper copy
+- Public surface: scenario picker, theme, chart + controls + playback
+- Snippet behind a closed `<details>`; tail / full-history helper copy
 - Scenario catalog / UI metadata (`scenarios.ts`; series fixtures imported from `src/scenarios`)
-- Thin re-exports (`mockSeries.ts`, `longPlayback.ts`; `adversarialMocks.ts` for C11 tests)
-- Playground helpers (`copySnippet.ts`, `generateSeries.ts`, `parseSeriesJson.ts`, `demoUrl.ts`, `demoSession.ts`, `useDemoAppState.ts`, `useDemoAgentState.ts`, `agentState.ts`, `agentScenarios.ts`)
-- Agent QA panel (`DemoAgentStatePanel.vue` — visible when `?agent=1`; C24) — **demo only, not published**
-- Full-history tail toggle (`fullHistoryTail`, off by default — expands effective `tailLength` to series length)
-- Power-user panel (`DemoPowerUser.vue` — radii, speeds, selectedTicker, CSS vars)
-- Copy / labels overrides (`DemoCopyOverrides.vue`, `demoCopyFields.ts` — blank = package default; session-persisted)
-- Local perf sample panel (`DemoPerfPanel.vue`, `demoPerfSample.ts` — convenience only; Playwright `tests/perf` is source of truth)
-- Tab session persistence (`sessionStorage` via `demoSession.ts` — C13.5)
+- Thin re-exports (`mockSeries.ts`, `longPlayback.ts`; `adversarialMocks.ts` for tests)
+- Playground helpers (`copySnippet.ts`, `generateSeries.ts`, `parseSeriesJson.ts`, `demoUrl.ts`, `demoSession.ts`, `useDemoAppState.ts`)
+- Full-history tail toggle (`fullHistoryTail`, off by default)
+- Copy / labels overrides (`DemoCopyOverrides.vue`, `demoCopyFields.ts`)
+
+## Dev harness only (`import.meta.env.DEV`)
+
+- Agent state panel (`DemoAgentStatePanel.vue`, `?agent=1`)
+- Stress generator, BYO JSON, compare mode (`DemoAdvanced.vue`)
+- Perf sample overlay (`DemoPerfPanel.vue`, `demoPerfSample.ts`)
+- Power-user panel (`DemoPowerUser.vue`)
 
 ## Does not belong here
 
