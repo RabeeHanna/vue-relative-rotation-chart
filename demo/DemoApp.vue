@@ -6,6 +6,7 @@ import DemoControls from './DemoControls.vue'
 import DemoPerfPanel from './DemoPerfPanel.vue'
 import { useDemoAppState } from './useDemoAppState'
 import { partialCopyFromFields } from './demoCopyFields'
+import { DEMO_CHART_REGION_ID } from './chartRegionId'
 import './DemoApp.css'
 
 const {
@@ -71,6 +72,7 @@ const {
       :dark="dark"
       :host-style="hostStyle"
       :theme-style="themeStyle"
+      :chart-region-id="DEMO_CHART_REGION_ID"
       :single-props="singleProps"
       :left-props="leftProps"
       :right-props="rightProps"
@@ -82,6 +84,7 @@ const {
     <RrgPlaybackControls
       :class="{ dark }"
       :dates="dates"
+      :chart-region-id="DEMO_CHART_REGION_ID"
       v-model:selected-date="selectedDate"
       v-model:playing="playing"
       v-model:speed="speed"

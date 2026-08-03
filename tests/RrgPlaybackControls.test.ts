@@ -80,12 +80,16 @@ describe('RrgPlaybackControls', () => {
     expect(wrapper.get('[data-testid="rrg-playback-frame"]').text()).toBe('Frame 2 of 3')
     expect(wrapper.get('[data-testid="rrg-playback-speed-label"]').text()).toBe('2x')
     expect(wrapper.get('[data-testid="rrg-playback-loop"]').exists()).toBe(true)
+    const scrubber = wrapper.get('[data-testid="rrg-playback-scrubber"]')
+    expect(scrubber.attributes('aria-valuetext')).toContain('2024-01-12')
+    expect(scrubber.attributes('aria-valuetext')).toContain('Frame 2 of 3')
     expect(wrapper.get('[data-testid="rrg-playback-toggle"]').attributes('aria-label')).toBe(
       'Play',
     )
     expect(wrapper.get('[data-testid="rrg-playback"]').attributes('data-label-style')).toBe(
       'icon',
     )
+    expect(wrapper.get('[data-testid="rrg-playback"]').attributes('tabindex')).toBeUndefined()
     expect(wrapper.find('.rrg-playback__btn-text').exists()).toBe(false)
   })
 
@@ -272,14 +276,14 @@ describe('RrgPlaybackControls', () => {
       attachTo: document.body,
     })
 
-    await wrapper.get('[data-testid="rrg-playback"]').trigger('keydown', { key: 'ArrowRight' })
+    await wrapper.get('[data-testid="rrg-playback-scrubber"]').trigger('keydown', { key: 'ArrowRight' })
     expect(wrapper.emitted('update:selectedDate')?.at(-1)?.[0]).toBe('2024-01-19')
 
-    await wrapper.get('[data-testid="rrg-playback"]').trigger('keydown', { key: ' ' })
+    await wrapper.get('[data-testid="rrg-playback-scrubber"]').trigger('keydown', { key: ' ' })
     expect(wrapper.emitted('update:playing')?.at(-1)?.[0]).toBe(true)
 
     await wrapper.setProps({ playing: true, selectedDate: '2024-01-19' })
-    await wrapper.get('[data-testid="rrg-playback"]').trigger('keydown', { key: 'Home' })
+    await wrapper.get('[data-testid="rrg-playback-scrubber"]').trigger('keydown', { key: 'Home' })
     expect(wrapper.emitted('update:selectedDate')?.at(-1)?.[0]).toBe('2024-01-05')
     expect(wrapper.emitted('update:playing')?.at(-1)?.[0]).toBe(false)
 

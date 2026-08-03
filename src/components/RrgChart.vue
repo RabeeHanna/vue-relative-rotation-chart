@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toRef, watch } from 'vue'
+import { computed, ref, toRef, useId, watch } from 'vue'
 import { RRG_CHART_DEFAULTS, type RrgChartProps, type RrgRenderPoint } from '../types/rrg'
 import { useRrgChartEmptyState, useRrgChartExport } from '../composables/useRrgChartChrome'
 import { useRrgViewport } from '../composables/useRrgViewport'
@@ -38,7 +38,11 @@ const props = withDefaults(defineProps<Omit<RrgChartProps, 'visibleTickers'>>(),
   hitRadius: RRG_CHART_DEFAULTS.hitRadius,
   highlightedTicker: null,
   selectedTicker: null,
+  regionId: undefined,
 })
+
+const autoRegionId = useId()
+const resolvedRegionId = computed(() => props.regionId ?? `rrg-chart-${autoRegionId}`)
 
 const visibleTickers = defineModel<string[]>('visibleTickers')
 
@@ -133,6 +137,7 @@ const resolvedLabels = useRrgLabelLayout(
 <template>
   <div
     ref="chartRoot"
+    :id="resolvedRegionId"
     class="rrg-chart"
     data-testid="rrg-chart"
     :data-viewport-mode="viewportMode"

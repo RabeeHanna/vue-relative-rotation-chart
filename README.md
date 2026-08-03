@@ -206,6 +206,14 @@ const showTailFade = ref(false)
 
 Omitted keys fall back to English defaults via `mergeChartCopy`, `mergeControlsCopy`, and `mergePlaybackCopy`. Ticker symbols and ISO dates in tooltips are caller data, not translated by the package.
 
+### Accessibility
+
+- Chart SVG exposes `role="img"` with generated `<title>` / `<desc>` from the resolved date and visible tickers.
+- Interactive points are focusable (`tabindex="0"`), activate on **Enter** and **Space**, and expose `aria-pressed` when `selectedTicker` matches.
+- Place `<RrgChart>` before `<RrgPlaybackControls>` in the DOM so tab order moves through chart points, then the timeline scrubber and transport buttons.
+- Link playback to the chart with matching ids: set `regionId` on `RrgChart` and `chartRegionId` on `RrgPlaybackControls` (the scrubber sets `aria-controls`). When `regionId` is omitted, the chart auto-generates one.
+- The timeline scrubber `aria-valuetext` includes the ISO date and frame position (for example `2024-03-01 — Frame 2 of 5`).
+
 ## Host integration
 
 Keep RRG calculation in the host; adapt frames → `RrgRenderSeries[]`:

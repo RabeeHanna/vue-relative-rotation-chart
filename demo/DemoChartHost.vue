@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RrgChart, type RrgChartProps, type RrgRenderPoint } from '../src'
+import { DEMO_CHART_REGION_ID } from './chartRegionId'
 
 defineProps<{
   compare: boolean
@@ -9,6 +10,7 @@ defineProps<{
   dark: boolean
   hostStyle?: Record<string, string>
   themeStyle?: Record<string, string>
+  chartRegionId?: string
 }>()
 
 const visibleTickers = defineModel<string[]>('visibleTickers')
@@ -25,6 +27,7 @@ const emit = defineEmits<{
       <RrgChart
         :class="{ dark }"
         :style="themeStyle"
+        :region-id="chartRegionId ?? DEMO_CHART_REGION_ID"
         v-bind="singleProps"
         v-model:visible-tickers="visibleTickers"
         @point-hover="emit('pointHover', $event)"

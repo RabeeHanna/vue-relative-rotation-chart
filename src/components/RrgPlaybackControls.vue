@@ -41,6 +41,7 @@ const {
   speedLabel,
   displayDate,
   frameLabel,
+  timelineValueText,
   resolvedCopy,
   togglePlaying,
   stepBy,
@@ -94,7 +95,6 @@ function onKeydown(event: KeyboardEvent) {
       'rrg-playback--inline': layout === 'inline',
     }"
     data-testid="rrg-playback"
-    tabindex="0"
     role="group"
     :aria-label="resolvedCopy.group"
     :data-playing="playing ? 'true' : 'false'"
@@ -104,7 +104,6 @@ function onKeydown(event: KeyboardEvent) {
     :data-label-style="labelStyle"
     :data-layout="layout"
     :data-frame-index="frameIndex >= 0 ? String(frameIndex) : undefined"
-    @keydown="onKeydown"
   >
     <div class="rrg-playback__timeline">
       <input
@@ -120,11 +119,13 @@ function onKeydown(event: KeyboardEvent) {
         :aria-valuemin="0"
         :aria-valuemax="Math.max(frameCount - 1, 0)"
         :aria-valuenow="Math.max(frameIndex, 0)"
-        :aria-valuetext="displayDate"
+        :aria-valuetext="timelineValueText"
+        :aria-controls="chartRegionId || undefined"
         :aria-label="resolvedCopy.timeline"
         @input="onScrubInput"
         @change="onScrubCommit"
         @pointerup="onScrubCommit"
+        @keydown="onKeydown"
       />
       <div class="rrg-playback__meta">
         <span data-testid="rrg-playback-date">{{ displayDate }}</span>

@@ -58,6 +58,12 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
       total: frameCount.value === 0 ? '—' : frameCount.value,
     }),
   )
+  const timelineValueText = computed(() => {
+    if (frameCount.value === 0 || effectiveIndex.value < 0) {
+      return props.selectedDate || '—'
+    }
+    return `${props.dates[effectiveIndex.value]} — ${frameLabel.value}`
+  })
   const tickRate = computed(() => playbackTickRate(clampedSpeed.value, props.speedMode))
   const frameStep = computed(() => playbackFrameStep(clampedSpeed.value, props.speedMode))
 
@@ -128,6 +134,7 @@ export function useRrgPlaybackControls(props: ResolvedProps, emit: PlaybackContr
     speedLabel,
     displayDate,
     frameLabel,
+    timelineValueText,
     resolvedCopy,
     togglePlaying,
     stepBy,
