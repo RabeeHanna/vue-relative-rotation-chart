@@ -99,6 +99,14 @@ export type RrgViewportMode = 'fit' | 'max' | 'center'
 
 export type RrgLabelMode = 'auto' | 'always' | 'hover'
 
+/** Optional number formatting hooks for chart rendering. */
+export type RrgChartFormatters = {
+  /** Format numeric values in tooltips and point aria labels. */
+  formatNumber?: (value: number) => string
+  /** Format axis tick labels; defaults to `formatNumber` when omitted. */
+  formatAxisTick?: (value: number, axis: 'x' | 'y') => string
+}
+
 /**
  * Convenience input shape matching chart props for adapters.
  *
@@ -178,6 +186,8 @@ export type RrgChartProps = {
 
   /** Optional UI copy overrides (quadrants, tooltip, a11y title/desc). */
   copy?: RrgChartCopy
+  /** Optional number formatting overrides for ticks and tooltips. */
+  formatters?: RrgChartFormatters
 }
 
 export type RrgChartEmits = {

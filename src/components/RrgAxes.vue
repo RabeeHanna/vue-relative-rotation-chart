@@ -1,12 +1,24 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue'
 import type { RrgScale } from '../composables/useRrgScales'
+import type { ResolvedRrgChartCopy } from '../types/copy'
+import { RRG_CHART_COPY_DEFAULTS } from '../types/copy'
+import type { ResolvedRrgChartFormatters } from '../utils/chartFormatters'
+import { RRG_CHART_FORMATTER_DEFAULTS } from '../utils/chartFormatters'
 import { generateTicks } from '../utils/ticks'
 
 const props = defineProps({
   xScale: { type: Function as PropType<RrgScale>, required: true },
   yScale: { type: Function as PropType<RrgScale>, required: true },
   showGrid: { type: Boolean, default: true },
+  copy: {
+    type: Object as PropType<ResolvedRrgChartCopy>,
+    default: () => RRG_CHART_COPY_DEFAULTS,
+  },
+  formatters: {
+    type: Object as PropType<ResolvedRrgChartFormatters>,
+    default: () => RRG_CHART_FORMATTER_DEFAULTS,
+  },
 })
 
 const xDomain = computed(() => props.xScale.domain() as [number, number])
@@ -25,6 +37,10 @@ const yTicks = computed(() => generateTicks(yDomain.value[0], yDomain.value[1], 
 
 const centerX = computed(() => props.xScale(100))
 const centerY = computed(() => props.yScale(100))
+
+function formatTick(value: number, axis: 'x' | 'y'): string {
+  return props.formatters.formatAxisTick(value, axis)
+}
 </script>
 
 <template>
@@ -121,7 +137,7 @@ const centerY = computed(() => props.yScale(100))
           font-size="11"
           font-family="var(--rrg-font-family, ui-sans-serif, system-ui, sans-serif)"
         >
-          {{ tick }}
+          {{ formatTick(tick, 'x') }}
         </text>
       </g>
     </g>
@@ -148,7 +164,7 @@ const centerY = computed(() => props.yScale(100))
           font-size="11"
           font-family="var(--rrg-font-family, ui-sans-serif, system-ui, sans-serif)"
         >
-          {{ tick }}
+          {{ formatTick(tick, 'y') }}
         </text>
       </g>
     </g>
@@ -163,7 +179,7 @@ const centerY = computed(() => props.yScale(100))
       font-size="11"
       font-family="var(--rrg-font-family, ui-sans-serif, system-ui, sans-serif)"
     >
-      RS-Ratio →
+      {{ copy.axisTitleX }}
     </text>
     <text
       class="rrg-axis-title"
@@ -174,7 +190,7 @@ const centerY = computed(() => props.yScale(100))
       font-size="11"
       font-family="var(--rrg-font-family, ui-sans-serif, system-ui, sans-serif)"
     >
-      RS-Momentum ↑
+      {{ copy.axisTitleY }}
     </text>
   </g>
 </template>

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { computed } from 'vue'
 import type { RrgRenderSeries } from '../src/types/rrg'
+import { mergeChartCopy } from '../src/types/copy'
 import { useRrgChartEmptyState } from '../src/composables/useRrgChartChrome'
 
 const series: RrgRenderSeries[] = [
@@ -16,12 +17,14 @@ describe('useRrgChartEmptyState', () => {
   it('reports all-hidden when every series is hidden', () => {
     const coloredSeries = computed(() => series)
     const dateStatus = computed(() => 'exact' as const)
+    const copy = computed(() => mergeChartCopy({ emptyAllHidden: 'Todo oculto' }))
     const { isEmpty, emptyReason, emptyMessage } = useRrgChartEmptyState(
       coloredSeries,
       dateStatus,
+      copy,
     )
     expect(isEmpty.value).toBe(true)
     expect(emptyReason.value).toBe('all-hidden')
-    expect(emptyMessage.value).toMatch(/hidden/i)
+    expect(emptyMessage.value).toBe('Todo oculto')
   })
 })

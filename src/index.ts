@@ -14,6 +14,7 @@ export type {
   RrgChartProps,
   RrgChartEmits,
   RrgChartCopy,
+  RrgChartFormatters,
   RrgPlaybackCopy,
   RrgPlaybackControlsProps,
   RrgPlaybackControlsEmits,
@@ -36,6 +37,13 @@ export {
   mergePlaybackCopy,
   formatCopy,
 } from './types/copy'
+export {
+  RRG_CONTROLS_COPY_DEFAULTS,
+  mergeControlsCopy,
+  type RrgControlsCopy,
+  type ResolvedRrgControlsCopy,
+} from './types/controlsCopy'
+export { resolveChartFormatters } from './utils/chartFormatters'
 export {
   RRG_VIEWPORT_MODES,
   isRrgViewportMode,

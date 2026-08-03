@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import type { RrgRenderSeries } from '../types/rrg'
+import type { ResolvedRrgControlsCopy } from '../types/controlsCopy'
+import { RRG_CONTROLS_COPY_DEFAULTS } from '../types/controlsCopy'
 import { assignSeriesColors } from '../utils/colors'
 import {
   filterVisibleTickers,
@@ -17,11 +19,13 @@ const props = withDefaults(
     disabled?: boolean
     dark?: boolean
     inset?: boolean
+    controlsCopy?: ResolvedRrgControlsCopy
   }>(),
   {
     disabled: false,
     dark: false,
     inset: false,
+    controlsCopy: () => RRG_CONTROLS_COPY_DEFAULTS,
   },
 )
 
@@ -103,7 +107,7 @@ watch(visibleTickers, () => {
     ]"
     data-testid="rrg-series-visibility"
     role="group"
-    aria-label="Series visibility"
+    :aria-label="controlsCopy.visibilityGroup"
   >
     <div class="rrg-series-visibility__actions">
       <button
@@ -112,7 +116,7 @@ watch(visibleTickers, () => {
         :disabled="disabled"
         @click="onShowAll"
       >
-        Show all
+        {{ controlsCopy.showAll }}
       </button>
       <button
         type="button"
@@ -120,7 +124,7 @@ watch(visibleTickers, () => {
         :disabled="disabled"
         @click="onHideAll"
       >
-        Hide all
+        {{ controlsCopy.hideAll }}
       </button>
       <button
         type="button"
@@ -128,7 +132,7 @@ watch(visibleTickers, () => {
         :disabled="disabled || !preSoloTickers"
         @click="onRestore"
       >
-        Restore
+        {{ controlsCopy.restore }}
       </button>
     </div>
 
@@ -163,7 +167,7 @@ watch(visibleTickers, () => {
           :disabled="disabled"
           @click="onSolo(item.ticker)"
         >
-          Solo
+          {{ controlsCopy.solo }}
         </button>
       </li>
     </ul>

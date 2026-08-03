@@ -7,6 +7,7 @@ import type { ExportChartPngOptions } from '../utils/exportChartSvg'
 export function useRrgChartEmptyState(
   coloredSeries: ComputedRef<readonly RrgRenderSeries[]>,
   dateStatus: ComputedRef<ChartDateStatus>,
+  copy: ComputedRef<{ emptyAllHidden: string; emptyNoDates: string }>,
 ) {
   const allSeriesHidden = computed(
     () =>
@@ -18,7 +19,7 @@ export function useRrgChartEmptyState(
     allSeriesHidden.value ? 'all-hidden' : 'no-dates',
   )
   const emptyMessage = computed(() =>
-    allSeriesHidden.value ? 'All series are hidden' : 'No series dates to display',
+    allSeriesHidden.value ? copy.value.emptyAllHidden : copy.value.emptyNoDates,
   )
 
   return { isEmpty, emptyReason, emptyMessage }

@@ -13,6 +13,8 @@ import { useRrgChartDimensions } from '../composables/useRrgChartDimensions'
 import { useSeriesIndex } from '../composables/useSeriesIndex'
 import { applyVisibleTickers } from '../composables/useRrgSeriesVisibility'
 import { assignSeriesColors } from '../utils/colors'
+import { resolveChartFormatters } from '../utils/chartFormatters'
+import { mergeChartCopy } from '../types/copy'
 import { resolveChartDateFromIndex } from '../utils/chartDate'
 import RrgSvgRoot from './RrgSvgRoot.vue'
 import RrgAxes from './RrgAxes.vue'
@@ -59,7 +61,14 @@ const dateResolution = computed(() =>
 const resolvedDate = computed(() => dateResolution.value.date)
 const dateStatus = computed(() => dateResolution.value.status)
 const chartRoot = ref<HTMLElement | null>(null)
-const { isEmpty, emptyReason, emptyMessage } = useRrgChartEmptyState(coloredSeries, dateStatus)
+const copyRef = toRef(props, 'copy')
+const resolvedCopy = computed(() => mergeChartCopy(copyRef.value))
+const resolvedFormatters = computed(() => resolveChartFormatters(props.formatters))
+const { isEmpty, emptyReason, emptyMessage } = useRrgChartEmptyState(
+  coloredSeries,
+  dateStatus,
+  resolvedCopy,
+)
 const { getSvgElement, exportPng } = useRrgChartExport(chartRoot)
 defineExpose({ getSvgElement, exportPng })
 
@@ -67,7 +76,6 @@ const resolvedDateRef = resolvedDate
 const tailLengthRef = toRef(props, 'tailLength')
 const viewportModeRef = toRef(props, 'viewportMode')
 const showTailFadeRef = toRef(props, 'showTailFade')
-const copyRef = toRef(props, 'copy')
 const domain = useRrgViewport(seriesIndex, resolvedDateRef, tailLengthRef, viewportModeRef)
 const { svgWidth, svgHeight, plotWidth, plotHeight } = useRrgChartDimensions(
   chartRoot,
@@ -88,7 +96,7 @@ const { hoveredTicker, hoveredPoint, onPointEnter, onPointLeave, onPointClick } 
 const effectiveHoveredTicker = computed(
   () => hoveredTicker.value ?? props.highlightedTicker ?? null,
 )
-const { title: a11yTitle, description: a11yDescription, resolvedCopy } = useRrgChartSummary(
+const { title: a11yTitle, description: a11yDescription } = useRrgChartSummary(
   resolvedDateRef,
   viewportModeRef,
   currentPoints,
@@ -158,6 +166,8 @@ const resolvedLabels = useRrgLabelLayout(
         :x-scale="xScale"
         :y-scale="yScale"
         :show-grid="showGrid"
+        :copy="resolvedCopy"
+        :formatters="resolvedFormatters"
       />
       <RrgQuadrants
         v-if="showQuadrantLabels"
@@ -182,6 +192,7 @@ const resolvedLabels = useRrgLabelLayout(
           :point-radius="pointRadius"
           :hit-radius="hitRadius"
           :copy="resolvedCopy"
+          :formatters="resolvedFormatters"
           @point-enter="handlePointEnter"
           @point-leave="handlePointLeave"
           @point-click="handlePointClick"
@@ -195,6 +206,7 @@ const resolvedLabels = useRrgLabelLayout(
         :plot-width="plotWidth"
         :plot-height="plotHeight"
         :copy="resolvedCopy"
+        :formatters="resolvedFormatters"
       />
     </RrgSvgRoot>
   </div>

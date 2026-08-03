@@ -134,7 +134,8 @@ const speed = ref(2)
 | `highlightedTicker` / `selectedTicker` | `string \| null` | `null` | |
 | `width` / `height` | `number` | `640` / `480` | |
 | `pointRadius` / `hitRadius` | `number` | `5.5` / `12` | |
-| `copy` | `RrgChartCopy` | — | Optional UI string overrides |
+| `copy` | `RrgChartCopy` | — | Quadrants, axes, tooltip, empty-state strings |
+| `formatters` | `RrgChartFormatters` | — | `formatNumber` / `formatAxisTick` hooks |
 
 ### Events
 
@@ -193,6 +194,17 @@ const showTailFade = ref(false)
 ```
 
 `applyVisibleTickers` remains available when you prefer to filter series before passing them in.
+
+### Localization (`copy` + `controlsCopy`)
+
+| Surface | Prop | Covers |
+|---------|------|--------|
+| Chart SVG | `copy` on `RrgChart` | Quadrants, axis titles, tooltip labels, a11y title/desc, empty states |
+| Playback | `copy` on `RrgPlaybackControls` | Transport buttons, frame label, aria group |
+| Control panel | `controlsCopy` on `RrgChartControlsPanel` | Section titles, viewport/display/visibility labels |
+| Numbers | `formatters` on `RrgChart` | Axis ticks, tooltip values, point aria (`formatNumber`, `formatAxisTick`) |
+
+Omitted keys fall back to English defaults via `mergeChartCopy`, `mergeControlsCopy`, and `mergePlaybackCopy`. Ticker symbols and ISO dates in tooltips are caller data, not translated by the package.
 
 ## Host integration
 

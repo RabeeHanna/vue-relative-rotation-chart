@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type { RrgLabelMode, RrgRenderSeries, RrgViewportMode } from '../types/rrg'
 import { RRG_TAIL_LENGTH_PRESETS } from '../types/defaults'
+import type { RrgControlsCopy } from '../types/controlsCopy'
+import { mergeControlsCopy } from '../types/controlsCopy'
 import RrgDisplaySettingsControls from './RrgDisplaySettingsControls.vue'
 import RrgSeriesVisibilityControls from './RrgSeriesVisibilityControls.vue'
 import RrgViewportControls from './RrgViewportControls.vue'
@@ -13,13 +16,12 @@ const props = withDefaults(
   defineProps<{
     series: RrgRenderSeries[]
     disabled?: boolean
-    /** Tail-length select is disabled when full-history mode is on. */
     displayDisabled?: boolean
     dark?: boolean
     sections?: RrgChartControlsSection[]
-    /** Tail-length select presets (deduplicated, sorted; current value inserted when absent). */
     tailLengthPresets?: readonly number[]
     defaultOpen?: boolean
+    controlsCopy?: RrgControlsCopy
   }>(),
   {
     disabled: false,
@@ -37,6 +39,8 @@ const labelMode = defineModel<RrgLabelMode>('labelMode', { required: true })
 const showTailFade = defineModel<boolean>('showTailFade', { required: true })
 const visibleTickers = defineModel<string[]>('visibleTickers', { required: true })
 
+const resolvedControlsCopy = computed(() => mergeControlsCopy(props.controlsCopy))
+
 function showSection(section: RrgChartControlsSection): boolean {
   return props.sections.includes(section)
 }
@@ -48,7 +52,7 @@ function showSection(section: RrgChartControlsSection): boolean {
     :class="{ dark }"
     data-testid="rrg-chart-controls-panel"
     role="group"
-    aria-label="Chart controls"
+    :aria-label="resolvedControlsCopy.chartControlsGroup"
   >
     <details
       v-if="showSection('viewport')"
@@ -56,11 +60,12 @@ function showSection(section: RrgChartControlsSection): boolean {
       data-testid="rrg-chart-controls-viewport-section"
       :open="defaultOpen || undefined"
     >
-      <summary>Viewport</summary>
+      <summary>{{ resolvedControlsCopy.viewportSection }}</summary>
       <RrgViewportControls
         v-model:viewport-mode="viewportMode"
         :disabled="disabled"
         :dark="dark"
+        :controls-copy="resolvedControlsCopy"
         inset
       />
     </details>
@@ -71,7 +76,7 @@ function showSection(section: RrgChartControlsSection): boolean {
       data-testid="rrg-chart-controls-display-section"
       :open="defaultOpen || undefined"
     >
-      <summary>Display</summary>
+      <summary>{{ resolvedControlsCopy.displaySection }}</summary>
       <RrgDisplaySettingsControls
         v-model:tail-length="tailLength"
         v-model:label-mode="labelMode"
@@ -79,6 +84,7 @@ function showSection(section: RrgChartControlsSection): boolean {
         :tail-length-presets="tailLengthPresets"
         :disabled="disabled || displayDisabled"
         :dark="dark"
+        :controls-copy="resolvedControlsCopy"
         inset
       />
     </details>
@@ -89,12 +95,13 @@ function showSection(section: RrgChartControlsSection): boolean {
       data-testid="rrg-chart-controls-visibility-section"
       :open="defaultOpen || undefined"
     >
-      <summary>Series</summary>
+      <summary>{{ resolvedControlsCopy.seriesSection }}</summary>
       <RrgSeriesVisibilityControls
         v-model:visible-tickers="visibleTickers"
         :series="series"
         :disabled="disabled"
         :dark="dark"
+        :controls-copy="resolvedControlsCopy"
         inset
       />
     </details>

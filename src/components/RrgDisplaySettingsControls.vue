@@ -2,12 +2,10 @@
 import { computed } from 'vue'
 import type { RrgLabelMode } from '../types/rrg'
 import { RRG_TAIL_LENGTH_PRESETS } from '../types/defaults'
+import type { ResolvedRrgControlsCopy } from '../types/controlsCopy'
+import { RRG_CONTROLS_COPY_DEFAULTS } from '../types/controlsCopy'
 import { resolveTailLengthPresets } from '../utils/tailLengthPresets'
-import {
-  RRG_LABEL_MODES,
-  rrgLabelModeDescription,
-  rrgLabelModeLabel,
-} from '../utils/labelModeLabels'
+import { RRG_LABEL_MODES } from '../utils/labelModeLabels'
 import './rrgControlsShared.css'
 import './RrgDisplaySettingsControls.css'
 
@@ -16,14 +14,15 @@ const props = withDefaults(
     disabled?: boolean
     dark?: boolean
     inset?: boolean
-    /** Tail-length select presets (deduplicated, sorted; current value inserted when absent). */
     tailLengthPresets?: readonly number[]
+    controlsCopy?: ResolvedRrgControlsCopy
   }>(),
   {
     disabled: false,
     dark: false,
     inset: false,
     tailLengthPresets: () => RRG_TAIL_LENGTH_PRESETS,
+    controlsCopy: () => RRG_CONTROLS_COPY_DEFAULTS,
   },
 )
 
@@ -34,6 +33,20 @@ const showTailFade = defineModel<boolean>('showTailFade', { required: true })
 const resolvedTailLengthPresets = computed(() =>
   resolveTailLengthPresets(tailLength.value, props.tailLengthPresets),
 )
+
+function labelModeLabel(mode: RrgLabelMode): string {
+  const c = props.controlsCopy
+  if (mode === 'always') return c.labelAlways
+  if (mode === 'hover') return c.labelHover
+  return c.labelAuto
+}
+
+function labelModeDescription(mode: RrgLabelMode): string {
+  const c = props.controlsCopy
+  if (mode === 'always') return c.labelAlwaysDescription
+  if (mode === 'hover') return c.labelHoverDescription
+  return c.labelAutoDescription
+}
 </script>
 
 <template>
@@ -45,10 +58,10 @@ const resolvedTailLengthPresets = computed(() =>
     ]"
     data-testid="rrg-display-settings"
     role="group"
-    aria-label="Chart display settings"
+    :aria-label="controlsCopy.displayGroup"
   >
     <label class="rrg-display-settings__field">
-      Tail
+      {{ controlsCopy.tail }}
       <select
         v-model.number="tailLength"
         data-testid="rrg-display-tail-length"
@@ -61,7 +74,7 @@ const resolvedTailLengthPresets = computed(() =>
     </label>
 
     <label class="rrg-display-settings__field">
-      Labels
+      {{ controlsCopy.labels }}
       <select
         v-model="labelMode"
         data-testid="rrg-display-label-mode"
@@ -71,9 +84,9 @@ const resolvedTailLengthPresets = computed(() =>
           v-for="mode in RRG_LABEL_MODES"
           :key="mode"
           :value="mode"
-          :title="rrgLabelModeDescription(mode)"
+          :title="labelModeDescription(mode)"
         >
-          {{ rrgLabelModeLabel(mode) }}
+          {{ labelModeLabel(mode) }}
         </option>
       </select>
     </label>
@@ -85,7 +98,7 @@ const resolvedTailLengthPresets = computed(() =>
         data-testid="rrg-display-tail-fade"
         :disabled="disabled"
       />
-      Tail fade
+      {{ controlsCopy.tailFade }}
     </label>
   </div>
 </template>
