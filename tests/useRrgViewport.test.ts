@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRrgViewport } from '../src/composables/useRrgViewport'
 import { centerDomain, fitDomain, maxDomain } from '../src/utils/viewportDomain'
 import { buildSeriesIndex } from '../src/utils/seriesIndex'
@@ -68,5 +68,32 @@ describe('useRrgViewport', () => {
       computed(() => 'fit'),
     )
     expect(domain.value.xMax).toBeGreaterThan(110)
+  })
+
+  it('uses a tighter domain when fitPadding is smaller than the default', () => {
+    const date = computed(() => '2024-03-01')
+    const tail = computed(() => 10)
+    const mode = computed(() => 'fit' as const)
+    const loose = useRrgViewport(seriesIndex, date, tail, mode)
+    const tight = useRrgViewport(seriesIndex, date, tail, mode, { fitPadding: 2 })
+    expect(tight.value.xMin).toBeGreaterThan(loose.value.xMin)
+    expect(tight.value.xMax).toBeLessThan(loose.value.xMax)
+    expect(tight.value.yMin).toBeGreaterThan(loose.value.yMin)
+    expect(tight.value.yMax).toBeLessThan(loose.value.yMax)
+  })
+
+  it('reacts when fitPadding changes', () => {
+    const padding = ref(5)
+    const domain = useRrgViewport(
+      seriesIndex,
+      computed(() => '2024-03-01'),
+      computed(() => 10),
+      computed(() => 'fit'),
+      { fitPadding: padding },
+    )
+    const loose = { ...domain.value }
+    padding.value = 2
+    expect(domain.value.xMin).toBeGreaterThan(loose.xMin)
+    expect(domain.value.xMax).toBeLessThan(loose.xMax)
   })
 })

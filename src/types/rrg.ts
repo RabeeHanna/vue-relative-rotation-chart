@@ -155,6 +155,12 @@ export type RrgChartProps = {
   tailLength?: number
   /** Default: 'fit' (Fit-All — data extent + padding) */
   viewportMode?: RrgViewportMode
+  /**
+   * Extra domain units on each side of the Fit-All data extent (RS-Ratio /
+   * RS-Momentum), not CSS pixels. Default 5. Non-finite or negative values
+   * fall back to the default. Does not affect `max` or `center` modes.
+   */
+  fitPadding?: number
   /** Default: 'auto' */
   labelMode?: RrgLabelMode
   showQuadrantLabels?: boolean

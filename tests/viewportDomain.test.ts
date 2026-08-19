@@ -5,6 +5,7 @@ import {
   expandDomainToIncludeCenter,
   fitDomain,
   maxDomain,
+  resolveFitPadding,
   RRG_DOMAIN_CENTER,
 } from '../src/utils/viewportDomain'
 import type { RrgRenderSeries } from '../src/types/rrg'
@@ -47,6 +48,16 @@ function seriesSpanningCenter(): RrgRenderSeries[] {
     },
   ]
 }
+
+describe('resolveFitPadding', () => {
+  it('keeps finite non-negative values and falls back otherwise', () => {
+    expect(resolveFitPadding(0)).toBe(0)
+    expect(resolveFitPadding(2)).toBe(2)
+    expect(resolveFitPadding(undefined)).toBe(5)
+    expect(resolveFitPadding(-1)).toBe(5)
+    expect(resolveFitPadding(Number.NaN)).toBe(5)
+  })
+})
 
 describe('viewportDomain policy A', () => {
   it('expandDomainToIncludeCenter pulls bounds through the RRG center', () => {
@@ -110,6 +121,15 @@ describe('viewportDomain policy A', () => {
     expect(fitWithHidden).toEqual(fitVisible)
     expect(maxWithHidden).toEqual(maxVisible)
     expect(maxWithHidden.xMax).toBeLessThan(150)
+  })
+
+  it('fitDomain padding 2 is tighter than padding 5 for the same window', () => {
+    const loose = fitDomain(seriesSpanningCenter(), '2024-02-01', 2, 5)
+    const tight = fitDomain(seriesSpanningCenter(), '2024-02-01', 2, 2)
+    expect(tight.xMin).toBeGreaterThan(loose.xMin)
+    expect(tight.xMax).toBeLessThan(loose.xMax)
+    expect(tight.yMin).toBeGreaterThan(loose.yMin)
+    expect(tight.yMax).toBeLessThan(loose.yMax)
   })
 })
 

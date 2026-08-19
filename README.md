@@ -10,8 +10,6 @@ Build interactive stock, ETF, sector, index, and portfolio-holdings rotation cha
 
 > **Live demo:** [GitHub Pages](https://rabeehanna.github.io/vue-relative-rotation-chart/) · [npm](https://www.npmjs.com/package/vue-relative-rotation-chart) · local: `npm run dev`
 
-![vue-relative-rotation-chart demo — sector ETF RRG with controls and playback](https://github.com/RabeeHanna/vue-relative-rotation-chart/raw/develop/public/readme-demo.png)
-
 ## What it renders (and what it does not)
 
 **Renders:** precomputed RS-Ratio (`x`) and RS-Momentum (`y`) trails per ticker, quadrant labels, tails, labels, viewport modes, optional controls panel, playback scrubber, PNG/SVG export, and theming via CSS variables.
@@ -179,6 +177,7 @@ See `RrgChartProps` JSDoc in the published types for the full contract.
 | `visibleTickers` | `string[]` | — | Optional `v-model` |
 | `tailLength` | `number` | `10` | Historical points in tail |
 | `viewportMode` | `'fit' \| 'max' \| 'center'` | `'fit'` | Fit-All default |
+| `fitPadding` | `number` | `5` | Extra Fit-All domain units per side (not CSS px) |
 | `labelMode` | `'auto' \| 'always' \| 'hover'` | `'auto'` | Spatial-bin collision |
 | `tickerLabelAlwaysVisible` | `boolean` | `false` | Identity override |
 | `showTailFade` | `boolean` | `false` | Tail opacity gradient |

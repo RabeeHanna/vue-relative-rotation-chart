@@ -1,16 +1,17 @@
-import { computed, type ComputedRef, type Ref } from 'vue'
+import { computed, toValue, type ComputedRef, type MaybeRefOrGetter, type Ref } from 'vue'
 import type { RrgDomain, RrgViewportMode } from '../types/rrg'
 import {
   centerDomain,
   fitDomainFromIndex,
   maxDomainFromIndex,
+  resolveFitPadding,
 } from '../utils/viewportDomain'
 import type { SeriesIndex } from '../utils/seriesIndex'
 
 export type ViewportOptions = {
-  centerRadius?: number
-  fitPadding?: number
-  maxPadding?: number
+  centerRadius?: MaybeRefOrGetter<number | undefined>
+  fitPadding?: MaybeRefOrGetter<number | undefined>
+  maxPadding?: MaybeRefOrGetter<number | undefined>
 }
 
 type MaybeRef<T> = ComputedRef<T> | Ref<T>
@@ -25,14 +26,11 @@ export function useRrgViewport(
   viewportMode: MaybeRef<RrgViewportMode>,
   options: ViewportOptions = {},
 ): ComputedRef<RrgDomain> {
-  const {
-    centerRadius = 10,
-    fitPadding = 5,
-    maxPadding = 2,
-  } = options
-
   return computed((): RrgDomain => {
     const index = seriesIndex.value
+    const centerRadius = toValue(options.centerRadius) ?? 10
+    const maxPadding = toValue(options.maxPadding) ?? 2
+    const fitPadding = resolveFitPadding(toValue(options.fitPadding))
     switch (viewportMode.value) {
       case 'center':
         return centerDomain(centerRadius)

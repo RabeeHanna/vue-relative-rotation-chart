@@ -28,6 +28,7 @@ import './RrgChart.css'
 const props = withDefaults(defineProps<Omit<RrgChartProps, 'visibleTickers'>>(), {
   tailLength: RRG_CHART_DEFAULTS.tailLength,
   viewportMode: RRG_CHART_DEFAULTS.viewportMode,
+  fitPadding: RRG_CHART_DEFAULTS.fitPadding,
   labelMode: RRG_CHART_DEFAULTS.labelMode,
   showQuadrantLabels: RRG_CHART_DEFAULTS.showQuadrantLabels,
   showGrid: RRG_CHART_DEFAULTS.showGrid,
@@ -72,11 +73,12 @@ const { isEmpty, emptyReason, emptyMessage } = useRrgChartEmptyState(
 const { getSvgElement, exportPng } = useRrgChartExport(chartRoot)
 defineExpose({ getSvgElement, exportPng })
 
-const resolvedDateRef = resolvedDate
 const tailLengthRef = toRef(props, 'tailLength')
 const viewportModeRef = toRef(props, 'viewportMode')
 const showTailFadeRef = toRef(props, 'showTailFade')
-const domain = useRrgViewport(seriesIndex, resolvedDateRef, tailLengthRef, viewportModeRef)
+const domain = useRrgViewport(seriesIndex, resolvedDate, tailLengthRef, viewportModeRef, {
+  fitPadding: toRef(props, 'fitPadding'),
+})
 const { svgWidth, svgHeight, plotWidth, plotHeight } = useRrgChartDimensions(
   chartRoot,
   toRef(props, 'width'),
@@ -85,7 +87,7 @@ const { svgWidth, svgHeight, plotWidth, plotHeight } = useRrgChartDimensions(
 const { xScale, yScale } = useRrgScales(domain, plotWidth, plotHeight)
 const { currentPoints, tailData } = useRrgTailSlices(
   seriesIndex,
-  resolvedDateRef,
+  resolvedDate,
   tailLengthRef,
   xScale,
   yScale,
@@ -97,7 +99,7 @@ const effectiveHoveredTicker = computed(
   () => hoveredTicker.value ?? props.highlightedTicker ?? null,
 )
 const { title: a11yTitle, description: a11yDescription } = useRrgChartSummary(
-  resolvedDateRef,
+  resolvedDate,
   viewportModeRef,
   currentPoints,
   copyRef,

@@ -45,6 +45,7 @@ describe('public type contract', () => {
     expectTypeOf<RrgChartProps>().not.toHaveProperty('showPatterns')
     expectTypeOf<RrgChartProps>().toHaveProperty('tickerLabelAlwaysVisible')
     expectTypeOf<RrgChartProps>().toHaveProperty('showTailFade')
+    expectTypeOf<RrgChartProps>().toHaveProperty('fitPadding')
     expectTypeOf<RrgChartEmits>().toHaveProperty('pointHover')
     expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('dates')
     expectTypeOf<RrgPlaybackControlsProps>().toHaveProperty('labelStyle')
@@ -61,6 +62,7 @@ describe('public type contract', () => {
   it('exposes documented default constants', () => {
     expect(RRG_CHART_DEFAULTS.tailLength).toBe(10)
     expect(RRG_CHART_DEFAULTS.viewportMode).toBe('fit')
+    expect(RRG_CHART_DEFAULTS.fitPadding).toBe(5)
     expect(RRG_CHART_DEFAULTS.labelMode).toBe('auto')
     expect(RRG_CHART_DEFAULTS.tickerLabelAlwaysVisible).toBe(false)
     expect(RRG_CHART_DEFAULTS.showTailFade).toBe(false)

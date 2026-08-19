@@ -1,5 +1,6 @@
 import { extent } from 'd3-array'
 import { padExtent, roundDomainBound } from './bounds'
+import { RRG_CHART_DEFAULTS } from '../types/defaults'
 import type { RrgDomain } from '../types/rrg'
 import type { RrgRenderSeries } from '../types/rrg'
 import {
@@ -10,6 +11,14 @@ import {
 
 /** Fixed RRG quadrant center on both axes (Policy A anchor). */
 export const RRG_DOMAIN_CENTER = 100
+
+/** Finite, non-negative padding; otherwise the Fit-All default. */
+export function resolveFitPadding(value: number | undefined): number {
+  if (value === undefined || !Number.isFinite(value) || value < 0) {
+    return RRG_CHART_DEFAULTS.fitPadding
+  }
+  return value
+}
 
 /**
  * Policy A: auto-derived domains always include the quadrant center so labels
@@ -58,8 +67,9 @@ export function fitDomainFromIndex(
   index: SeriesIndex,
   selectedDate: string,
   tailLength: number,
-  padding = 5,
+  padding?: number,
 ): RrgDomain {
+  const resolvedPadding = resolveFitPadding(padding)
   const xs: number[] = []
   const ys: number[] = []
 
@@ -80,10 +90,10 @@ export function fitDomainFromIndex(
   const [xMin, xMax] = extent(xs) as [number, number]
   const [yMin, yMax] = extent(ys) as [number, number]
   return expandDomainToIncludeCenter({
-    xMin: roundDomainBound(xMin - padding, 0.5, 'floor'),
-    xMax: roundDomainBound(xMax + padding, 0.5, 'ceil'),
-    yMin: roundDomainBound(yMin - padding, 0.5, 'floor'),
-    yMax: roundDomainBound(yMax + padding, 0.5, 'ceil'),
+    xMin: roundDomainBound(xMin - resolvedPadding, 0.5, 'floor'),
+    xMax: roundDomainBound(xMax + resolvedPadding, 0.5, 'ceil'),
+    yMin: roundDomainBound(yMin - resolvedPadding, 0.5, 'floor'),
+    yMax: roundDomainBound(yMax + resolvedPadding, 0.5, 'ceil'),
   })
 }
 
@@ -91,7 +101,7 @@ export function fitDomain(
   series: RrgRenderSeries[],
   selectedDate: string,
   tailLength: number,
-  padding = 5,
+  padding?: number,
 ): RrgDomain {
   return fitDomainFromIndex(buildSeriesIndex(series), selectedDate, tailLength, padding)
 }

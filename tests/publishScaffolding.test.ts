@@ -58,10 +58,10 @@ describe('docs removal follow-through', () => {
     expect(offenders, offenders.join(', ')).toEqual([])
   })
 
-  it('relocates readme demo image to public/', () => {
+  it('keeps readme demo image out of README for npm', () => {
     expect(existsSync(path.join(root, 'public/readme-demo.png'))).toBe(true)
     const readme = readFileSync(path.join(root, 'README.md'), 'utf8')
-    expect(readme).toContain('public/readme-demo.png')
+    expect(readme).not.toContain('readme-demo.png')
     expect(readme).not.toContain('docs/readme-demo.png')
   })
 })

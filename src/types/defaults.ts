@@ -10,6 +10,8 @@ import type {
 export const RRG_CHART_DEFAULTS = {
   tailLength: 10,
   viewportMode: 'fit' as RrgViewportMode,
+  /** Domain units added around Fit-All extent (not CSS pixels). */
+  fitPadding: 5,
   labelMode: 'auto' as RrgLabelMode,
   showQuadrantLabels: true,
   showGrid: true,
